@@ -16,6 +16,9 @@ namespace HealthyLifestyleTrackingApp.Data
         public DbSet<Exercise> Exercises { get; init; }
         public DbSet<FoodCategory> FoodCategories { get; init; }
         public DbSet<ExerciseCategory> ExerciseCategories { get; init; }
+        public DbSet<Tag> Tags { get; init; }
+        public DbSet<FoodTag> FoodTags { get; init; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -32,6 +35,9 @@ namespace HealthyLifestyleTrackingApp.Data
                 .WithMany(c => c.Exercises)
                 .HasForeignKey(c => c.ExerciseCategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<FoodTag>()
+                 .HasKey(x => new { x.FoodId, x.TagId });
 
             base.OnModelCreating(builder);
         }

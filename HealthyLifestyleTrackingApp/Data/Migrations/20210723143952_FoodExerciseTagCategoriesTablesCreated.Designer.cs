@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthyLifestyleTrackingApp.Data.Migrations
 {
     [DbContext(typeof(HealthyLifestyleTrackerDbContext))]
-    [Migration("20210721234542_FoodExerciseCategoriesTablesCreated")]
-    partial class FoodExerciseCategoriesTablesCreated
+    [Migration("20210723143952_FoodExerciseTagCategoriesTablesCreated")]
+    partial class FoodExerciseTagCategoriesTablesCreated
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -92,9 +92,6 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                     b.Property<int>("FoodCategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("FoodTag")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -103,7 +100,7 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                     b.Property<double>("Protein")
                         .HasColumnType("float");
 
-                    b.Property<int>("Serving")
+                    b.Property<int>("ServingType")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -128,6 +125,38 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("FoodCategories");
+                });
+
+            modelBuilder.Entity("HealthyLifestyleTrackingApp.Data.Models.FoodTag", b =>
+                {
+                    b.Property<int>("FoodId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FoodId", "TagId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("FoodTags");
+                });
+
+            modelBuilder.Entity("HealthyLifestyleTrackingApp.Data.Models.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -352,6 +381,25 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                     b.Navigation("FoodCategory");
                 });
 
+            modelBuilder.Entity("HealthyLifestyleTrackingApp.Data.Models.FoodTag", b =>
+                {
+                    b.HasOne("HealthyLifestyleTrackingApp.Data.Models.Food", "Food")
+                        .WithMany("FoodTags")
+                        .HasForeignKey("FoodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HealthyLifestyleTrackingApp.Data.Models.Tag", "Tag")
+                        .WithMany("FoodTags")
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Food");
+
+                    b.Navigation("Tag");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -408,9 +456,19 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                     b.Navigation("Exercises");
                 });
 
+            modelBuilder.Entity("HealthyLifestyleTrackingApp.Data.Models.Food", b =>
+                {
+                    b.Navigation("FoodTags");
+                });
+
             modelBuilder.Entity("HealthyLifestyleTrackingApp.Data.Models.FoodCategory", b =>
                 {
                     b.Navigation("Foods");
+                });
+
+            modelBuilder.Entity("HealthyLifestyleTrackingApp.Data.Models.Tag", b =>
+                {
+                    b.Navigation("FoodTags");
                 });
 #pragma warning restore 612, 618
         }

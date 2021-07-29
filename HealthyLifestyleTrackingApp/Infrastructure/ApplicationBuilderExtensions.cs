@@ -18,13 +18,14 @@ namespace HealthyLifestyleTrackingApp.Infrastructure
 
             data.Database.Migrate();
 
-            SeesFoodCategories(data);
-            SeesExerciseCategories(data);
+            SeedFoodCategories(data);
+            SeedExerciseCategories(data);
+            SeedTags(data);
 
             return app;
         }
 
-        private static void SeesFoodCategories(HealthyLifestyleTrackerDbContext data)
+        private static void SeedFoodCategories(HealthyLifestyleTrackerDbContext data)
         {
             if (data.FoodCategories.Any())
             {
@@ -48,7 +49,7 @@ namespace HealthyLifestyleTrackingApp.Infrastructure
             data.SaveChanges();
         }
 
-        private static void SeesExerciseCategories(HealthyLifestyleTrackerDbContext data)
+        private static void SeedExerciseCategories(HealthyLifestyleTrackerDbContext data)
         {
             if (data.ExerciseCategories.Any())
             {
@@ -61,6 +62,29 @@ namespace HealthyLifestyleTrackingApp.Infrastructure
                 new ExerciseCategory { Name = "Moderate" },
                 new ExerciseCategory { Name = "High Intensity" },
                 new ExerciseCategory { Name = "Strenght Training" },
+            });
+
+            data.SaveChanges();
+        }
+
+
+        private static void SeedTags(HealthyLifestyleTrackerDbContext data)
+        {
+            if (data.Tags.Any())
+            {
+                return;
+            }
+
+            data.Tags.AddRange(new[]
+            {
+                new Tag { Name = "Healthy" },
+                new Tag { Name = "RichInProtein" },
+                new Tag { Name = "RichInCarbs" },
+                new Tag { Name = "RichInFat" },
+                new Tag { Name = "JunkFood " },
+                new Tag { Name = "Alcohol" },
+                new Tag { Name = "Vegeterian" },
+                new Tag { Name = "Vegan" },
             });
 
             data.SaveChanges();

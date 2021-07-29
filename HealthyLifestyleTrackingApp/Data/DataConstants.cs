@@ -7,5 +7,6 @@
         public const int ExerciseNameMaxLength = 40;
         public const int NutritionalValueNameMaxLenghth = 20;
         public const int CategoryNameMaxLenghth = 20;
+        public const int FoodTagNameMaxLenghth = 20;
     }
 }

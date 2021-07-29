@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HealthyLifestyleTrackingApp.Data.Migrations
 {
-    public partial class FoodExerciseCategoriesTablesCreated : Migration
+    public partial class FoodExerciseTagCategoriesTablesCreated : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -31,6 +31,19 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_FoodCategories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tags",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tags", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -64,12 +77,11 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Brand = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     Amount = table.Column<double>(type: "float", nullable: false),
-                    Serving = table.Column<int>(type: "int", nullable: false),
+                    ServingType = table.Column<int>(type: "int", nullable: false),
                     Calories = table.Column<int>(type: "int", nullable: false),
                     Protein = table.Column<double>(type: "float", nullable: false),
                     Carbohydrates = table.Column<double>(type: "float", nullable: false),
                     Fat = table.Column<double>(type: "float", nullable: false),
-                    FoodTag = table.Column<int>(type: "int", nullable: true),
                     FoodCategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -83,6 +95,30 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "FoodTags",
+                columns: table => new
+                {
+                    FoodId = table.Column<int>(type: "int", nullable: false),
+                    TagId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FoodTags", x => new { x.FoodId, x.TagId });
+                    table.ForeignKey(
+                        name: "FK_FoodTags_Foods_FoodId",
+                        column: x => x.FoodId,
+                        principalTable: "Foods",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FoodTags_Tags_TagId",
+                        column: x => x.TagId,
+                        principalTable: "Tags",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Exercises_ExerciseCategoryId",
                 table: "Exercises",
@@ -92,6 +128,11 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                 name: "IX_Foods_FoodCategoryId",
                 table: "Foods",
                 column: "FoodCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FoodTags_TagId",
+                table: "FoodTags",
+                column: "TagId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -100,10 +141,16 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                 name: "Exercises");
 
             migrationBuilder.DropTable(
-                name: "Foods");
+                name: "FoodTags");
 
             migrationBuilder.DropTable(
                 name: "ExerciseCategories");
+
+            migrationBuilder.DropTable(
+                name: "Foods");
+
+            migrationBuilder.DropTable(
+                name: "Tags");
 
             migrationBuilder.DropTable(
                 name: "FoodCategories");
