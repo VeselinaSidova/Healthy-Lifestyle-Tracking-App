@@ -6,20 +6,20 @@
 
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <h2 class="heading-margin text-center">Add Food</h2>
+        <h2 class="heading-margin text-center">Create Food</h2>
 
         <form method="post">
             <div class="form-group">
                 <label asp-for="Name"></label>
-                <input aps-for="Name" class="form-control" placeholder="Add food name">
+                <input asp-for="Name" class="form-control" placeholder="Add food name">
             </div>
             <div class="form-group">
                 <label asp-for="Brand"></label>
-                <input aps-for="Brand" class="form-control" placeholder="Add food brand">
+                <input asp-for="Brand" class="form-control" placeholder="Add food brand">
             </div>
             <div class="form-group">
                 <label asp-for="Amount"></label>
-                <input aps-for="Amount" class="form-control" placeholder="Add amount, ex: 1, 1.5, 200">
+                <input asp-for="Amount" class="form-control" placeholder="Add amount, ex: 1, 1.5, 200">
             </div>
             <div class="form-group">
                 <label asp-for="ServingType"></label>
@@ -38,35 +38,35 @@
                 <select asp-for="FoodCategoryId" class="form-control">
                     @foreach (var category in Model.FoodCategories)
                     {
-                        <option value="@category.Id">@category.Name</option>
+                        <option value="@category?.Id">@category?.Name</option>
                     }
                 </select>
             </div>
             <div class="form-group">
                 <label asp-for="Calories"></label>
-                <input aps-for="Calories" class="form-control" placeholder="Add kcal per 100 grams">
+                <input asp-for="Calories" class="form-control" placeholder="Add kcal per 100 grams">
             </div>
             <div class="form-group">
                 <label asp-for="Protein"></label>
-                <input aps-for="Protein" class="form-control" placeholder="Add grams per 100 grams">
+                <input asp-for="Protein" class="form-control" placeholder="Add grams per 100 grams">
             </div>
             <div class="form-group">
                 <label asp-for="Carbohydrates"></label>
-                <input aps-for="Carbohydrates" class="form-control" placeholder="Add grams per 100 grams">
+                <input asp-for="Carbohydrates" class="form-control" placeholder="Add grams per 100 grams">
             </div>
             <div class="form-group">
                 <label asp-for="Fat"></label>
-                <input aps-for="Fat" class="form-control" placeholder="Add grams per 100 grams">
+                <input asp-for="Fat" class="form-control" placeholder="Add grams per 100 grams">
             </div>
             <div class="form-group">
-                <label asp-for="Tags"></label>
-                <select multiple class="form-control">
-                    @foreach (var foodTag in Model.Tags)
-                    {
-                        <option value="@foodTag.Id">@foodTag.Name</option>
-                    }
-                </select>
-            </div>
+                <label asp-for="FoodTags"></label>
+                <select asp-for="FoodTags" multiple class="form-control">
+                        @foreach (var foodTag in Model.Tags)
+                        {
+                            <option value="@foodTag.Id">@foodTag.Name</option>
+                        }
+                    </select>
+</div>
             <input class="btn btn-primary" type="submit" value="Create" />
         </form>
     </div>
