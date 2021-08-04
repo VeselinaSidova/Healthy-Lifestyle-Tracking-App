@@ -1,8 +1,4 @@
-﻿using HealthyLifestyleTrackingApp.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace HealthyLifestyleTrackingApp.Models.Foods
 {
@@ -10,6 +6,7 @@ namespace HealthyLifestyleTrackingApp.Models.Foods
     {
         public int Id { get; init; }
 
+        [Required]
         public string Name { get; init; }
     }
 }

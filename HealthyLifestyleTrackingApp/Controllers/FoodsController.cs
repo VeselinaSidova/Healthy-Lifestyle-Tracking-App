@@ -1,7 +1,9 @@
 ﻿using HealthyLifestyleTrackingApp.Data;
+using HealthyLifestyleTrackingApp.Data.Enums;
 using HealthyLifestyleTrackingApp.Data.Models;
 using HealthyLifestyleTrackingApp.Models.Foods;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -27,6 +29,27 @@ namespace HealthyLifestyleTrackingApp.Controllers
             {
                 this.ModelState.AddModelError(nameof(food.FoodCategoryId), "Food category does not exist.");
             }
+
+
+            if (!Enum.IsDefined(typeof(StandardServingType), (int)food.StandardServingType))
+            {
+                this.ModelState.AddModelError(nameof(food.StandardServingType), "Serving type does not exist.");
+            }
+
+            var tagIds = this.data.Tags.Select(x => x.Id).ToList();
+
+            if (food.FoodTags != null)
+            {
+                foreach (var tag in food.FoodTags)
+                {
+                    if (!this.data.Tags.Any(t => t.Id == tag))
+                    {
+                        this.ModelState.AddModelError(nameof(food.FoodTags), "Food tag does not exist.");
+                    }
+                   
+                }
+            }
+
 
             if (!ModelState.IsValid)
             {

@@ -1,5 +1,4 @@
 ﻿using HealthyLifestyleTrackingApp.Data.Enums;
-using HealthyLifestyleTrackingApp.Data.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using static HealthyLifestyleTrackingApp.Data.DataConstants;
