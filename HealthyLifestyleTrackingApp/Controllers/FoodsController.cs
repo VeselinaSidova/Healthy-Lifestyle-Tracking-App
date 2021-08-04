@@ -1,4 +1,5 @@
 ﻿using HealthyLifestyleTrackingApp.Data;
+using HealthyLifestyleTrackingApp.Data.Models;
 using HealthyLifestyleTrackingApp.Models.Foods;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -22,7 +23,41 @@ namespace HealthyLifestyleTrackingApp.Controllers
         [HttpPost]
         public IActionResult Create(CreateFoodFormModel food)
         {
-            return View();
+            if (!this.data.FoodCategories.Any(c => c.Id == food.FoodCategoryId))
+            {
+                this.ModelState.AddModelError(nameof(food.FoodCategoryId), "Food category does not exist.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                food.FoodCategories = this.GetFoodCategories();
+                food.Tags = this.GetFoodTags();
+                return View(food);
+            }
+
+            var foodData = new Food
+            {
+                Name = food.Name,
+                Brand = food.Brand,
+                StandardServingAmount = (double)food.StandardServingAmount,
+                StandardServingType = food.StandardServingType,
+                Calories = (int)food.Calories,
+                Protein = (double)food.Protein,
+                Carbohydrates = (double)food.Carbohydrates,
+                Fat = (double)food.Fat,
+                FoodCategoryId = food.FoodCategoryId,
+            };
+            foreach (var foodTag in food.FoodTags)
+            {
+                var tag = data.Tags.FirstOrDefault(x => x.Id == foodTag)
+                    ?? new Tag { Id = foodTag };
+                foodData.FoodTags.Add(new FoodTag { Tag = tag });
+            }
+
+            this.data.Foods.Add(foodData);
+            this.data.SaveChanges();
+
+            return RedirectToAction("Index", "Home");
         }
 
         private IEnumerable<FoodCategoryViewModel> GetFoodCategories()

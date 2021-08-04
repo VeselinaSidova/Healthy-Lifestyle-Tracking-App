@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthyLifestyleTrackingApp.Data.Migrations
 {
     [DbContext(typeof(HealthyLifestyleTrackerDbContext))]
-    [Migration("20210723143952_FoodExerciseTagCategoriesTablesCreated")]
-    partial class FoodExerciseTagCategoriesTablesCreated
+    [Migration("20210804122726_FoodExerciseCategoriesTagsTablesCreated")]
+    partial class FoodExerciseCategoriesTagsTablesCreated
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -73,9 +73,6 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
-
                     b.Property<string>("Brand")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
@@ -100,7 +97,10 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                     b.Property<double>("Protein")
                         .HasColumnType("float");
 
-                    b.Property<int>("ServingType")
+                    b.Property<double>("StandardServingAmount")
+                        .HasColumnType("float");
+
+                    b.Property<int>("StandardServingType")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -386,13 +386,13 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                     b.HasOne("HealthyLifestyleTrackingApp.Data.Models.Food", "Food")
                         .WithMany("FoodTags")
                         .HasForeignKey("FoodId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("HealthyLifestyleTrackingApp.Data.Models.Tag", "Tag")
                         .WithMany("FoodTags")
                         .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Food");

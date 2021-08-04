@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace HealthyLifestyleTrackingApp.Data.Migrations
 {
-    public partial class FoodExerciseTagCategoriesTablesCreated : Migration
+    public partial class FoodExerciseCategoriesTagsTablesCreated : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -76,8 +76,8 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Brand = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    Amount = table.Column<double>(type: "float", nullable: false),
-                    ServingType = table.Column<int>(type: "int", nullable: false),
+                    StandardServingAmount = table.Column<double>(type: "float", nullable: false),
+                    StandardServingType = table.Column<int>(type: "int", nullable: false),
                     Calories = table.Column<int>(type: "int", nullable: false),
                     Protein = table.Column<double>(type: "float", nullable: false),
                     Carbohydrates = table.Column<double>(type: "float", nullable: false),
@@ -110,13 +110,13 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                         column: x => x.FoodId,
                         principalTable: "Foods",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_FoodTags_Tags_TagId",
                         column: x => x.TagId,
                         principalTable: "Tags",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(

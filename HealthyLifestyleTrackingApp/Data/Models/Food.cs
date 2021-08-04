@@ -14,14 +14,14 @@ namespace HealthyLifestyleTrackingApp.Data.Models
         [MaxLength(FoodNameMaxLength)]
         public string Name { get; set; }
 
-        [MaxLength(FoodBrandNameMaxLength)]
+        [MaxLength(FoodBrandMaxLength)]
         public string Brand { get; set; }
 
-        public double Amount { get; set; }
+        public double StandardServingAmount { get; set; }
 
-        public ServingType ServingType { get; set; }
+        public StandardServingType StandardServingType { get; set; }
 
-         public int Calories { get; set; }
+        public int Calories { get; set; }
 
         public double Protein { get; set; }
 
@@ -33,6 +33,6 @@ namespace HealthyLifestyleTrackingApp.Data.Models
 
         public FoodCategory FoodCategory { get; init; }
 
-        public ICollection<FoodTag> FoodTags { get; set; }
+        public ICollection<FoodTag> FoodTags { get; set; } = new List<FoodTag>();
     }
 }

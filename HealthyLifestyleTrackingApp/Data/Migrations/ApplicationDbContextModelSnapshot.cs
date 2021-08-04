@@ -71,9 +71,6 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
-
                     b.Property<string>("Brand")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
@@ -98,7 +95,10 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                     b.Property<double>("Protein")
                         .HasColumnType("float");
 
-                    b.Property<int>("ServingType")
+                    b.Property<double>("StandardServingAmount")
+                        .HasColumnType("float");
+
+                    b.Property<int>("StandardServingType")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -384,13 +384,13 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                     b.HasOne("HealthyLifestyleTrackingApp.Data.Models.Food", "Food")
                         .WithMany("FoodTags")
                         .HasForeignKey("FoodId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("HealthyLifestyleTrackingApp.Data.Models.Tag", "Tag")
                         .WithMany("FoodTags")
                         .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Food");

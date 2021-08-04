@@ -36,8 +36,23 @@ namespace HealthyLifestyleTrackingApp.Data
                 .HasForeignKey(c => c.ExerciseCategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder
+                .Entity<FoodTag>()
+                .HasKey(x => new { x.FoodId, x.TagId });
+
             builder.Entity<FoodTag>()
-                 .HasKey(x => new { x.FoodId, x.TagId });
+                .HasOne(b => b.Food)
+                .WithMany(b => b.FoodTags)
+                .HasForeignKey(b => b.FoodId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<FoodTag>()
+                .HasOne(b => b.Tag)
+                .WithMany(b => b.FoodTags)
+                .HasForeignKey(b => b.TagId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);
         }
