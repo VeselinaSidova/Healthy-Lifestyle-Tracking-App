@@ -22,11 +22,36 @@ namespace HealthyLifestyleTrackingApp.Controllers
             Tags = this.GetFoodTags()
         });
 
-        public IActionResult All()
+        public IActionResult All([FromQuery]AllFoodsQueryModel query)
         {
-            var foods = this.data
-                .Foods
-                .OrderBy(f => f.FoodCategory.Name)
+            var foodsQuery = this.data.Foods.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.Category))
+            {
+                foodsQuery = foodsQuery.Where(f => f.FoodCategory.Name == query.Category);
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.Tag))
+            {
+                foodsQuery = foodsQuery.Where(f => f.FoodTags.Any(t => t.Tag.Name == query.Tag));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
+            {
+                foodsQuery = foodsQuery.Where(f =>
+                    f.Name.ToLower().Contains(query.SearchTerm.ToLower()) || 
+                    f.Brand.ToLower().Contains(query.SearchTerm.ToLower()) || 
+                    f.FoodCategory.Name.ToLower().Contains(query.SearchTerm.ToLower()));
+            }
+
+            foodsQuery = query.Sorting switch
+            {
+                FoodSorting.Category => foodsQuery.OrderBy(f => f.FoodCategory.Name),
+                FoodSorting.DateCreated => foodsQuery.OrderByDescending(f => f.Id),
+                FoodSorting.Name or _ => foodsQuery.OrderBy(f => f.Name)
+            };
+
+            var foods = foodsQuery
                 .Select(f => new FoodListingViewModel
                 {
                     Id = f.Id,
@@ -41,7 +66,15 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 })
                 .ToList();
 
-            return View(foods);
+            var foodCategories = this.data.FoodCategories.Select(c => c.Name).OrderBy(c => c).Distinct().ToList();
+
+            var foodTags = this.data.Tags.Select(t => t.Name).ToList();
+
+            query.Categories = foodCategories;
+            query.Foods = foods;
+            query.Tags = foodTags;
+
+            return View(query);
         }
 
         [HttpPost]

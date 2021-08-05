@@ -1,7 +1,51 @@
-﻿@model IEnumerable<FoodListingViewModel>
+﻿@model AllFoodsQueryModel
+
+
+<form method="get">
+    <div class="row mb-12">
+        <div class="mb-1 form-group col-md-4">
+            <div class="form-group">
+                <label asp-for="Category">Search by Category</label>
+                <select asp-for="Category" class="form-control">
+                    <option value="">All</option>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category">@category</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="mb-1 form-group col-md-4">
+            <div class="form-group">
+                <label asp-for="Tag">Search by Tag</label>
+                <select asp-for="Tag" class="form-control">
+                    <option value="">All</option>
+                    @foreach (var tag in Model.Tags)
+                    {
+                        <option value="@tag">@tag</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="mb-1 form-group col-md-4">
+            <div class="form-group">
+                <label asp-for="Sorting">Sort</label>
+                <select asp-for="Sorting" class="form-control">
+                    <option value="1" selected>Name</option>
+                    <option value="2">Category</option>
+                    <option value="3">Date Created</option>
+                </select>
+            </div>
+        </div>
+        <div class="m-auto pb-5 form-group col-md-6">
+            <label asp-for="SearchTerm"></label>
+            <input asp-for="SearchTerm" class="form-control" placeholder="Search for...">
+        </div>
+    </div>
+</form>
 
 <div class="row">
-    @foreach (var food in Model)
+    @foreach (var food in Model.Foods)
     {
     <div class="col-md-3">
         <div class="card" style="width: 18rem;">

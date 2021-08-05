@@ -10,6 +10,7 @@ namespace HealthyLifestyleTrackingApp.Models.Exercise
         [StringLength(ExerciseNameMaxLength, MinimumLength = ExerciseNameMinLength, ErrorMessage = "Exercise name should be between 2 and 40 characters long.")]
         public string Name { get; init; }
 
+        [Display(Name = "Calories per hour")]
         [Required]
         [Range(ExerciseCaloriesPerHourMinValue, ExerciseCaloriesPerHourMaxValue, ErrorMessage = "Value should be a whole number between 0 and 10000.")]
         public int CaloriesPerHour { get; init; }
