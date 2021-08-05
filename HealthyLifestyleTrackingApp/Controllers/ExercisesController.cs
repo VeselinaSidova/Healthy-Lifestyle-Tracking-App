@@ -24,11 +24,11 @@ namespace HealthyLifestyleTrackingApp.Controllers
             var exercises = this.data
                 .Exercises
                 .OrderBy(e => e.ExerciseCategory.Name)
-                .Select(e => new 
+                .Select(e => new ExerciseListingViewModel
                 {
                     Id = e.Id,
                     Name = e.Name,
-                    CaloriesPerHous = e.CaloriesPerHour,
+                    CaloriesPerHour = e.CaloriesPerHour,
                     ImageUrl = e.ImageUrl,
                     ExerciseCategory = e.ExerciseCategory.Name
                 })
