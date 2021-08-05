@@ -24,6 +24,11 @@ namespace HealthyLifestyleTrackingApp.Models.Foods
         [Display(Name = "Standard Serving Type")]
         public StandardServingType StandardServingType { get; set; }
 
+        [Display(Name = "Image URL")]
+        [Required]
+        [Url]
+        public string ImageUrl { get; set; }
+
         [Required]
         [Range(FoodCaloriesMinValue, FoodCaloriesMaxValue, ErrorMessage = "Value should be a whole number between 0 and 10000.")]
         public int? Calories { get; init; }

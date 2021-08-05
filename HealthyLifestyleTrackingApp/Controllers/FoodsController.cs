@@ -22,6 +22,28 @@ namespace HealthyLifestyleTrackingApp.Controllers
             Tags = this.GetFoodTags()
         });
 
+        public IActionResult All()
+        {
+            var foods = this.data
+                .Foods
+                .OrderBy(f => f.FoodCategory.Name)
+                .Select(f => new FoodListingViewModel
+                {
+                    Id = f.Id,
+                    Name = f.Name,
+                    Brand = f.Brand,
+                    ImageUrl = f.ImageUrl,
+                    Calories = f.Calories,
+                    Protein = f.Protein,
+                    Carbohydrates = f.Carbohydrates,
+                    Fat = f.Fat,
+                    FoodCategory = f.FoodCategory.Name
+                })
+                .ToList();
+
+            return View(foods);
+        }
+
         [HttpPost]
         public IActionResult Create(CreateFoodFormModel food)
         {
@@ -64,6 +86,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 Brand = food.Brand,
                 StandardServingAmount = (double)food.StandardServingAmount,
                 StandardServingType = food.StandardServingType,
+                ImageUrl = food.ImageUrl,
                 Calories = (int)food.Calories,
                 Protein = (double)food.Protein,
                 Carbohydrates = (double)food.Carbohydrates,
@@ -80,7 +103,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
             this.data.Foods.Add(foodData);
             this.data.SaveChanges();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(All));
         }
 
         private IEnumerable<FoodCategoryViewModel> GetFoodCategories()

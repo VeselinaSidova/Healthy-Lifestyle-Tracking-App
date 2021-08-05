@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using HealthyLifestyleTrackingApp.Data;
 using HealthyLifestyleTrackingApp.Data.Models;
 using Microsoft.AspNetCore.Builder;
@@ -78,13 +79,15 @@ namespace HealthyLifestyleTrackingApp.Infrastructure
             data.Tags.AddRange(new[]
             {
                 new Tag { Name = "Healthy" },
-                new Tag { Name = "RichInProtein" },
-                new Tag { Name = "RichInCarbs" },
-                new Tag { Name = "RichInFat" },
-                new Tag { Name = "JunkFood " },
+                new Tag { Name = "Rich in Protein" },
+                new Tag { Name = "Rich in Carbs" },
+                new Tag { Name = "Rich in Fat" },
+                new Tag { Name = "Junk Food " },
                 new Tag { Name = "Alcohol" },
                 new Tag { Name = "Vegeterian" },
                 new Tag { Name = "Vegan" },
+                new Tag { Name = "Low in Calories"},
+                new Tag { Name = "Dense in Calories"},
             });
 
             data.SaveChanges();

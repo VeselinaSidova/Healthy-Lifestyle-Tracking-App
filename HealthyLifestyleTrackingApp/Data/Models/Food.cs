@@ -21,6 +21,9 @@ namespace HealthyLifestyleTrackingApp.Data.Models
 
         public StandardServingType StandardServingType { get; set; }
 
+        [Required]
+        public string ImageUrl { get; set; }
+
         public int Calories { get; set; }
 
         public double Protein { get; set; }

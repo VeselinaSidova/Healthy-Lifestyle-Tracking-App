@@ -39,8 +39,13 @@
                 </select>
             </div>
             <div class="form-group">
+                <label asp-for="ImageUrl"></label>
+                <input asp-for="ImageUrl" class="form-control" placeholder="Add image URL">
+                <span asp-validation-for="ImageUrl" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Calories"></label>
-                <input asp-for="Calories" class="form-control" placeholder="Add calories per 100 grams">
+                <input asp-for="Calories" class="form-control" placeholder="Add kcal per 100 grams">
                 <span asp-validation-for="Calories" class="small text-danger"></span>
             </div>
             <div class="form-group">

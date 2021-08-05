@@ -1,0 +1,19 @@
+﻿@model IEnumerable<FoodListingViewModel>
+
+<div class="row">
+    @foreach (var food in Model)
+    {
+    <div class="col-md-3">
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="@food.ImageUrl" alt="@food.Name">
+            <div class="card-body">
+                <h5 class="card-title">@food.Name</h5>
+                <p class="card-text">@food.Calories kcal\100gr</p>
+                <p class="card-text">Category: @food.FoodCategory</p>
+                <a asp-controller="Foods" asp-action="Details" asp-route-id="@food.Id" class="btn btn-primary">More Details</a>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+

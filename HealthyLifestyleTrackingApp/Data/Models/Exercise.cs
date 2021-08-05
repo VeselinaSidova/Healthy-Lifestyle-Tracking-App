@@ -12,9 +12,10 @@ namespace HealthyLifestyleTrackingApp.Data.Models
         [MaxLength(ExerciseNameMaxLength)]
         public string Name { get; set; }
 
-        public TimeSpan Duration { get; set; }
+        public int CaloriesPerHour { get; set; }
 
-        public int Calories { get; set; }
+        [Required]
+        public string ImageUrl { get; set; }
 
         public int ExerciseCategoryId { get; set; }
 

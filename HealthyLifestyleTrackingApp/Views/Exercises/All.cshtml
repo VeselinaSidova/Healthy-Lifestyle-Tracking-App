@@ -1,0 +1,18 @@
+﻿@model IEnumerable<ExerciseListingViewModel>
+
+<div class="row">
+    @foreach (var exercise in Model)
+    {
+        <div class="col-md-3">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="@exercise.ImageUrl" alt="@exercise.Name">
+                <div class="card-body">
+                    <h5 class="card-title">@exercise.Name</h5>
+                    <p class="card-text">@exercise.CaloriesPerHour kcal\hour</p>
+                    <p class="card-text">Category: @exercise.ExerciseCategory</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
