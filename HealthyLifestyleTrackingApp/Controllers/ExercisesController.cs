@@ -44,7 +44,11 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
             var exerciseCategories = this.data.ExerciseCategories.Select(c => c.Name).OrderBy(c => c).Distinct().ToList();
 
+            var totalExercises = exerciseQuery.Count();
+
             var exercises = exerciseQuery
+                .Skip((query.CurrentPage - 1) * AllExercisesQueryModel.ExercisesPerPage)
+                .Take(AllExercisesQueryModel.ExercisesPerPage)
                 .Select(e => new ExerciseListingViewModel
                 {
                     Id = e.Id,
@@ -57,6 +61,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
             query.Categories = exerciseCategories;
             query.Exercises = exercises;
+            query.TotalExercises = totalExercises;
 
             return View(query);
         }

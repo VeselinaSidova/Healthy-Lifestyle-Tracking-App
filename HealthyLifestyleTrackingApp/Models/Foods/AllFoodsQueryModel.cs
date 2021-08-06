@@ -7,6 +7,7 @@ namespace HealthyLifestyleTrackingApp.Models.Foods
     public class AllFoodsQueryModel
     {
         public const int FoodsPerPage = 8;
+
         public string Category { get; init; }
 
         public string Tag { get; init; }
