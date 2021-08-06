@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace HealthyLifestyleTrackingApp.Models.Foods
+namespace HealthyLifestyleTrackingApp.Models.Exercise
 {
-    public class AllFoodsQueryModel
+    public class AllExercisesQueryModel
     {
         public string Category { get; init; }
-
-        public string Tag { get; init; }
 
         [Display(Name = "Search")]
         public string SearchTerm { get; init; }
@@ -17,8 +15,6 @@ namespace HealthyLifestyleTrackingApp.Models.Foods
 
         public IEnumerable<string> Categories { get; set; }
 
-        public IEnumerable<string> Tags { get; set; }
-
-        public IEnumerable<FoodListingViewModel> Foods { get; set; }
+        public IEnumerable<ExerciseListingViewModel> Exercises { get; set; }
     }
 }

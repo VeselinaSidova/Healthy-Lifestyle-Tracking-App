@@ -1,4 +1,5 @@
 ﻿using HealthyLifestyleTrackingApp.Data;
+using HealthyLifestyleTrackingApp.Data.Enums;
 using HealthyLifestyleTrackingApp.Data.Models;
 using HealthyLifestyleTrackingApp.Models.Exercise;
 using Microsoft.AspNetCore.Mvc;
@@ -19,11 +20,32 @@ namespace HealthyLifestyleTrackingApp.Controllers
             ExerciseCategories = this.GetExerciseCategories(),
         });
 
-        public IActionResult All()
+        public IActionResult All([FromQuery] AllExercisesQueryModel query)
         {
-            var exercises = this.data
-                .Exercises
-                .OrderBy(e => e.ExerciseCategory.Name)
+            var exerciseQuery = this.data.Exercises.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.Category))
+            {
+                exerciseQuery = exerciseQuery.Where(e => e.ExerciseCategory.Name == query.Category);
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
+            {
+                exerciseQuery = exerciseQuery.Where(e =>
+                    e.Name.ToLower().Contains(query.SearchTerm.ToLower()) ||
+                    e.ExerciseCategory.Name.ToLower().Contains(query.SearchTerm.ToLower()));
+            }
+
+            exerciseQuery = query.Sorting switch
+            {
+                Sorting.Category => exerciseQuery.OrderBy(f => f.ExerciseCategory.Name),
+                Sorting.DateCreated => exerciseQuery.OrderByDescending(f => f.Id),
+                Sorting.Name or _ => exerciseQuery.OrderBy(f => f.Name)
+            };
+
+            var exerciseCategories = this.data.ExerciseCategories.Select(c => c.Name).OrderBy(c => c).Distinct().ToList();
+
+            var exercises = exerciseQuery
                 .Select(e => new ExerciseListingViewModel
                 {
                     Id = e.Id,
@@ -34,7 +56,10 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 })
                 .ToList();
 
-            return View(exercises);
+            query.Categories = exerciseCategories;
+            query.Exercises = exercises;
+
+            return View(query);
         }
 
         [HttpPost]

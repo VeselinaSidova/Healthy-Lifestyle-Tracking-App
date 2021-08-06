@@ -1,6 +1,6 @@
 ﻿namespace HealthyLifestyleTrackingApp.Data.Enums
 {
-    public enum FoodSorting
+    public enum Sorting
     {
         Name = 1,
         Category = 2, 

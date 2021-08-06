@@ -46,9 +46,9 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
             foodsQuery = query.Sorting switch
             {
-                FoodSorting.Category => foodsQuery.OrderBy(f => f.FoodCategory.Name),
-                FoodSorting.DateCreated => foodsQuery.OrderByDescending(f => f.Id),
-                FoodSorting.Name or _ => foodsQuery.OrderBy(f => f.Name)
+                Sorting.Category => foodsQuery.OrderBy(f => f.FoodCategory.Name),
+                Sorting.DateCreated => foodsQuery.OrderByDescending(f => f.Id),
+                Sorting.Name or _ => foodsQuery.OrderBy(f => f.Name)
             };
 
             var foods = foodsQuery
