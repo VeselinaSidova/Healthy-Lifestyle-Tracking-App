@@ -88,6 +88,7 @@ namespace HealthyLifestyleTrackingApp.Infrastructure
                 new Tag { Name = "Vegan" },
                 new Tag { Name = "Low in Calories"},
                 new Tag { Name = "Dense in Calories"},
+                new Tag { Name = "High in Sugar"},
             });
 
             data.SaveChanges();

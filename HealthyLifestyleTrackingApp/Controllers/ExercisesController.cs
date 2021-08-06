@@ -32,8 +32,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
             if (!string.IsNullOrWhiteSpace(query.SearchTerm))
             {
                 exerciseQuery = exerciseQuery.Where(e =>
-                    e.Name.ToLower().Contains(query.SearchTerm.ToLower()) ||
-                    e.ExerciseCategory.Name.ToLower().Contains(query.SearchTerm.ToLower()));
+                    e.Name.ToLower().Contains(query.SearchTerm.ToLower()));
             }
 
             exerciseQuery = query.Sorting switch

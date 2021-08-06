@@ -3,10 +3,10 @@
     public class DataConstants
     {
         public const int FoodNameMinLength = 2;
-        public const int FoodNameMaxLength = 30;
+        public const int FoodNameMaxLength = 50;
         public const int FoodBrandMinLength = 1;
         public const int FoodBrandMaxLength = 20;
-        public const int ExerciseNameMaxLength = 40;
+        public const int ExerciseNameMaxLength = 50;
         public const int ExerciseNameMinLength = 2;
         public const int CategoryNameMaxLenghth = 20;
         public const int FoodTagNameMaxLenghth = 20;

@@ -40,8 +40,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
             {
                 foodsQuery = foodsQuery.Where(f =>
                     f.Name.ToLower().Contains(query.SearchTerm.ToLower()) || 
-                    f.Brand.ToLower().Contains(query.SearchTerm.ToLower()) || 
-                    f.FoodCategory.Name.ToLower().Contains(query.SearchTerm.ToLower()));
+                    f.Brand.ToLower().Contains(query.SearchTerm.ToLower()));
             }
 
             foodsQuery = query.Sorting switch
@@ -51,7 +50,11 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 Sorting.Name or _ => foodsQuery.OrderBy(f => f.Name)
             };
 
+            var totalFoods = foodsQuery.Count();
+
             var foods = foodsQuery
+                .Skip((query.CurrentPage - 1) * AllFoodsQueryModel.FoodsPerPage)
+                .Take(AllFoodsQueryModel.FoodsPerPage)
                 .Select(f => new FoodListingViewModel
                 {
                     Id = f.Id,
@@ -73,6 +76,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
             query.Categories = foodCategories;
             query.Foods = foods;
             query.Tags = foodTags;
+            query.TotalFoods = totalFoods;
 
             return View(query);
         }
@@ -158,6 +162,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
                Id = t.Id,
                Name = t.Name
            })
+           .OrderBy(t => t.Name)
            .ToList();
     }
 }

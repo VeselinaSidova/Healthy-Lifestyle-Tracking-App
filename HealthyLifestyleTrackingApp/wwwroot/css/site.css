@@ -80,3 +80,8 @@ body {
     height: 10vw;
     object-fit: cover;
 }
+
+.card {
+    height: calc(100% - 15px);
+    margin-bottom: 15px;
+}
