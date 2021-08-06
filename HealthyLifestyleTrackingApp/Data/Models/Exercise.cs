@@ -1,6 +1,5 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using static HealthyLifestyleTrackingApp.Data.DataConstants;
+﻿using System.ComponentModel.DataAnnotations;
+using static HealthyLifestyleTrackingApp.Data.DataConstants.Exercise;
 
 namespace HealthyLifestyleTrackingApp.Data.Models
 {
@@ -9,7 +8,7 @@ namespace HealthyLifestyleTrackingApp.Data.Models
         public int Id { get; init; }
 
         [Required]
-        [MaxLength(ExerciseNameMaxLength)]
+        [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
         public int CaloriesPerHour { get; set; }

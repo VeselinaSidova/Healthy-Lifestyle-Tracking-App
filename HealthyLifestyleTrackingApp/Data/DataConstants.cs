@@ -2,27 +2,60 @@
 {
     public class DataConstants
     {
-        public const int FoodNameMinLength = 2;
-        public const int FoodNameMaxLength = 50;
-        public const int FoodBrandMinLength = 1;
-        public const int FoodBrandMaxLength = 20;
-        public const int ExerciseNameMaxLength = 50;
-        public const int ExerciseNameMinLength = 2;
-        public const int CategoryNameMaxLenghth = 20;
-        public const int FoodTagNameMaxLenghth = 20;
+        public class Food
+        {
+            public const int NameMinLength = 2;
+            public const int NameMaxLength = 50;
+            public const int BrandMinLength = 1;
+            public const int BrandMaxLength = 20;
+            public const double StandardServingAmountMinValue = 0.1;
+            public const double StandardServingAmountMaxValue = 5000;
+            public const int CaloriesMinValue = 0;
+            public const int CaloriesMaxValue = 10000;
+            public const double NutritionMinValue = 0;
+            public const double NutritionMaxValue = 100;
+        }
 
-        public const double FoodStandardServingAmountMinValue = 0.1;
-        public const double FoodStandardServingAmountMaxValue = 5000;
+        public class Exercise 
+        {
+            public const int NameMinLength = 2;
+            public const int NameMaxLength = 50;
+            public const int CaloriesPerHourMinValue = 1;
+            public const int CaloriesPerHourMaxValue = 10000;
+        }
 
-        public const int FoodCaloriesMinValue = 0;
-        public const int FoodCaloriesMaxValue = 10000;
+        public class Category 
+        {
+            public const int NameMaxLenghth = 20;
+        } 
 
-        public const int ExerciseCaloriesPerHourMinValue = 1;
-        public const int ExerciseCaloriesPerHourMaxValue = 10000;
+        public class FoodTag
+        {
+            public const int NameMaxLength = 20;
+        }
 
-        public const double FoodNutritionMinValue = 0;
-        public const double FoodNutritionMaxValue = 100;
-        
+        public class Recipe
+        {
+            public const int NameMinLength = 2;
+            public const int NameMaxLength = 50;
+        }
+
+        public class Article
+        {
+            public const int TitleMaxLength = 50;
+        }
+
+        public class LifeCoach
+        {
+            public const int NameMinLength = 1;
+            public const int NameMaxLength = 30;
+        }
+
+        public class SuperUser
+        {
+            public const int NameMinLength = 1;
+            public const int NameMaxLength = 30;
+        }
 
 
 

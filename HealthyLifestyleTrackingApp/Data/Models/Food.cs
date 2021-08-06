@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using HealthyLifestyleTrackingApp.Data.Enums;
-using static HealthyLifestyleTrackingApp.Data.DataConstants;
+using static HealthyLifestyleTrackingApp.Data.DataConstants.Food;
 
 
 namespace HealthyLifestyleTrackingApp.Data.Models
@@ -11,10 +11,10 @@ namespace HealthyLifestyleTrackingApp.Data.Models
         public int Id { get; init; }
 
         [Required]
-        [MaxLength(FoodNameMaxLength)]
+        [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
-        [MaxLength(FoodBrandMaxLength)]
+        [MaxLength(BrandMaxLength)]
         public string Brand { get; set; }
 
         public double StandardServingAmount { get; set; }
