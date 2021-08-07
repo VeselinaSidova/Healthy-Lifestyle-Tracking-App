@@ -5,7 +5,7 @@ using static HealthyLifestyleTrackingApp.Data.DataConstants.Food;
 
 namespace HealthyLifestyleTrackingApp.Models.Foods
 {
-    public class CreateFoodFormModel
+    public class CreateFoodFormModel : IValidatableObject
     {
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = "Food name should be between 2 and 30 characters long.")]
@@ -54,5 +54,13 @@ namespace HealthyLifestyleTrackingApp.Models.Foods
         public IEnumerable<FoodTagViewModel> Tags { get; set; }
 
         public ICollection<int> FoodTags { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (this.Protein + this.Carbohydrates + this.Fat > 100)
+            {
+                yield return new ValidationResult("The sum of the nutritional values for protein, carbohydrates and fats should be less or equal to 100 grams!");
+            }
+        }
     }
 }

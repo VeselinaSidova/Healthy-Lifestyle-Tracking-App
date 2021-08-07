@@ -62,7 +62,7 @@ namespace HealthyLifestyleTrackingApp.Infrastructure
                 new ExerciseCategory { Name = "Light" },
                 new ExerciseCategory { Name = "Moderate" },
                 new ExerciseCategory { Name = "High Intensity" },
-                new ExerciseCategory { Name = "Strenght Training" },
+                new ExerciseCategory { Name = "Strength Training" },
             });
 
             data.SaveChanges();
