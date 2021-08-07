@@ -2,6 +2,7 @@
 using HealthyLifestyleTrackingApp.Data.Enums;
 using HealthyLifestyleTrackingApp.Data.Models;
 using HealthyLifestyleTrackingApp.Models.Foods;
+using HealthyLifestyleTrackingApp.Services.Foods;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,36 @@ namespace HealthyLifestyleTrackingApp.Controllers
 {
     public class FoodsController : Controller
     {
+        private readonly IFoodService foods;
         private readonly HealthyLifestyleTrackerDbContext data;
 
-        public FoodsController(HealthyLifestyleTrackerDbContext data)
-            => this.data = data;
+        public FoodsController(IFoodService foods, HealthyLifestyleTrackerDbContext data)
+        {
+            this.foods = foods;
+            this.data = data;
+        }
+
+        public IActionResult All([FromQuery] AllFoodsQueryModel query)
+        {
+            var queryResult = this.foods.All(
+                query.Category,
+                query.Tag,
+                query.SearchTerm,
+                query.Sorting,
+                query.CurrentPage,
+                AllFoodsQueryModel.FoodsPerPage);
+
+            var foodCategories = this.foods.AllFoodCategories();
+
+            var foodTags = this.foods.AllFoodTags();
+
+            query.Categories = foodCategories;
+            query.Tags = foodTags;
+            query.TotalFoods = queryResult.TotalFoods;
+            query.Foods = queryResult.Foods;
+
+            return View(query);
+        }
 
         public IActionResult Create() => View(new CreateFoodFormModel
         {
@@ -84,64 +111,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
             return RedirectToAction(nameof(All));
         }
 
-        public IActionResult All([FromQuery]AllFoodsQueryModel query)
-        {
-            var foodsQuery = this.data.Foods.AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(query.Category))
-            {
-                foodsQuery = foodsQuery.Where(f => f.FoodCategory.Name == query.Category);
-            }
-
-            if (!string.IsNullOrWhiteSpace(query.Tag))
-            {
-                foodsQuery = foodsQuery.Where(f => f.FoodTags.Any(t => t.Tag.Name == query.Tag));
-            }
-
-            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
-            {
-                foodsQuery = foodsQuery.Where(f =>
-                    f.Name.ToLower().Contains(query.SearchTerm.ToLower()) || 
-                    f.Brand.ToLower().Contains(query.SearchTerm.ToLower()));
-            }
-
-            foodsQuery = query.Sorting switch
-            {
-                Sorting.Category => foodsQuery.OrderBy(f => f.FoodCategory.Name),
-                Sorting.DateCreated => foodsQuery.OrderByDescending(f => f.Id),
-                Sorting.Name or _ => foodsQuery.OrderBy(f => f.Name)
-            };
-
-            var totalFoods = foodsQuery.Count();
-
-            var foods = foodsQuery
-                .Skip((query.CurrentPage - 1) * AllFoodsQueryModel.FoodsPerPage)
-                .Take(AllFoodsQueryModel.FoodsPerPage)
-                .Select(f => new FoodListingViewModel
-                {
-                    Id = f.Id,
-                    Name = f.Name,
-                    Brand = f.Brand,
-                    ImageUrl = f.ImageUrl,
-                    Calories = f.Calories,
-                    Protein = f.Protein,
-                    Carbohydrates = f.Carbohydrates,
-                    Fat = f.Fat,
-                    FoodCategory = f.FoodCategory.Name
-                })
-                .ToList();
-
-            var foodCategories = this.data.FoodCategories.Select(c => c.Name).OrderBy(c => c).Distinct().ToList();
-
-            var foodTags = this.data.Tags.Select(t => t.Name).ToList();
-
-            query.Categories = foodCategories;
-            query.Foods = foods;
-            query.Tags = foodTags;
-            query.TotalFoods = totalFoods;
-
-            return View(query);
-        }
+        
 
        
         private IEnumerable<FoodCategoryViewModel> GetFoodCategories()

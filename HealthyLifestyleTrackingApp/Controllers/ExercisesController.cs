@@ -7,15 +7,20 @@ using HealthyLifestyleTrackingApp.Models.Exercises;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using HealthyLifestyleTrackingApp.Infrastructure;
+using HealthyLifestyleTrackingApp.Services.Exercises;
 
 namespace HealthyLifestyleTrackingApp.Controllers
 {
     public class ExercisesController : Controller
     {
+        private readonly IExerciseService exercises;
         private readonly HealthyLifestyleTrackerDbContext data;
 
-        public ExercisesController(HealthyLifestyleTrackerDbContext data)
-            => this.data = data;
+        public ExercisesController(IExerciseService exercises, HealthyLifestyleTrackerDbContext data)
+        {
+            this.exercises = exercises;
+            this.data = data;
+        }
 
 
         [Authorize]
@@ -75,46 +80,18 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
         public IActionResult All([FromQuery] AllExercisesQueryModel query)
         {
-            var exerciseQuery = this.data.Exercises.AsQueryable();
+            var queryResult = this.exercises.All(
+                 query.Category,
+                 query.SearchTerm,
+                 query.Sorting,
+                 query.CurrentPage,
+                 AllExercisesQueryModel.ExercisesPerPage);
 
-            if (!string.IsNullOrWhiteSpace(query.Category))
-            {
-                exerciseQuery = exerciseQuery.Where(e => e.ExerciseCategory.Name == query.Category);
-            }
-
-            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
-            {
-                exerciseQuery = exerciseQuery.Where(e =>
-                    e.Name.ToLower().Contains(query.SearchTerm.ToLower()));
-            }
-
-            exerciseQuery = query.Sorting switch
-            {
-                Sorting.Category => exerciseQuery.OrderBy(f => f.ExerciseCategory.Name),
-                Sorting.DateCreated => exerciseQuery.OrderByDescending(f => f.Id),
-                Sorting.Name or _ => exerciseQuery.OrderBy(f => f.Name)
-            };
-
-            var exerciseCategories = this.data.ExerciseCategories.Select(c => c.Name).OrderBy(c => c).Distinct().ToList();
-
-            var totalExercises = exerciseQuery.Count();
-
-            var exercises = exerciseQuery
-                .Skip((query.CurrentPage - 1) * AllExercisesQueryModel.ExercisesPerPage)
-                .Take(AllExercisesQueryModel.ExercisesPerPage)
-                .Select(e => new ExerciseListingViewModel
-                {
-                    Id = e.Id,
-                    Name = e.Name,
-                    CaloriesPerHour = e.CaloriesPerHour,
-                    ImageUrl = e.ImageUrl,
-                    ExerciseCategory = e.ExerciseCategory.Name
-                })
-                .ToList();
+            var exerciseCategories = this.exercises.AllExerciseCategories();
 
             query.Categories = exerciseCategories;
-            query.Exercises = exercises;
-            query.TotalExercises = totalExercises;
+            query.Exercises = queryResult.Exercises;
+            query.TotalExercises = queryResult.TotalExercises;
 
             return View(query);
         }

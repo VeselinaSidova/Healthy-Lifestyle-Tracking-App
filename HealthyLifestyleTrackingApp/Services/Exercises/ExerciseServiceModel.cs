@@ -1,6 +1,6 @@
-﻿namespace HealthyLifestyleTrackingApp.Models.Exercises
+﻿namespace HealthyLifestyleTrackingApp.Services.Exercises
 {
-    public class ExerciseListingViewModel
+    public class ExerciseServiceModel
     {
         public int Id { get; init; }
 
@@ -9,8 +9,6 @@
         public int CaloriesPerHour { get; init; }
 
         public string ImageUrl { get; init; }
-
-        public int ExerciseCategoryId { get; init; }
 
         public string ExerciseCategory { get; init; }
     }

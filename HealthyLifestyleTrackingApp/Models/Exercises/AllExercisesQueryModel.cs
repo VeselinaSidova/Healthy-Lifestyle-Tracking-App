@@ -1,6 +1,7 @@
-﻿using HealthyLifestyleTrackingApp.Data.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using HealthyLifestyleTrackingApp.Data.Enums;
+using HealthyLifestyleTrackingApp.Services.Exercises;
 
 namespace HealthyLifestyleTrackingApp.Models.Exercises
 {
@@ -21,6 +22,6 @@ namespace HealthyLifestyleTrackingApp.Models.Exercises
 
         public IEnumerable<string> Categories { get; set; }
 
-        public IEnumerable<ExerciseListingViewModel> Exercises { get; set; }
+        public IEnumerable<ExerciseServiceModel> Exercises { get; set; }
     }
 }

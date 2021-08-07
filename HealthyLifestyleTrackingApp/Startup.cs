@@ -1,5 +1,7 @@
 using HealthyLifestyleTrackingApp.Data;
 using HealthyLifestyleTrackingApp.Infrastructure;
+using HealthyLifestyleTrackingApp.Services.Exercises;
+using HealthyLifestyleTrackingApp.Services.Foods;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -37,6 +39,9 @@ namespace HealthyLifestyleTrackingApp
                 .AddEntityFrameworkStores<HealthyLifestyleTrackerDbContext>();
 
             services.AddControllersWithViews();
+
+            services.AddTransient<IFoodService, FoodService>();
+            services.AddTransient<IExerciseService, ExerciseService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
