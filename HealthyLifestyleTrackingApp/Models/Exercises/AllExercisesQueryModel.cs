@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace HealthyLifestyleTrackingApp.Models.Exercise
+namespace HealthyLifestyleTrackingApp.Models.Exercises
 {
     public class AllExercisesQueryModel
     {

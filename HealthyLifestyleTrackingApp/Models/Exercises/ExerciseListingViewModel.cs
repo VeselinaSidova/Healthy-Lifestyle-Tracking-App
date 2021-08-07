@@ -1,4 +1,4 @@
-﻿namespace HealthyLifestyleTrackingApp.Models.Exercise
+﻿namespace HealthyLifestyleTrackingApp.Models.Exercises
 {
     public class ExerciseListingViewModel
     {

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using static HealthyLifestyleTrackingApp.Data.DataConstants.Exercise;
 
-namespace HealthyLifestyleTrackingApp.Models.Exercise
+namespace HealthyLifestyleTrackingApp.Models.Exercises
 {
     public class CreateExerciseFormModel
     {

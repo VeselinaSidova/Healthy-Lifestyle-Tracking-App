@@ -1,7 +1,7 @@
 ﻿using HealthyLifestyleTrackingApp.Data;
 using HealthyLifestyleTrackingApp.Data.Enums;
 using HealthyLifestyleTrackingApp.Data.Models;
-using HealthyLifestyleTrackingApp.Models.Exercise;
+using HealthyLifestyleTrackingApp.Models.Exercises;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
