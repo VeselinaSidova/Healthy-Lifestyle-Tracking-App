@@ -20,6 +20,9 @@ namespace HealthyLifestyleTrackingApp.Data.Models
         [Required]
         public string UserId { get; set; }
 
+        [Required]
+        public string ProfilePictureUrl { get; set; }
+
         public IEnumerable<Article> Articles { get; set; } = new List<Article>();
 
         public IEnumerable<Recipe> Recipes { get; set; } = new List<Recipe>();

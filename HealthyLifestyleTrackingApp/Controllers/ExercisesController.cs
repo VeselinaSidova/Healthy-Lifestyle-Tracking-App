@@ -1,10 +1,12 @@
-﻿using HealthyLifestyleTrackingApp.Data;
+﻿using System.Linq;
+using System.Collections.Generic;
+using HealthyLifestyleTrackingApp.Data;
 using HealthyLifestyleTrackingApp.Data.Enums;
 using HealthyLifestyleTrackingApp.Data.Models;
 using HealthyLifestyleTrackingApp.Models.Exercises;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
+using HealthyLifestyleTrackingApp.Infrastructure;
 
 namespace HealthyLifestyleTrackingApp.Controllers
 {
@@ -15,10 +17,61 @@ namespace HealthyLifestyleTrackingApp.Controllers
         public ExercisesController(HealthyLifestyleTrackerDbContext data)
             => this.data = data;
 
-        public IActionResult Create() => View(new CreateExerciseFormModel
+
+        [Authorize]
+        public IActionResult Create()
         {
-            ExerciseCategories = this.GetExerciseCategories(),
-        });
+            if (!this.UserIsLifeCoach())
+            {
+                return RedirectToAction(nameof(LifeCoachesController.Become), "LifeCoaches");
+            }
+
+            return View(new CreateExerciseFormModel
+            {
+                ExerciseCategories = this.GetExerciseCategories(),
+            });
+        }
+            
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult Create(CreateExerciseFormModel exercise)
+        {
+            var lifeCoachId = this.data
+                .LifeCoaches
+                .Where(c => c.UserId == this.User.GetId())
+                .Select(c => c.Id)
+                .FirstOrDefault();
+
+            if (lifeCoachId == 0)
+            {
+                return RedirectToAction(nameof(LifeCoachesController.Become), "LifeCoaches");
+            }
+
+            if (!this.data.ExerciseCategories.Any(c => c.Id == exercise.ExerciseCategoryId))
+            {
+                this.ModelState.AddModelError(nameof(exercise.ExerciseCategoryId), "Exercise category does not exist.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                exercise.ExerciseCategories = this.GetExerciseCategories();
+                return View(exercise);
+            }
+
+            var exerciseData = new Exercise
+            {
+                Name = exercise.Name,
+                CaloriesPerHour = exercise.CaloriesPerHour,
+                ImageUrl = exercise.ImageUrl,
+                ExerciseCategoryId = exercise.ExerciseCategoryId
+            };
+
+            this.data.Exercises.Add(exerciseData);
+            this.data.SaveChanges();
+
+            return RedirectToAction(nameof(All));
+        }
 
         public IActionResult All([FromQuery] AllExercisesQueryModel query)
         {
@@ -66,33 +119,10 @@ namespace HealthyLifestyleTrackingApp.Controllers
             return View(query);
         }
 
-        [HttpPost]
-        public IActionResult Create(CreateExerciseFormModel exercise)
-        {
-            if (!this.data.ExerciseCategories.Any(c => c.Id == exercise.ExerciseCategoryId))
-            {
-                this.ModelState.AddModelError(nameof(exercise.ExerciseCategoryId), "Exercise category does not exist.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                exercise.ExerciseCategories = this.GetExerciseCategories();
-                return View(exercise);
-            }
-
-            var exerciseData = new Exercise
-            {
-                Name = exercise.Name,
-                CaloriesPerHour = exercise.CaloriesPerHour,
-                ImageUrl = exercise.ImageUrl,
-                ExerciseCategoryId = exercise.ExerciseCategoryId
-            };
-
-            this.data.Exercises.Add(exerciseData);
-            this.data.SaveChanges();
-
-            return RedirectToAction(nameof(All));
-        }
+        private bool UserIsLifeCoach() 
+            => this.data
+                .LifeCoaches
+                .Any(c => c.UserId == this.User.GetId());
 
         private IEnumerable<ExerciseCategoryViewModel> GetExerciseCategories()
              => this.data

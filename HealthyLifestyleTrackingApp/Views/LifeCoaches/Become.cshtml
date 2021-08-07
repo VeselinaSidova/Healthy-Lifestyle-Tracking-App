@@ -1,0 +1,30 @@
+﻿@model BecomeLifeCoachFormModel
+
+@{
+    ViewBag.Title = "Become Life Coach";
+}
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <h2 class="heading-margin text-center">@ViewBag.Title</h2>
+
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="FirstName"></label>
+                <input asp-for="FirstName" class="form-control" placeholder="Add your first name">
+                <span asp-validation-for="FirstName" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName"></label>
+                <input asp-for="LastName" class="form-control" placeholder="Add your last name">
+                <span asp-validation-for="FirstName" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProfilePictureUrl"></label>
+                <input asp-for="ProfilePictureUrl" class="form-control" placeholder="Add you profile picture URL">
+                <span asp-validation-for="ProfilePictureUrl" class="small text-danger"></span>
+            </div>
+            <input class="btn btn-primary mt-3" type="submit" value="Become Life Coach" />
+        </form>
+    </div>
+</div>

@@ -22,6 +22,68 @@ namespace HealthyLifestyleTrackingApp.Controllers
             Tags = this.GetFoodTags()
         });
 
+        [HttpPost]
+        public IActionResult Create(CreateFoodFormModel food)
+        {
+            if (!this.data.FoodCategories.Any(c => c.Id == food.FoodCategoryId))
+            {
+                this.ModelState.AddModelError(nameof(food.FoodCategoryId), "Food category does not exist.");
+            }
+
+
+            if (!Enum.IsDefined(typeof(StandardServingType), (int)food.StandardServingType))
+            {
+                this.ModelState.AddModelError(nameof(food.StandardServingType), "Serving type does not exist.");
+            }
+
+            var tagIds = this.data.Tags.Select(x => x.Id).ToList();
+
+            if (food.FoodTags != null)
+            {
+                foreach (var tag in food.FoodTags)
+                {
+                    if (!this.data.Tags.Any(t => t.Id == tag))
+                    {
+                        this.ModelState.AddModelError(nameof(food.FoodTags), "Food tag does not exist.");
+                    }
+
+                }
+            }
+
+
+            if (!ModelState.IsValid)
+            {
+                food.FoodCategories = this.GetFoodCategories();
+                food.Tags = this.GetFoodTags();
+                return View(food);
+            }
+
+            var foodData = new Food
+            {
+                Name = food.Name,
+                Brand = food.Brand,
+                StandardServingAmount = (double)food.StandardServingAmount,
+                StandardServingType = food.StandardServingType,
+                ImageUrl = food.ImageUrl,
+                Calories = (int)food.Calories,
+                Protein = (double)food.Protein,
+                Carbohydrates = (double)food.Carbohydrates,
+                Fat = (double)food.Fat,
+                FoodCategoryId = food.FoodCategoryId,
+            };
+            foreach (var foodTag in food.FoodTags)
+            {
+                var tag = data.Tags.FirstOrDefault(x => x.Id == foodTag)
+                    ?? new Tag { Id = foodTag };
+                foodData.FoodTags.Add(new FoodTag { Tag = tag });
+            }
+
+            this.data.Foods.Add(foodData);
+            this.data.SaveChanges();
+
+            return RedirectToAction(nameof(All));
+        }
+
         public IActionResult All([FromQuery]AllFoodsQueryModel query)
         {
             var foodsQuery = this.data.Foods.AsQueryable();
@@ -81,68 +143,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
             return View(query);
         }
 
-        [HttpPost]
-        public IActionResult Create(CreateFoodFormModel food)
-        {
-            if (!this.data.FoodCategories.Any(c => c.Id == food.FoodCategoryId))
-            {
-                this.ModelState.AddModelError(nameof(food.FoodCategoryId), "Food category does not exist.");
-            }
-
-
-            if (!Enum.IsDefined(typeof(StandardServingType), (int)food.StandardServingType))
-            {
-                this.ModelState.AddModelError(nameof(food.StandardServingType), "Serving type does not exist.");
-            }
-
-            var tagIds = this.data.Tags.Select(x => x.Id).ToList();
-
-            if (food.FoodTags != null)
-            {
-                foreach (var tag in food.FoodTags)
-                {
-                    if (!this.data.Tags.Any(t => t.Id == tag))
-                    {
-                        this.ModelState.AddModelError(nameof(food.FoodTags), "Food tag does not exist.");
-                    }
-                   
-                }
-            }
-
-
-            if (!ModelState.IsValid)
-            {
-                food.FoodCategories = this.GetFoodCategories();
-                food.Tags = this.GetFoodTags();
-                return View(food);
-            }
-
-            var foodData = new Food
-            {
-                Name = food.Name,
-                Brand = food.Brand,
-                StandardServingAmount = (double)food.StandardServingAmount,
-                StandardServingType = food.StandardServingType,
-                ImageUrl = food.ImageUrl,
-                Calories = (int)food.Calories,
-                Protein = (double)food.Protein,
-                Carbohydrates = (double)food.Carbohydrates,
-                Fat = (double)food.Fat,
-                FoodCategoryId = food.FoodCategoryId,
-            };
-            foreach (var foodTag in food.FoodTags)
-            {
-                var tag = data.Tags.FirstOrDefault(x => x.Id == foodTag)
-                    ?? new Tag { Id = foodTag };
-                foodData.FoodTags.Add(new FoodTag { Tag = tag });
-            }
-
-            this.data.Foods.Add(foodData);
-            this.data.SaveChanges();
-
-            return RedirectToAction(nameof(All));
-        }
-
+       
         private IEnumerable<FoodCategoryViewModel> GetFoodCategories()
             => this.data
             .FoodCategories

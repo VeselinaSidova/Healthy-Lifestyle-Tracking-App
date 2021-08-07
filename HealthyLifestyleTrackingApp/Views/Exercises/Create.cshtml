@@ -1,12 +1,12 @@
 ﻿@model CreateExerciseFormModel
 
 @{
-    ViewData["Title"] = "Create Exercise";
+    ViewBag.Title = "Create Exercise";
 }
 
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <h2 class="heading-margin text-center">Create Exercise</h2>
+        <h2 class="heading-margin text-center">@ViewBag.Title</h2>
 
         <form method="post">
             <div class="form-group">
@@ -34,7 +34,7 @@
                 <input asp-for="ImageUrl" class="form-control" placeholder="Add image URL">
                 <span asp-validation-for="ImageUrl" class="small text-danger"></span>
             </div>
-            <input class="btn btn-primary" type="submit" value="Create" />
+            <input class="btn btn-primary mt-3" type="submit" value="Create" />
         </form>
     </div>
 </div>

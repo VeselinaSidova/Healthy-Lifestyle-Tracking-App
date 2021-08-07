@@ -1,12 +1,12 @@
 ﻿@model CreateFoodFormModel 
 
 @{
-    ViewData["Title"] = "Create Food";
+    ViewBag.Title = "Create Food";
 }
 
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <h2 class="heading-margin text-center">Create Food</h2>
+        <h2 class="heading-margin text-center">@ViewBag.Title</h2>
 
         <form method="post">
             <div class="form-group">
@@ -75,7 +75,7 @@
                 </select>
                 <span asp-validation-for="FoodTags" class="small text-danger"></span>
             </div>
-            <input class="btn btn-primary" type="submit" value="Create" />
+            <input class="btn btn-primary mt-3" type="submit" value="Create" />
         </form>
     </div>
 </div>
