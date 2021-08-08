@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HealthyLifestyleTrackingApp.Models.Exercises
+namespace HealthyLifestyleTrackingApp.Service.Foods
 {
-    public class ExerciseCategoryViewModel
+    public class FoodTagServiceModel
     {
         public int Id { get; init; }
 

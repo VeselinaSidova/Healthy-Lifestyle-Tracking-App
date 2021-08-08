@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using HealthyLifestyleTrackingApp.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace HealthyLifestyleTrackingApp.Controllers
 {

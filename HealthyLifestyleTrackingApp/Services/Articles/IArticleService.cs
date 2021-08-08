@@ -1,4 +1,6 @@
-﻿namespace HealthyLifestyleTrackingApp.Services.Articles
+﻿using System.Collections.Generic;
+
+namespace HealthyLifestyleTrackingApp.Services.Articles
 {
     public interface IArticleService
     {
@@ -6,5 +8,8 @@
             string searchTerm,
             int currentPage,
             int ArticlesPerPage);
+
+        IEnumerable<ArticleServiceModel> ByUser(string userId);
     }
 }
+ 

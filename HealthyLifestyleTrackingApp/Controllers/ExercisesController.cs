@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using HealthyLifestyleTrackingApp.Data;
@@ -7,6 +6,7 @@ using HealthyLifestyleTrackingApp.Data.Models;
 using HealthyLifestyleTrackingApp.Infrastructure;
 using HealthyLifestyleTrackingApp.Models.Exercises;
 using HealthyLifestyleTrackingApp.Services.Exercises;
+using HealthyLifestyleTrackingApp.Services.LifeCoaches;
 
 namespace HealthyLifestyleTrackingApp.Controllers
 {
@@ -14,10 +14,12 @@ namespace HealthyLifestyleTrackingApp.Controllers
     {
         private readonly IExerciseService exercises;
         private readonly HealthyLifestyleTrackerDbContext data;
+        private readonly ILifeCoachService lifeCoaches;
 
-        public ExercisesController(IExerciseService exercises, HealthyLifestyleTrackerDbContext data)
+        public ExercisesController(IExerciseService exercises, ILifeCoachService lifeCoaches, HealthyLifestyleTrackerDbContext data)
         {
             this.exercises = exercises;
+            this.lifeCoaches = lifeCoaches;
             this.data = data;
         }
 
@@ -30,7 +32,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
                  query.CurrentPage,
                  AllExercisesQueryModel.ExercisesPerPage);
 
-            var exerciseCategories = this.exercises.AllExerciseCategories();
+            var exerciseCategories = this.exercises.GetExerciseCategories().Select(c => c.Name).ToList();
 
             query.Categories = exerciseCategories;
             query.Exercises = queryResult.Exercises;
@@ -42,14 +44,14 @@ namespace HealthyLifestyleTrackingApp.Controllers
         [Authorize]
         public IActionResult Create()
         {
-            if (!this.UserIsLifeCoach())
+            if (!this.lifeCoaches.IsLifeCoach(this.User.GetId()))
             {
                 return RedirectToAction(nameof(LifeCoachesController.Become), "LifeCoaches");
             }
 
             return View(new CreateExerciseFormModel
             {
-                ExerciseCategories = this.GetExerciseCategories(),
+                ExerciseCategories = this.exercises.GetExerciseCategories(),
             });
         }   
 
@@ -75,7 +77,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
             if (!ModelState.IsValid)
             {
-                exercise.ExerciseCategories = this.GetExerciseCategories();
+                exercise.ExerciseCategories = this.exercises.GetExerciseCategories();
                 return View(exercise);
             }
 
@@ -92,23 +94,5 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
             return RedirectToAction(nameof(All));
         }
-
-        
-
-        private bool UserIsLifeCoach() 
-            => this.data
-                .LifeCoaches
-                .Any(c => c.UserId == this.User.GetId());
-
-        private IEnumerable<ExerciseCategoryViewModel> GetExerciseCategories()
-             => this.data
-            .ExerciseCategories
-            .Select(c => new ExerciseCategoryViewModel
-            {
-                Id = c.Id,
-                Name = c.Name
-            })
-            .ToList();
-        
     }
 }

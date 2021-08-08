@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using HealthyLifestyleTrackingApp.Services.Exercises;
 using static HealthyLifestyleTrackingApp.Data.DataConstants.Exercise;
 
 namespace HealthyLifestyleTrackingApp.Models.Exercises
@@ -24,6 +25,6 @@ namespace HealthyLifestyleTrackingApp.Models.Exercises
         [Display(Name = "Category")]
         public int ExerciseCategoryId { get; init; }
 
-        public IEnumerable<ExerciseCategoryViewModel> ExerciseCategories { get; set; }
+        public IEnumerable<ExerciseCategoryServiceModel> ExerciseCategories { get; set; }
     }
 }

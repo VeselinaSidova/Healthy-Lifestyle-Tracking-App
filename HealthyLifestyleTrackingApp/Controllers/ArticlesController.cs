@@ -7,7 +7,7 @@ using HealthyLifestyleTrackingApp.Data.Models;
 using HealthyLifestyleTrackingApp.Infrastructure;
 using HealthyLifestyleTrackingApp.Models.Articles;
 using HealthyLifestyleTrackingApp.Services.Articles;
-
+using HealthyLifestyleTrackingApp.Services.LifeCoaches;
 
 namespace HealthyLifestyleTrackingApp.Controllers
 {
@@ -15,10 +15,12 @@ namespace HealthyLifestyleTrackingApp.Controllers
     {
         private readonly IArticleService articles;
         private readonly HealthyLifestyleTrackerDbContext data;
+        private readonly ILifeCoachService lifeCoaches;
 
-        public ArticlesController(IArticleService articles, HealthyLifestyleTrackerDbContext data)
+        public ArticlesController(IArticleService articles, ILifeCoachService lifeCoaches, HealthyLifestyleTrackerDbContext data)
         {
             this.articles = articles;
+            this.lifeCoaches = lifeCoaches;
             this.data = data;
         }
 
@@ -36,9 +38,17 @@ namespace HealthyLifestyleTrackingApp.Controllers
         }
 
         [Authorize]
+        public IActionResult Mine()
+        {
+            var myArticles = this.articles.ByUser(this.User.GetId());
+
+            return View(myArticles);
+        }
+
+        [Authorize]
         public IActionResult Create()
         {
-            if (!this.UserIsLifeCoach())
+            if (!this.lifeCoaches.IsLifeCoach(this.User.GetId()))
             {
                 return RedirectToAction(nameof(LifeCoachesController.Become), "LifeCoaches");
             }
@@ -49,7 +59,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Create(CreateArticleFormModel article)
+        public IActionResult Create(ArticleFormModel article)
         {
             var lifeCoachId = this.data
                 .LifeCoaches
@@ -82,9 +92,10 @@ namespace HealthyLifestyleTrackingApp.Controllers
             return RedirectToAction(nameof(All));
         }
 
-        private bool UserIsLifeCoach()
-           => this.data
-               .LifeCoaches
-               .Any(c => c.UserId == this.User.GetId());
+        //[Authorize]
+        //public IActionResult Edit(int id)
+        //{
+
+        //}
     }
 }

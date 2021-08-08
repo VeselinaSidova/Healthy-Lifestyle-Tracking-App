@@ -3,7 +3,7 @@ using static HealthyLifestyleTrackingApp.Data.DataConstants.Article;
 
 namespace HealthyLifestyleTrackingApp.Models.Articles
 {
-    public class CreateArticleFormModel
+    public class ArticleFormModel
     {
         [Required]
         [StringLength(TitleMaxLength, MinimumLength = TitleMinLength)]

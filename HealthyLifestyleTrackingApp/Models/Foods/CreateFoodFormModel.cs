@@ -1,6 +1,7 @@
-﻿using HealthyLifestyleTrackingApp.Data.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using HealthyLifestyleTrackingApp.Data.Enums;
+using HealthyLifestyleTrackingApp.Service.Foods;
 using static HealthyLifestyleTrackingApp.Data.DataConstants.Food;
 
 namespace HealthyLifestyleTrackingApp.Models.Foods
@@ -51,9 +52,9 @@ namespace HealthyLifestyleTrackingApp.Models.Foods
         [Display(Name = "Category")]
         public int FoodCategoryId { get; init; }
 
-        public IEnumerable<FoodCategoryViewModel> FoodCategories { get; set; }
+        public IEnumerable<FoodCategoryServiceModel> FoodCategories { get; set; }
 
-        public IEnumerable<FoodTagViewModel> Tags { get; set; }
+        public IEnumerable<FoodTagServiceModel> Tags { get; set; }
 
         public ICollection<int> FoodTags { get; set; }
 

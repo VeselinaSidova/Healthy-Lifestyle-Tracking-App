@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using HealthyLifestyleTrackingApp.Data.Enums;
+using HealthyLifestyleTrackingApp.Service.Foods;
 
 namespace HealthyLifestyleTrackingApp.Services.Foods
 {
@@ -13,8 +14,12 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
             int currentPage, 
             int foodsPerPage);
 
-        IEnumerable<string> AllFoodCategories();
+        //IEnumerable<string> AllFoodCategories();
 
-        IEnumerable<string> AllFoodTags();
+        //IEnumerable<string> AllFoodTags();
+
+        IEnumerable<FoodCategoryServiceModel> GetFoodCategories();
+
+        IEnumerable<FoodTagServiceModel> GetFoodTags();
     }
 }

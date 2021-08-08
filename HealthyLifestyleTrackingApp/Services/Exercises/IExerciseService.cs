@@ -12,6 +12,6 @@ namespace HealthyLifestyleTrackingApp.Services.Exercises
             int currentPage,
             int exercisesPerPage);
 
-        IEnumerable<string> AllExerciseCategories();
+        IEnumerable<ExerciseCategoryServiceModel> GetExerciseCategories();
     }
 }

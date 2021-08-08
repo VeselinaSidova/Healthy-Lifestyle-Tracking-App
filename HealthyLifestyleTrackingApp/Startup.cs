@@ -3,6 +3,7 @@ using HealthyLifestyleTrackingApp.Infrastructure;
 using HealthyLifestyleTrackingApp.Services.Articles;
 using HealthyLifestyleTrackingApp.Services.Exercises;
 using HealthyLifestyleTrackingApp.Services.Foods;
+using HealthyLifestyleTrackingApp.Services.LifeCoaches;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -50,6 +51,7 @@ namespace HealthyLifestyleTrackingApp
             services.AddTransient<IFoodService, FoodService>();
             services.AddTransient<IExerciseService, ExerciseService>();
             services.AddTransient<IArticleService, ArticleService>();
+            services.AddTransient<ILifeCoachService, LifeCoachService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

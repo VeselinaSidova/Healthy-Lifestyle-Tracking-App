@@ -1,12 +1,11 @@
-﻿using HealthyLifestyleTrackingApp.Data;
+﻿using System;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using HealthyLifestyleTrackingApp.Data;
 using HealthyLifestyleTrackingApp.Data.Enums;
 using HealthyLifestyleTrackingApp.Data.Models;
 using HealthyLifestyleTrackingApp.Models.Foods;
 using HealthyLifestyleTrackingApp.Services.Foods;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace HealthyLifestyleTrackingApp.Controllers
 {
@@ -31,9 +30,9 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 query.CurrentPage,
                 AllFoodsQueryModel.FoodsPerPage);
 
-            var foodCategories = this.foods.AllFoodCategories();
+            var foodCategories = this.foods.GetFoodCategories().Select(c => c.Name).ToList();
 
-            var foodTags = this.foods.AllFoodTags();
+            var foodTags = this.foods.GetFoodTags().Select(c => c.Name).ToList();
 
             query.Categories = foodCategories;
             query.Tags = foodTags;
@@ -45,8 +44,8 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
         public IActionResult Create() => View(new CreateFoodFormModel
         {
-            FoodCategories = this.GetFoodCategories(),
-            Tags = this.GetFoodTags()
+            FoodCategories = this.foods.GetFoodCategories(),
+            Tags = this.foods.GetFoodTags()
         });
 
         [HttpPost]
@@ -80,8 +79,8 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
             if (!ModelState.IsValid)
             {
-                food.FoodCategories = this.GetFoodCategories();
-                food.Tags = this.GetFoodTags();
+                food.FoodCategories = this.foods.GetFoodCategories();
+                food.Tags = this.foods.GetFoodTags();
                 return View(food);
             }
 
@@ -110,30 +109,5 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
             return RedirectToAction(nameof(All));
         }
-
-        
-
-       
-        private IEnumerable<FoodCategoryViewModel> GetFoodCategories()
-            => this.data
-            .FoodCategories
-            .Select(c => new FoodCategoryViewModel
-            {
-                Id = c.Id,
-                Name = c.Name
-            })
-            .ToList();
-
-
-        private IEnumerable<FoodTagViewModel> GetFoodTags()
-           => this.data
-           .Tags
-           .Select(t => new FoodTagViewModel
-           {
-               Id = t.Id,
-               Name = t.Name
-           })
-           .OrderBy(t => t.Name)
-           .ToList();
     }
 }

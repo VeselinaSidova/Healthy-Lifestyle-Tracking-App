@@ -63,7 +63,14 @@ namespace HealthyLifestyleTrackingApp.Services.Exercises
             };
         }
 
-        public IEnumerable<string> AllExerciseCategories()
-            => this.data.ExerciseCategories.Select(c => c.Name).OrderBy(c => c).Distinct().ToList();
+        public IEnumerable<ExerciseCategoryServiceModel> GetExerciseCategories()
+         => this.data
+            .ExerciseCategories
+            .Select(c => new ExerciseCategoryServiceModel
+            {
+                Id = c.Id,
+                Name = c.Name
+            })
+            .ToList();
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using HealthyLifestyleTrackingApp.Data;
 using HealthyLifestyleTrackingApp.Data.Enums;
+using HealthyLifestyleTrackingApp.Service.Foods;
 
 namespace HealthyLifestyleTrackingApp.Services.Foods
 {
@@ -71,10 +72,32 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
             };
         }
 
-        public IEnumerable<string> AllFoodCategories()
-            => this.data.FoodCategories.Select(c => c.Name).OrderBy(c => c).Distinct().ToList();
+        //public IEnumerable<string> AllFoodCategories()
+        //    => this.data.FoodCategories.Select(c => c.Name).OrderBy(c => c).Distinct().ToList();
 
-        public IEnumerable<string> AllFoodTags()
-            => this.data.Tags.Select(t => t.Name).ToList();
+        //public IEnumerable<string> AllFoodTags()
+        //    => this.data.Tags.Select(t => t.Name).ToList();
+
+
+        public IEnumerable<FoodCategoryServiceModel> GetFoodCategories()
+         => this.data
+         .FoodCategories
+         .Select(c => new FoodCategoryServiceModel
+         {
+             Id = c.Id,
+             Name = c.Name
+         })
+         .ToList();
+
+        public IEnumerable<FoodTagServiceModel> GetFoodTags()
+           => this.data
+           .Tags
+           .Select(t => new FoodTagServiceModel
+           {
+               Id = t.Id,
+               Name = t.Name
+           })
+           .OrderBy(t => t.Name)
+           .ToList();
     }
 }
