@@ -1,12 +1,11 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
-using HealthyLifestyleTrackingApp.Data;
-using HealthyLifestyleTrackingApp.Data.Enums;
-using HealthyLifestyleTrackingApp.Data.Models;
-using HealthyLifestyleTrackingApp.Models.Exercises;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using HealthyLifestyleTrackingApp.Data;
+using HealthyLifestyleTrackingApp.Data.Models;
 using HealthyLifestyleTrackingApp.Infrastructure;
+using HealthyLifestyleTrackingApp.Models.Exercises;
 using HealthyLifestyleTrackingApp.Services.Exercises;
 
 namespace HealthyLifestyleTrackingApp.Controllers
@@ -22,6 +21,23 @@ namespace HealthyLifestyleTrackingApp.Controllers
             this.data = data;
         }
 
+        public IActionResult All([FromQuery] AllExercisesQueryModel query)
+        {
+            var queryResult = this.exercises.All(
+                 query.Category,
+                 query.SearchTerm,
+                 query.Sorting,
+                 query.CurrentPage,
+                 AllExercisesQueryModel.ExercisesPerPage);
+
+            var exerciseCategories = this.exercises.AllExerciseCategories();
+
+            query.Categories = exerciseCategories;
+            query.Exercises = queryResult.Exercises;
+            query.TotalExercises = queryResult.TotalExercises;
+
+            return View(query);
+        }
 
         [Authorize]
         public IActionResult Create()
@@ -35,8 +51,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
             {
                 ExerciseCategories = this.GetExerciseCategories(),
             });
-        }
-            
+        }   
 
         [Authorize]
         [HttpPost]
@@ -78,23 +93,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
             return RedirectToAction(nameof(All));
         }
 
-        public IActionResult All([FromQuery] AllExercisesQueryModel query)
-        {
-            var queryResult = this.exercises.All(
-                 query.Category,
-                 query.SearchTerm,
-                 query.Sorting,
-                 query.CurrentPage,
-                 AllExercisesQueryModel.ExercisesPerPage);
-
-            var exerciseCategories = this.exercises.AllExerciseCategories();
-
-            query.Categories = exerciseCategories;
-            query.Exercises = queryResult.Exercises;
-            query.TotalExercises = queryResult.TotalExercises;
-
-            return View(query);
-        }
+        
 
         private bool UserIsLifeCoach() 
             => this.data

@@ -7,6 +7,8 @@ namespace HealthyLifestyleTrackingApp.Models.Foods
 {
     public class CreateFoodFormModel : IValidatableObject
     {
+        private const int NutritionalValueSum = 100;
+
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = "Food name should be between 2 and 30 characters long.")]
         public string Name { get; init; }
@@ -57,7 +59,7 @@ namespace HealthyLifestyleTrackingApp.Models.Foods
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (this.Protein + this.Carbohydrates + this.Fat > 100)
+            if (this.Protein + this.Carbohydrates + this.Fat > NutritionalValueSum)
             {
                 yield return new ValidationResult("The sum of the nutritional values for protein, carbohydrates and fats should be less or equal to 100 grams!");
             }

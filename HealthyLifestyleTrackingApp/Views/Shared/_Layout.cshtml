@@ -18,19 +18,33 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Foods" asp-action="Create">Create Food</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Foods
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a asp-area="" asp-controller="Foods" asp-action="Create" class="dropdown-item">Create Food</a>
+                                <a asp-area="" asp-controller="Foods" asp-action="All" class="dropdown-item">All Foods</a>
+                            </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Exercises" asp-action="Create">Create Exercise</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Exercises
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a asp-area="" asp-controller="Exercises" asp-action="Create" class="dropdown-item">Create Exercise</a>
+                                <a asp-area="" asp-controller="Exercises" asp-action="All" class="dropdown-item">All Exercises</a>
+                            </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Foods" asp-action="All">All Foods</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Articles
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a asp-area="" asp-controller="Articles" asp-action="Create" class="dropdown-item">Create Article</a>
+                                <a asp-area="" asp-controller="Articles" asp-action="All" class="dropdown-item">All Articles</a>
+                            </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Exercises" asp-action="All">All Exercises</a>
-                        </li>
-
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

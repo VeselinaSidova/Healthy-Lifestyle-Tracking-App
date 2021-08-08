@@ -43,6 +43,9 @@
         public class Article
         {
             public const int TitleMaxLength = 50;
+            public const int TitleMinLength = 2;
+            public const int ContentMinLength = 50;
+            public const int ContentMaxLength = 50000;
         }
 
         public class LifeCoach

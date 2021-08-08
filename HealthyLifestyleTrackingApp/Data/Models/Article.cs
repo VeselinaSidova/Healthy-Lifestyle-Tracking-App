@@ -16,6 +16,9 @@ namespace HealthyLifestyleTrackingApp.Data.Models
 
         [Required]
         public string Content { get; set; }
+
+        [Required]
+        public string ImageUrl { get; set; }
         
         public int LifeCoachId { get; init; }
 
