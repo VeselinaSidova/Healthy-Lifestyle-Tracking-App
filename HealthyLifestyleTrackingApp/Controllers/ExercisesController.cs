@@ -1,8 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using HealthyLifestyleTrackingApp.Data;
-using HealthyLifestyleTrackingApp.Data.Models;
 using HealthyLifestyleTrackingApp.Infrastructure;
 using HealthyLifestyleTrackingApp.Models.Exercises;
 using HealthyLifestyleTrackingApp.Services.Exercises;
@@ -13,14 +11,12 @@ namespace HealthyLifestyleTrackingApp.Controllers
     public class ExercisesController : Controller
     {
         private readonly IExerciseService exercises;
-        private readonly HealthyLifestyleTrackerDbContext data;
         private readonly ILifeCoachService lifeCoaches;
 
-        public ExercisesController(IExerciseService exercises, ILifeCoachService lifeCoaches, HealthyLifestyleTrackerDbContext data)
+        public ExercisesController(IExerciseService exercises, ILifeCoachService lifeCoaches)
         {
             this.exercises = exercises;
             this.lifeCoaches = lifeCoaches;
-            this.data = data;
         }
 
         public IActionResult All([FromQuery] AllExercisesQueryModel query)
@@ -53,10 +49,10 @@ namespace HealthyLifestyleTrackingApp.Controllers
             {
                 ExerciseCategories = this.exercises.GetExerciseCategories(),
             });
-        }   
+        }
 
-        [Authorize]
         [HttpPost]
+        [Authorize]
         public IActionResult Create(CreateExerciseFormModel exercise)
         {
             var lifeCoachId = this.lifeCoaches.GetIdByUser(this.User.GetId());

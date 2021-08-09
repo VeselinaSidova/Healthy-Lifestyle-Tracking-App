@@ -6,7 +6,7 @@ namespace HealthyLifestyleTrackingApp.Data.Models
 {
     public class Article
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
 
         [Required]
         [MaxLength(TitleMaxLength)]

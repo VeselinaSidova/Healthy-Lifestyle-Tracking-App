@@ -1,9 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using HealthyLifestyleTrackingApp.Data;
-using HealthyLifestyleTrackingApp.Data.Enums;
-using HealthyLifestyleTrackingApp.Data.Models;
 using HealthyLifestyleTrackingApp.Models.Foods;
 using HealthyLifestyleTrackingApp.Services.Foods;
 
@@ -12,12 +8,10 @@ namespace HealthyLifestyleTrackingApp.Controllers
     public class FoodsController : Controller
     {
         private readonly IFoodService foods;
-        private readonly HealthyLifestyleTrackerDbContext data;
 
-        public FoodsController(IFoodService foods, HealthyLifestyleTrackerDbContext data)
+        public FoodsController(IFoodService foods)
         {
             this.foods = foods;
-            this.data = data;
         }
 
         public IActionResult All([FromQuery] AllFoodsQueryModel query)

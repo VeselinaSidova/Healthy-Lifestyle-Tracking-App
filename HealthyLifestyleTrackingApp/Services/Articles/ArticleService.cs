@@ -43,10 +43,10 @@ namespace HealthyLifestyleTrackingApp.Services.Articles
             };
         }
 
-        public ArticleServiceModel Details(int id)
+        public ArticleDetailsServiceModel Details(int articleId)
             => this.data
                 .Articles
-                .Where(a => a.Id == id)
+                .Where(a => a.Id == articleId)
                 .Select(a => new ArticleDetailsServiceModel
                 {
                     Id = a.Id,
@@ -77,6 +77,29 @@ namespace HealthyLifestyleTrackingApp.Services.Articles
             return articleData.Id;
         }
 
+        public bool Edit(int articleId, string title, string content, string imageUrl)
+        {
+            var articleData = this.data.Articles.Find(articleId);
+
+            if (articleData == null)
+            {
+                return false;
+            }
+
+            articleData.Title = title;
+            articleData.Content = content;
+            articleData.ImageUrl = imageUrl;
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
+        public bool ArticleIsByLifeCoach(int articleId, int lifeCoachId)
+            => this.data
+                .Articles
+                .Any(a => a.Id == articleId && a.LifeCoachId == lifeCoachId);
+
         public IEnumerable<ArticleServiceModel> ByUser(string userId)
             => this.GetArticles(this.data
                 .Articles
@@ -87,13 +110,12 @@ namespace HealthyLifestyleTrackingApp.Services.Articles
             => ariclesQuery
                 .Select(a => new ArticleServiceModel
                 {
+                    Id = a.Id,
                     Title = a.Title,
                     Author = a.LifeCoach.FirstName + " " + a.LifeCoach.LastName,
                     CreatedOn = a.CreatedOn,
                     ImageUrl = a.ImageUrl
                 })
                     .ToList();
-
-       
     }
 }

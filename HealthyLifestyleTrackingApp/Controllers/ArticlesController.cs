@@ -1,9 +1,5 @@
-﻿using System;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using HealthyLifestyleTrackingApp.Data;
-using HealthyLifestyleTrackingApp.Data.Models;
 using HealthyLifestyleTrackingApp.Infrastructure;
 using HealthyLifestyleTrackingApp.Models.Articles;
 using HealthyLifestyleTrackingApp.Services.Articles;
@@ -14,14 +10,12 @@ namespace HealthyLifestyleTrackingApp.Controllers
     public class ArticlesController : Controller
     {
         private readonly IArticleService articles;
-        private readonly HealthyLifestyleTrackerDbContext data;
         private readonly ILifeCoachService lifeCoaches;
 
-        public ArticlesController(IArticleService articles, ILifeCoachService lifeCoaches, HealthyLifestyleTrackerDbContext data)
+        public ArticlesController(IArticleService articles, ILifeCoachService lifeCoaches)
         {
             this.articles = articles;
             this.lifeCoaches = lifeCoaches;
-            this.data = data;
         }
 
         public IActionResult All([FromQuery] AllArticlesQueryModel query)
@@ -57,8 +51,8 @@ namespace HealthyLifestyleTrackingApp.Controllers
         }
 
 
-        [Authorize]
         [HttpPost]
+        [Authorize]
         public IActionResult Create(ArticleFormModel article)
         {
             var lifeCoachId = this.lifeCoaches.GetIdByUser(this.User.GetId());
@@ -82,10 +76,61 @@ namespace HealthyLifestyleTrackingApp.Controllers
             return RedirectToAction(nameof(All));
         }
 
-        //[Authorize]
-        //public IActionResult Edit(int id)
-        //{
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var userId = this.User.GetId();
 
-        //}
+            if (!this.lifeCoaches.IsLifeCoach(userId))
+            {
+                return RedirectToAction(nameof(LifeCoachesController.Become), "LifeCoaches");
+            }
+
+            var article = this.articles.Details(id);
+
+            if (article.UserId != userId)
+            {
+                return Unauthorized();
+            }
+
+            return View(new ArticleFormModel
+            {
+                Title = article.Title,
+                Content = article.Content,
+                ImageUrl = article.ImageUrl,
+            });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Edit(int id, ArticleFormModel article)
+        {
+            var lifeCoachId = this.lifeCoaches.GetIdByUser(this.User.GetId());
+
+            if (lifeCoachId == 0)
+            {
+                return RedirectToAction(nameof(LifeCoachesController.Become), "LifeCoaches");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(article);
+            }
+
+
+            if (!this.articles.ArticleIsByLifeCoach(id, lifeCoachId))
+            {
+                return BadRequest();
+            }
+
+            var articleIsEdited = articles.Edit(
+               id,
+               article.Title,
+               article.Content,
+               article.ImageUrl);
+
+
+            return RedirectToAction(nameof(Mine));
+        }
     }
 }

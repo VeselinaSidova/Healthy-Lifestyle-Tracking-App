@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using HealthyLifestyleTrackingApp.Data;
-using HealthyLifestyleTrackingApp.Data.Models;
 using HealthyLifestyleTrackingApp.Infrastructure;
 using HealthyLifestyleTrackingApp.Models.LifeCoaches;
 using HealthyLifestyleTrackingApp.Services.LifeCoaches;
@@ -10,12 +8,10 @@ namespace HealthyLifestyleTrackingApp.Controllers
 {
     public class LifeCoachesController : Controller
     {
-        private readonly HealthyLifestyleTrackerDbContext data;
         private readonly ILifeCoachService lifeCoaches;
 
-        public LifeCoachesController(ILifeCoachService lifeCoaches, HealthyLifestyleTrackerDbContext data)
+        public LifeCoachesController(ILifeCoachService lifeCoaches)
         {
-            this.data = data;
             this.lifeCoaches = lifeCoaches;
         }
 

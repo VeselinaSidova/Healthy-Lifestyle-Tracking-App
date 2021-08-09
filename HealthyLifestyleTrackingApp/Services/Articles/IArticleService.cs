@@ -10,13 +10,21 @@ namespace HealthyLifestyleTrackingApp.Services.Articles
             int currentPage,
             int ArticlesPerPage);
 
-        ArticleServiceModel Details(int id);
+        ArticleDetailsServiceModel Details(int articleId);
 
         int Create(
             string title,
             string content,
             string imageUrl,
             int lifeCoachId);
+
+        bool Edit(
+            int articleId,
+            string title,
+            string content,
+            string imageUrl);
+
+        bool ArticleIsByLifeCoach(int articleId, int lifeCoachId);
 
         IEnumerable<ArticleServiceModel> ByUser(string userId);
     }

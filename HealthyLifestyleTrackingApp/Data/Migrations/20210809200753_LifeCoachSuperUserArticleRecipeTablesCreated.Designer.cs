@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthyLifestyleTrackingApp.Data.Migrations
 {
     [DbContext(typeof(HealthyLifestyleTrackerDbContext))]
-    [Migration("20210807113952_ChangedLifeCoachTable")]
-    partial class ChangedLifeCoachTable
+    [Migration("20210809200753_LifeCoachSuperUserArticleRecipeTablesCreated")]
+    partial class LifeCoachSuperUserArticleRecipeTablesCreated
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,6 +34,10 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LifeCoachId")
                         .HasColumnType("int");
