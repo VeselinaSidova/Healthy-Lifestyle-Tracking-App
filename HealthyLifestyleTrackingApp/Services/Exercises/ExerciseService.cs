@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using HealthyLifestyleTrackingApp.Data;
 using HealthyLifestyleTrackingApp.Data.Enums;
+using HealthyLifestyleTrackingApp.Data.Models;
 
 namespace HealthyLifestyleTrackingApp.Services.Exercises
 {
@@ -62,6 +63,26 @@ namespace HealthyLifestyleTrackingApp.Services.Exercises
                 Exercises = exercises
             };
         }
+
+        public int Create(string name, int caloriesPerHour, string imageUrl, int exerciseCategoryId)
+        {
+            var exerciseData = new Exercise
+            {
+                Name = name,
+                CaloriesPerHour = caloriesPerHour,
+                ImageUrl = imageUrl,
+                ExerciseCategoryId = exerciseCategoryId
+            };
+
+            this.data.Exercises.Add(exerciseData);
+            this.data.SaveChanges();
+
+            return exerciseData.Id;
+        }
+
+
+        public bool ExerciseCategoryExists(int categoryId)
+            => this.data.ExerciseCategories.Any(c => c.Id == categoryId);
 
         public IEnumerable<ExerciseCategoryServiceModel> GetExerciseCategories()
          => this.data

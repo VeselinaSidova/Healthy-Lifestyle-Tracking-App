@@ -1,20 +1,23 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using HealthyLifestyleTrackingApp.Data;
 using HealthyLifestyleTrackingApp.Data.Models;
 using HealthyLifestyleTrackingApp.Infrastructure;
 using HealthyLifestyleTrackingApp.Models.LifeCoaches;
-
+using HealthyLifestyleTrackingApp.Services.LifeCoaches;
 
 namespace HealthyLifestyleTrackingApp.Controllers
 {
     public class LifeCoachesController : Controller
     {
         private readonly HealthyLifestyleTrackerDbContext data;
+        private readonly ILifeCoachService lifeCoaches;
 
-        public LifeCoachesController(HealthyLifestyleTrackerDbContext data)
-            => this.data = data;
+        public LifeCoachesController(ILifeCoachService lifeCoaches, HealthyLifestyleTrackerDbContext data)
+        {
+            this.data = data;
+            this.lifeCoaches = lifeCoaches;
+        }
 
         [Authorize]
         public IActionResult Become() => View();
@@ -25,9 +28,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
         {
             var userId = this.User.GetId(); 
 
-            var userIsAlreadyLifeCoach = this.data
-                .LifeCoaches
-                .Any(c => c.UserId == userId);
+            var userIsAlreadyLifeCoach = lifeCoaches.IsLifeCoach(userId);
 
             if (userIsAlreadyLifeCoach)
             {
@@ -39,16 +40,11 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 return View(lifeCoach);
             }
 
-            var lifeCoachData = new LifeCoach
-            {
-                FirstName = lifeCoach.FirstName,
-                LastName = lifeCoach.LastName,
-                ProfilePictureUrl = lifeCoach.ProfilePictureUrl,
-                UserId = userId
-            };
-
-            this.data.LifeCoaches.Add(lifeCoachData);
-            this.data.SaveChanges();
+            this.lifeCoaches.Create(
+                lifeCoach.FirstName,
+                lifeCoach.LastName,
+                lifeCoach.ProfilePictureUrl,
+                userId);
 
             return RedirectToAction("All", "Exercises");
         }

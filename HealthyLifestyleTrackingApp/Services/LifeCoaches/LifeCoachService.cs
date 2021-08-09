@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using HealthyLifestyleTrackingApp.Data;
+using HealthyLifestyleTrackingApp.Data.Models;
 
 namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
 {
@@ -9,6 +10,29 @@ namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
 
         public LifeCoachService(HealthyLifestyleTrackerDbContext data)
             => this.data = data;
+
+        public int Create(string firstName, string lastName, string profilePictureUrl, string userId)
+        {
+            var lifeCoachData = new LifeCoach
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                ProfilePictureUrl = profilePictureUrl,
+                UserId = userId
+            };
+
+            this.data.LifeCoaches.Add(lifeCoachData);
+            this.data.SaveChanges();
+
+            return lifeCoachData.Id;
+        }
+
+        public int GetIdByUser(string userId)
+            => this.data
+                .LifeCoaches
+                .Where(c => c.UserId == userId)
+                .Select(c => c.Id)
+                .FirstOrDefault();
 
         public bool IsLifeCoach(string userId)
             => this.data

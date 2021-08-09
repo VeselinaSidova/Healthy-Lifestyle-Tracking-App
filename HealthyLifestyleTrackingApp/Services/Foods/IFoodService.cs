@@ -14,12 +14,28 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
             int currentPage, 
             int foodsPerPage);
 
-        //IEnumerable<string> AllFoodCategories();
 
-        //IEnumerable<string> AllFoodTags();
+        int Create(
+                string name,
+                string brand,
+                double standardServingAmount,
+                StandardServingType standardServingType,
+                string imageUrl,
+                int calories,
+                double protein,
+                double carbohydrates,
+                double fat,
+                int foodCategoryId,
+                ICollection<int> foodTags);
 
         IEnumerable<FoodCategoryServiceModel> GetFoodCategories();
 
         IEnumerable<FoodTagServiceModel> GetFoodTags();
+
+        bool FoodCategoryExists(int categoryId);
+
+        bool StandardServingTypeExists(int standardServingTypeInt);
+
+        bool FoodTagsExists(int tag);
     }
 }

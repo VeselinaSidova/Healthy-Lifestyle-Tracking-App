@@ -59,18 +59,14 @@ namespace HealthyLifestyleTrackingApp.Controllers
         [HttpPost]
         public IActionResult Create(CreateExerciseFormModel exercise)
         {
-            var lifeCoachId = this.data
-                .LifeCoaches
-                .Where(c => c.UserId == this.User.GetId())
-                .Select(c => c.Id)
-                .FirstOrDefault();
+            var lifeCoachId = this.lifeCoaches.GetIdByUser(this.User.GetId());
 
             if (lifeCoachId == 0)
             {
                 return RedirectToAction(nameof(LifeCoachesController.Become), "LifeCoaches");
             }
 
-            if (!this.data.ExerciseCategories.Any(c => c.Id == exercise.ExerciseCategoryId))
+            if (!this.exercises.ExerciseCategoryExists(exercise.ExerciseCategoryId))
             {
                 this.ModelState.AddModelError(nameof(exercise.ExerciseCategoryId), "Exercise category does not exist.");
             }
@@ -81,16 +77,11 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 return View(exercise);
             }
 
-            var exerciseData = new Exercise
-            {
-                Name = exercise.Name,
-                CaloriesPerHour = exercise.CaloriesPerHour,
-                ImageUrl = exercise.ImageUrl,
-                ExerciseCategoryId = exercise.ExerciseCategoryId
-            };
-
-            this.data.Exercises.Add(exerciseData);
-            this.data.SaveChanges();
+            this.exercises.Create(
+                exercise.Name,
+                exercise.CaloriesPerHour,
+                exercise.ImageUrl,
+                exercise.ExerciseCategoryId);
 
             return RedirectToAction(nameof(All));
         }

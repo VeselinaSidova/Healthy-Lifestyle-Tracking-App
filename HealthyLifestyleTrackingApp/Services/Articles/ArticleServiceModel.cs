@@ -1,5 +1,4 @@
-﻿using HealthyLifestyleTrackingApp.Data.Models;
-using System;
+﻿using System;
 
 namespace HealthyLifestyleTrackingApp.Services.Articles
 {
@@ -8,8 +7,6 @@ namespace HealthyLifestyleTrackingApp.Services.Articles
         public int Id { get; init; }
 
         public string Title { get; init; }
-
-        public string Content { get; init; }
 
         public string Author { get; init; }
 

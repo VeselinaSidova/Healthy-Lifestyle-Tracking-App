@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using HealthyLifestyleTrackingApp.Data;
 using HealthyLifestyleTrackingApp.Data.Models;
+using System;
 
 namespace HealthyLifestyleTrackingApp.Services.Articles
 {
@@ -42,21 +43,57 @@ namespace HealthyLifestyleTrackingApp.Services.Articles
             };
         }
 
+        public ArticleServiceModel Details(int id)
+            => this.data
+                .Articles
+                .Where(a => a.Id == id)
+                .Select(a => new ArticleDetailsServiceModel
+                {
+                    Id = a.Id,
+                    Title = a.Title,
+                    Author = a.LifeCoach.FirstName + " " + a.LifeCoach.LastName,
+                    CreatedOn = a.CreatedOn.Date,
+                    Content = a.Content,
+                    ImageUrl = a.ImageUrl,
+                    LifeCoachId = a.LifeCoachId,
+                    UserId = a.LifeCoach.UserId
+                })
+                .FirstOrDefault();
+
+        public int Create(string title, string content, string imageUrl, int lifeCoachId)
+        {
+            var articleData = new Article
+            {
+                Title = title,
+                CreatedOn = DateTime.UtcNow,
+                Content = content,
+                ImageUrl = imageUrl,
+                LifeCoachId = lifeCoachId
+            };
+
+            this.data.Articles.Add(articleData);
+            this.data.SaveChanges();
+
+            return articleData.Id;
+        }
+
         public IEnumerable<ArticleServiceModel> ByUser(string userId)
             => this.GetArticles(this.data
                 .Articles
                 .Where(a => a.LifeCoach.UserId == userId));
+
 
         private IEnumerable<ArticleServiceModel> GetArticles(IQueryable<Article> ariclesQuery)
             => ariclesQuery
                 .Select(a => new ArticleServiceModel
                 {
                     Title = a.Title,
-                    Content = a.Content,
                     Author = a.LifeCoach.FirstName + " " + a.LifeCoach.LastName,
-                    CreatedOn = a.CreatedOn.Date,
+                    CreatedOn = a.CreatedOn,
                     ImageUrl = a.ImageUrl
                 })
                     .ToList();
+
+       
     }
 }

@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using HealthyLifestyleTrackingApp.Data;
 using HealthyLifestyleTrackingApp.Data.Enums;
+using HealthyLifestyleTrackingApp.Data.Models;
 using HealthyLifestyleTrackingApp.Service.Foods;
 
 namespace HealthyLifestyleTrackingApp.Services.Foods
@@ -72,11 +74,58 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
             };
         }
 
-        //public IEnumerable<string> AllFoodCategories()
-        //    => this.data.FoodCategories.Select(c => c.Name).OrderBy(c => c).Distinct().ToList();
+        public int Create(
+            string name, 
+            string brand, 
+            double standardServingAmount, 
+            StandardServingType standardServingType, 
+            string imageUrl, 
+            int calories, 
+            double protein, 
+            double carbohydrates, 
+            double fat, 
+            int foodCategoryId,
+            ICollection<int> foodTags)
+        {
+            var foodData = new Food
+            {
+                Name = name,
+                Brand = brand,
+                StandardServingAmount = (double)standardServingAmount,
+                StandardServingType = standardServingType,
+                ImageUrl = imageUrl,
+                Calories = (int)calories,
+                Protein = (double)protein,
+                Carbohydrates = (double)carbohydrates,
+                Fat = (double)fat,
+                FoodCategoryId = foodCategoryId,
+            };
+            if (foodTags != null)
+            {
+                foreach (var foodTag in foodTags)
+                {
+                    var tag = data.Tags.FirstOrDefault(x => x.Id == foodTag)
+                        ?? new Tag { Id = foodTag };
+                    foodData.FoodTags.Add(new FoodTag { Tag = tag });
+                }
+            }
+            
 
-        //public IEnumerable<string> AllFoodTags()
-        //    => this.data.Tags.Select(t => t.Name).ToList();
+            this.data.Foods.Add(foodData);
+            this.data.SaveChanges();
+
+            return foodData.Id;
+        }
+
+        public bool FoodCategoryExists(int categoryId)
+            => this.data.FoodCategories.Any(c => c.Id == categoryId);
+
+
+        public bool StandardServingTypeExists(int standardServingTypeInt)
+            => Enum.IsDefined(typeof(StandardServingType), standardServingTypeInt);
+
+        public bool FoodTagsExists(int tag)
+            => this.data.Tags.Any(t => t.Id == tag);
 
 
         public IEnumerable<FoodCategoryServiceModel> GetFoodCategories()
@@ -99,5 +148,7 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
            })
            .OrderBy(t => t.Name)
            .ToList();
+
+        
     }
 }

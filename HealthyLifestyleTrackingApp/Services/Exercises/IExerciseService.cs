@@ -12,6 +12,14 @@ namespace HealthyLifestyleTrackingApp.Services.Exercises
             int currentPage,
             int exercisesPerPage);
 
+        int Create(string name, 
+            int caloriesPerHour,
+            string imageUrl,
+            int exerciseCategoryId);
+
         IEnumerable<ExerciseCategoryServiceModel> GetExerciseCategories();
+
+        bool ExerciseCategoryExists(int categoryId);
+
     }
-}
+} 

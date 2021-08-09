@@ -61,11 +61,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
         [HttpPost]
         public IActionResult Create(ArticleFormModel article)
         {
-            var lifeCoachId = this.data
-                .LifeCoaches
-                .Where(c => c.UserId == this.User.GetId())
-                .Select(c => c.Id)
-                .FirstOrDefault();
+            var lifeCoachId = this.lifeCoaches.GetIdByUser(this.User.GetId());
 
             if (lifeCoachId == 0)
             {
@@ -77,17 +73,11 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 return View(article);
             }
 
-            var articleData = new Article
-            {
-                Title = article.Title,
-                CreatedOn = DateTime.UtcNow,
-                Content = article.Content, 
-                ImageUrl = article.ImageUrl,
-                LifeCoachId = lifeCoachId
-            };
-
-            this.data.Articles.Add(articleData);
-            this.data.SaveChanges();
+            this.articles.Create(
+                article.Title,
+                article.Content,
+                article.ImageUrl,
+                lifeCoachId);
 
             return RedirectToAction(nameof(All));
         }
