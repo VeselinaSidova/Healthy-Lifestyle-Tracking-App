@@ -81,14 +81,14 @@ namespace HealthyLifestyleTrackingApp.Controllers
         {
             var userId = this.User.GetId();
 
-            if (!this.lifeCoaches.IsLifeCoach(userId))
+            if (!this.lifeCoaches.IsLifeCoach(userId) && !User.IsAdmin())
             {
                 return RedirectToAction(nameof(LifeCoachesController.Become), "LifeCoaches");
             }
 
             var article = this.articles.Details(id);
 
-            if (article.UserId != userId)
+            if (article.UserId != userId && !User.IsAdmin())
             {
                 return Unauthorized();
             }
@@ -107,7 +107,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
         {
             var lifeCoachId = this.lifeCoaches.GetIdByUser(this.User.GetId());
 
-            if (lifeCoachId == 0)
+            if (lifeCoachId == 0 && !User.IsAdmin())
             {
                 return RedirectToAction(nameof(LifeCoachesController.Become), "LifeCoaches");
             }
@@ -118,7 +118,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
             }
 
 
-            if (!this.articles.ArticleIsByLifeCoach(id, lifeCoachId))
+            if (!this.articles.ArticleIsByLifeCoach(id, lifeCoachId) && !User.IsAdmin())
             {
                 return BadRequest();
             }

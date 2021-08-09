@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using HealthyLifestyleTrackingApp.Data;
 using HealthyLifestyleTrackingApp.Data.Models;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using static HealthyLifestyleTrackingApp.WebConstants;
 
 namespace HealthyLifestyleTrackingApp.Infrastructure
 {
@@ -14,16 +17,54 @@ namespace HealthyLifestyleTrackingApp.Infrastructure
             this IApplicationBuilder app)
         {
             using var scopedServices = app.ApplicationServices.CreateScope();
+            var serviceProvider = scopedServices.ServiceProvider;
 
-            var data = scopedServices.ServiceProvider.GetService<HealthyLifestyleTrackerDbContext>();
+            var data = serviceProvider.GetRequiredService<HealthyLifestyleTrackerDbContext>();
 
             data.Database.Migrate();
 
             SeedFoodCategories(data);
             SeedExerciseCategories(data);
             SeedTags(data);
+            SeedAdministrator(serviceProvider);
 
             return app;
+        }
+
+        private static void SeedAdministrator(IServiceProvider services)
+        {
+            var userManager = services.GetRequiredService<UserManager<User>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+            Task
+               .Run(async () =>
+               {
+                   if (await roleManager.RoleExistsAsync(AdministratorRoleName))
+                   {
+                       return;
+                   }
+                   var administratorRole = new IdentityRole { Name = AdministratorRoleName }; 
+
+                   await roleManager.CreateAsync(administratorRole);
+
+                   const string adminEmail = "admin@healthtracker.com";
+                   const string adminPassword = "admin1234";
+
+                   var user = new User
+                   {
+                       Email = adminEmail,
+                       UserName = adminEmail,
+                       FirstName = "Veselina",
+                       LastName = "Sidova (Admin)"
+                   };
+
+                   await userManager.CreateAsync(user, adminPassword);
+
+                   await userManager.AddToRoleAsync(user, administratorRole.Name);
+               })
+               .GetAwaiter()
+               .GetResult();
+           
         }
 
         private static void SeedFoodCategories(HealthyLifestyleTrackerDbContext data)

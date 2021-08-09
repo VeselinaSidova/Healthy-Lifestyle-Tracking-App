@@ -1,9 +1,3 @@
-using HealthyLifestyleTrackingApp.Data;
-using HealthyLifestyleTrackingApp.Infrastructure;
-using HealthyLifestyleTrackingApp.Services.Articles;
-using HealthyLifestyleTrackingApp.Services.Exercises;
-using HealthyLifestyleTrackingApp.Services.Foods;
-using HealthyLifestyleTrackingApp.Services.LifeCoaches;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -12,6 +6,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using HealthyLifestyleTrackingApp.Data;
+using HealthyLifestyleTrackingApp.Data.Models;
+using HealthyLifestyleTrackingApp.Infrastructure;
+using HealthyLifestyleTrackingApp.Services.Articles;
+using HealthyLifestyleTrackingApp.Services.Exercises;
+using HealthyLifestyleTrackingApp.Services.Foods;
+using HealthyLifestyleTrackingApp.Services.LifeCoaches;
+
 
 namespace HealthyLifestyleTrackingApp
 {
@@ -32,7 +34,7 @@ namespace HealthyLifestyleTrackingApp
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services
-                .AddDefaultIdentity<IdentityUser>(options =>
+                .AddDefaultIdentity<User>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = false;
                     options.Password.RequireDigit = false;

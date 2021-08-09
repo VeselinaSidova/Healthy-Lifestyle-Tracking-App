@@ -1,8 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using HealthyLifestyleTrackingApp.Services.LifeCoaches
 
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 @inject ILifeCoachService LifeCoaches
 
 <ul class="navbar-nav">
@@ -10,8 +10,9 @@
     {
         var useId = User.GetId();
         var userIsLifeCoach = LifeCoaches.IsLifeCoach(useId);
+        var userIsAdmin = User.IsAdmin();
 
-        @if (userIsLifeCoach)
+        @if (userIsLifeCoach && !userIsAdmin)
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Articles" asp-action="Mine">My Articles</a>
@@ -23,7 +24,7 @@
                 <a class="nav-link text-dark" asp-area="" asp-controller="SuperUsers" asp-action="Mine">My Trainees</a>
             </li>
         }
-        else
+        else if(!userIsAdmin)
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="LifeCoaches" asp-action="Become">Become Life Coach</a>

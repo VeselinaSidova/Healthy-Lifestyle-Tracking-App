@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HealthyLifestyleTrackingApp.Data
 {
-    public class HealthyLifestyleTrackerDbContext : IdentityDbContext
+    public class HealthyLifestyleTrackerDbContext : IdentityDbContext<User>
     {
         public HealthyLifestyleTrackerDbContext(DbContextOptions<HealthyLifestyleTrackerDbContext> options)
             : base(options)
@@ -84,14 +84,14 @@ namespace HealthyLifestyleTrackingApp.Data
 
             builder
                 .Entity<LifeCoach>()
-                .HasOne<IdentityUser>()
+                .HasOne<User>()
                 .WithOne()
                 .HasForeignKey<LifeCoach>(c => c.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .Entity<SuperUser>()
-                .HasOne<IdentityUser>()
+                .HasOne<User>()
                 .WithOne()
                 .HasForeignKey<SuperUser>(c => c.UserId)
                 .OnDelete(DeleteBehavior.Restrict);

@@ -54,6 +54,14 @@
             public const int NameMaxLength = 30;
         }
 
+        public class User
+        {
+            public const int NameMinLength = 1;
+            public const int NameMaxLength = 30;
+            public const int PasswordMinLength = 6;
+            public const int PasswordMaxLength = 100;
+        }
+
         public class SuperUser
         {
             public const int NameMinLength = 1;
