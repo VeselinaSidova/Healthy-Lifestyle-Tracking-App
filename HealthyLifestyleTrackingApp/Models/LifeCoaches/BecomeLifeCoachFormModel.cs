@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static HealthyLifestyleTrackingApp.Data.DataConstants.Exercise;
+using static HealthyLifestyleTrackingApp.Data.DataConstants.LifeCoach;
 
 namespace HealthyLifestyleTrackingApp.Models.LifeCoaches
 {
@@ -17,5 +17,10 @@ namespace HealthyLifestyleTrackingApp.Models.LifeCoaches
         [Required]
         [Url]
         public string ProfilePictureUrl { get; set; }
+
+        [Required]
+        [StringLength(AboutMaxLength, MinimumLength = AboutMinLength, ErrorMessage = "Your about information should be between 100 and 1000 characters long.")]
+        public string About { get; set; }
+
     }
 }

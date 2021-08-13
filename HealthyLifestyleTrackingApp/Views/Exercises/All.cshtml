@@ -46,6 +46,7 @@
                     <h5 class="card-title">@exercise.Name</h5>
                     <p class="card-text">@exercise.CaloriesPerHour kcal\hour</p>
                     <p class="card-text">Category: @exercise.ExerciseCategory</p>
+                    <a asp-controller="Tracker" asp-action="Track" asp-route-id="@exercise.Id" cite asp-route-information="@exercise.Name" class="btn btn-primary">Track</a>
                 </div>
             </div>
         </div>

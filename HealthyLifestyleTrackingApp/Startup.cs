@@ -81,6 +81,18 @@ namespace HealthyLifestyleTrackingApp
                 .UseAuthorization()
                 .UseEndpoints(endpoints =>
                 {
+                    endpoints.MapControllerRoute(
+                        name: "Food Details",
+                        pattern: "/Food/Details/{id}/{information}",
+                        defaults: new { controller = "Foods", action = "Details" });
+                    endpoints.MapControllerRoute(
+                       name: "Track Food",
+                       pattern: "/Food/Track-Food/{id}/{information}",
+                       defaults: new { controller = "FoodTracker", action = "Track" });
+                    endpoints.MapControllerRoute(
+                       name: "Track Exercise",
+                       pattern: "/Food/Track-Exercise/{id}/{information}",
+                       defaults: new { controller = "ExerciseTracker", action = "Track" });
                     endpoints.MapDefaultControllerRoute();
                     endpoints.MapRazorPages();
                 });

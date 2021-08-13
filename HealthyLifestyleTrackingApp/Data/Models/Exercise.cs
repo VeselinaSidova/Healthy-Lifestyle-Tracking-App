@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using static HealthyLifestyleTrackingApp.Data.DataConstants.Exercise;
 
 namespace HealthyLifestyleTrackingApp.Data.Models
@@ -19,5 +20,7 @@ namespace HealthyLifestyleTrackingApp.Data.Models
         public int ExerciseCategoryId { get; set; }
 
         public ExerciseCategory ExerciseCategory { get; set; }
+
+        public IEnumerable<TrackedExercise> TrackedExercises { get; set; } = new List<TrackedExercise>();
     }
 }

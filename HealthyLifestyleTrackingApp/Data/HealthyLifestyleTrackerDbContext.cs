@@ -22,42 +22,43 @@ namespace HealthyLifestyleTrackingApp.Data
         public DbSet<Article> Articles { get; init; }
         public DbSet<Recipe> Recipes { get; init; }
         public DbSet<LifeCoach> LifeCoaches { get; init; }
-        public DbSet<SuperUser> SuperUsers { get; init; }
-
+        public DbSet<Tracker> Trackers { get; init; }
+        public DbSet<TrackedFood> TrackedFoods { get; init; }
+        public DbSet<TrackedExercise> TrackedExercises { get; init; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
                 .Entity<Food>()
-                .HasOne(c => c.FoodCategory)
+                .HasOne(f => f.FoodCategory)
                 .WithMany(c => c.Foods)
-                .HasForeignKey(c => c.FoodCategoryId)
+                .HasForeignKey(f => f.FoodCategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .Entity<Exercise>()
-                .HasOne(c => c.ExerciseCategory)
+                .HasOne(e => e.ExerciseCategory)
                 .WithMany(c => c.Exercises)
-                .HasForeignKey(c => c.ExerciseCategoryId)
+                .HasForeignKey(e => e.ExerciseCategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .Entity<FoodTag>()
-                .HasKey(x => new { x.FoodId, x.TagId });
+                .HasKey(t => new { t.FoodId, t.TagId });
 
             builder
                 .Entity<FoodTag>()
-                .HasOne(b => b.Food)
-                .WithMany(b => b.FoodTags)
-                .HasForeignKey(b => b.FoodId)
+                .HasOne(t => t.Food)
+                .WithMany(f => f.FoodTags)
+                .HasForeignKey(t => t.FoodId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .Entity<FoodTag>()
-                .HasOne(b => b.Tag)
-                .WithMany(b => b.FoodTags)
-                .HasForeignKey(b => b.TagId)
+                .HasOne(t => t.Tag)
+                .WithMany(t => t.FoodTags)
+                .HasForeignKey(t => t.TagId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -70,16 +71,9 @@ namespace HealthyLifestyleTrackingApp.Data
 
             builder
                 .Entity<Recipe>()
-                .HasOne(a => a.LifeCoach)
+                .HasOne(r => r.LifeCoach)
                 .WithMany(c => c.Recipes)
-                .HasForeignKey(a => a.LifeCoachId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder
-                .Entity<SuperUser>()
-                .HasOne(a => a.LifeCoach)
-                .WithMany(c => c.SuperUsers)
-                .HasForeignKey(a => a.LifeCoachId)
+                .HasForeignKey(r => r.LifeCoachId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
@@ -90,13 +84,60 @@ namespace HealthyLifestyleTrackingApp.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
-                .Entity<SuperUser>()
-                .HasOne<User>()
-                .WithOne()
-                .HasForeignKey<SuperUser>(c => c.UserId)
+                .Entity<TrackedFood>()
+                .HasOne(f => f.Food)
+                .WithMany(f => f.TrackedFoods)
+                .HasForeignKey(f => f.FoodId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+               .Entity<TrackedExercise>()
+               .HasOne(e => e.Exercise)
+               .WithMany(e => e.TrackedExercises)
+               .HasForeignKey(e => e.ExerciseId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<TrackedFood>()
+                .HasOne(f => f.User)
+                .WithMany(u => u.TrackedFoods)
+                .HasForeignKey(f => f.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+              .Entity<TrackedExercise>()
+              .HasOne(e => e.User)
+              .WithMany(u => u.TrackedExercises)
+              .HasForeignKey(e => e.UserId)
+              .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+                .Entity<TrackedFood>()
+                .HasOne(f => f.Tracker)
+                .WithMany(t => t.TrackedFoods)
+                .HasForeignKey(f => f.TrackerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+             .Entity<TrackedExercise>()
+             .HasOne(e => e.Tracker)
+             .WithMany(t => t.TrackedExercises)
+             .HasForeignKey(e => e.TrackerId)
+             .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+             .Entity<User>()
+             .HasOne(u => u.Tracker)
+             .WithOne(t => t.User)
+             .HasForeignKey<Tracker>(u => u.UserId)
+             .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<User>().ToTable("Users");
+
+            builder.Entity<Tracker>().ToTable("Trackers");
 
             base.OnModelCreating(builder);
         }
     }
 }
+

@@ -6,6 +6,7 @@
             string firstName,
             string lastName,
             string profilePictureUrl,
+            string about,
             string userId);
 
         public bool IsLifeCoach(string userId);

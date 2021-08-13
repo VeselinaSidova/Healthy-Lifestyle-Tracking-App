@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using HealthyLifestyleTrackingApp.Models.Foods;
 using HealthyLifestyleTrackingApp.Services.Foods;
+using static HealthyLifestyleTrackingApp.WebConstants;
 
 namespace HealthyLifestyleTrackingApp.Controllers
 {
@@ -36,11 +37,16 @@ namespace HealthyLifestyleTrackingApp.Controllers
             return View(query);
         }
 
-        public IActionResult Details(int id, string info)
+        public IActionResult Details(int id, string information)
         {
             var food = this.foods.Details(id);
 
-            return View(food);
+            if (!information.Contains(food.Name))
+            {
+                return BadRequest();
+            }
+
+            return View(food); 
         }
 
         public IActionResult Create() => View(new CreateFoodFormModel
@@ -83,7 +89,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 return View(food);
             }
 
-            this.foods.Create(
+            var foodId = this.foods.Create(
                 food.Name,
                 food.Brand,
                 (double)food.StandardServingAmount,
@@ -95,8 +101,10 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 (double)food.Fat,
                 food.FoodCategoryId,
                 food.FoodTags);
-            
-            return RedirectToAction(nameof(All));
+
+            TempData[GlobalMessageKey] = "Successfully created food!";
+
+            return RedirectToAction(nameof(Details), new { id = foodId, information = food.Name });
         }
     }
 }

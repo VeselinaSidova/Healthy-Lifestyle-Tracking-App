@@ -4,14 +4,16 @@ using HealthyLifestyleTrackingApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HealthyLifestyleTrackingApp.Data.Migrations
 {
     [DbContext(typeof(HealthyLifestyleTrackerDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210813191909_ChangedLifeCoachesTableRemovedSuperUser")]
+    partial class ChangedLifeCoachesTableRemovedSuperUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -269,99 +271,6 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("HealthyLifestyleTrackingApp.Data.Models.TrackedExercise", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("DateTracked")
-                        .HasColumnType("datetime2");
-
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("time");
-
-                    b.Property<int>("ExerciseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TrackerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ExerciseId");
-
-                    b.HasIndex("TrackerId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("TrackedExercises");
-                });
-
-            modelBuilder.Entity("HealthyLifestyleTrackingApp.Data.Models.TrackedFood", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<double>("AmountInGrams")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("DateTracked")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("FoodId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MealType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TrackerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FoodId");
-
-                    b.HasIndex("TrackerId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("TrackedFoods");
-                });
-
-            modelBuilder.Entity("HealthyLifestyleTrackingApp.Data.Models.Tracker", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("Trackers");
-                });
-
             modelBuilder.Entity("HealthyLifestyleTrackingApp.Data.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -414,9 +323,6 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TrackerId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -645,71 +551,6 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                     b.Navigation("LifeCoach");
                 });
 
-            modelBuilder.Entity("HealthyLifestyleTrackingApp.Data.Models.TrackedExercise", b =>
-                {
-                    b.HasOne("HealthyLifestyleTrackingApp.Data.Models.Exercise", "Exercise")
-                        .WithMany("TrackedExercises")
-                        .HasForeignKey("ExerciseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("HealthyLifestyleTrackingApp.Data.Models.Tracker", "Tracker")
-                        .WithMany("TrackedExercises")
-                        .HasForeignKey("TrackerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("HealthyLifestyleTrackingApp.Data.Models.User", "User")
-                        .WithMany("TrackedExercises")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Exercise");
-
-                    b.Navigation("Tracker");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("HealthyLifestyleTrackingApp.Data.Models.TrackedFood", b =>
-                {
-                    b.HasOne("HealthyLifestyleTrackingApp.Data.Models.Food", "Food")
-                        .WithMany("TrackedFoods")
-                        .HasForeignKey("FoodId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("HealthyLifestyleTrackingApp.Data.Models.Tracker", "Tracker")
-                        .WithMany("TrackedFoods")
-                        .HasForeignKey("TrackerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("HealthyLifestyleTrackingApp.Data.Models.User", "User")
-                        .WithMany("TrackedFoods")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Food");
-
-                    b.Navigation("Tracker");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("HealthyLifestyleTrackingApp.Data.Models.Tracker", b =>
-                {
-                    b.HasOne("HealthyLifestyleTrackingApp.Data.Models.User", "User")
-                        .WithOne("Tracker")
-                        .HasForeignKey("HealthyLifestyleTrackingApp.Data.Models.Tracker", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -761,11 +602,6 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("HealthyLifestyleTrackingApp.Data.Models.Exercise", b =>
-                {
-                    b.Navigation("TrackedExercises");
-                });
-
             modelBuilder.Entity("HealthyLifestyleTrackingApp.Data.Models.ExerciseCategory", b =>
                 {
                     b.Navigation("Exercises");
@@ -774,8 +610,6 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
             modelBuilder.Entity("HealthyLifestyleTrackingApp.Data.Models.Food", b =>
                 {
                     b.Navigation("FoodTags");
-
-                    b.Navigation("TrackedFoods");
                 });
 
             modelBuilder.Entity("HealthyLifestyleTrackingApp.Data.Models.FoodCategory", b =>
@@ -793,22 +627,6 @@ namespace HealthyLifestyleTrackingApp.Data.Migrations
             modelBuilder.Entity("HealthyLifestyleTrackingApp.Data.Models.Tag", b =>
                 {
                     b.Navigation("FoodTags");
-                });
-
-            modelBuilder.Entity("HealthyLifestyleTrackingApp.Data.Models.Tracker", b =>
-                {
-                    b.Navigation("TrackedExercises");
-
-                    b.Navigation("TrackedFoods");
-                });
-
-            modelBuilder.Entity("HealthyLifestyleTrackingApp.Data.Models.User", b =>
-                {
-                    b.Navigation("TrackedExercises");
-
-                    b.Navigation("TrackedFoods");
-
-                    b.Navigation("Tracker");
                 });
 #pragma warning restore 612, 618
         }

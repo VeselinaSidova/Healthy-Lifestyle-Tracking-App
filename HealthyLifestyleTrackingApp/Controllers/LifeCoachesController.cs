@@ -40,9 +40,10 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 lifeCoach.FirstName,
                 lifeCoach.LastName,
                 lifeCoach.ProfilePictureUrl,
+                lifeCoach.About,
                 userId);
 
-            return RedirectToAction("All", "Exercises");
+            return RedirectToAction("Home", "Index");
         }
     }
 }

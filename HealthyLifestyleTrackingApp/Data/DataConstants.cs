@@ -52,6 +52,8 @@
         {
             public const int NameMinLength = 1;
             public const int NameMaxLength = 30;
+            public const int AboutMinLength = 50;
+            public const int AboutMaxLength = 1000;
         }
 
         public class User

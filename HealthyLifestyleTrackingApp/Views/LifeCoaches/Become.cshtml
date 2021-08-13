@@ -8,7 +8,7 @@
     <div class="container">
         <h2 class="display-4 mt-0">Want to become a Life Coach?</h2>
         <p class="lead">Do you want to help people with their health goals?</p>
-        <p class="lead mb-5">Once you are approved for a Life Coach you will be assigned individual super users and you can also add exercises, articles and recepies on our platform.</p>
+        <p class="lead mb-5">Once you are approved for a Life Coach you will be able to contribute by adding exercises, articles and recepies on our platform.</p>
         <p class="mb-2">Apply to become a Life Coach on Heath Tracker using the form below.</p>
     </div>
 </div>
@@ -31,6 +31,11 @@
                 <label asp-for="ProfilePictureUrl"></label>
                 <input asp-for="ProfilePictureUrl" class="form-control" placeholder="Add you profile picture URL">
                 <span asp-validation-for="ProfilePictureUrl" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="About"></label>
+                <textarea asp-for="About" class="form-control" placeholder="Tell us about yourself and give us more information about your experience as a life coach" rows="10"></textarea>
+                <span asp-validation-for="About" class="small text-danger"></span>
             </div>
             <input class="btn btn-primary mt-3" type="submit" value="Become Life Coach" />
         </form>

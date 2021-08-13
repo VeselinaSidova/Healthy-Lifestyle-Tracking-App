@@ -5,6 +5,7 @@ using HealthyLifestyleTrackingApp.Infrastructure;
 using HealthyLifestyleTrackingApp.Models.Exercises;
 using HealthyLifestyleTrackingApp.Services.Exercises;
 using HealthyLifestyleTrackingApp.Services.LifeCoaches;
+using static HealthyLifestyleTrackingApp.WebConstants;
 
 namespace HealthyLifestyleTrackingApp.Controllers
 {
@@ -15,7 +16,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
         public ExercisesController(IExerciseService exercises, ILifeCoachService lifeCoaches)
         {
-            this.exercises = exercises; 
+            this.exercises = exercises;
             this.lifeCoaches = lifeCoaches;
         }
 
@@ -78,6 +79,8 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 exercise.CaloriesPerHour,
                 exercise.ImageUrl,
                 exercise.ExerciseCategoryId);
+
+            TempData[GlobalMessageKey] = "Exercise was added and is awaiting approval!";
 
             return RedirectToAction(nameof(All));
         }

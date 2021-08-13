@@ -4,6 +4,7 @@ using HealthyLifestyleTrackingApp.Infrastructure;
 using HealthyLifestyleTrackingApp.Models.Articles;
 using HealthyLifestyleTrackingApp.Services.Articles;
 using HealthyLifestyleTrackingApp.Services.LifeCoaches;
+using static HealthyLifestyleTrackingApp.WebConstants;
 
 namespace HealthyLifestyleTrackingApp.Controllers
 {
@@ -129,6 +130,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
                article.Content,
                article.ImageUrl);
 
+            TempData[GlobalMessageKey] = "Successfully added added article!";
 
             return RedirectToAction(nameof(Mine));
         }

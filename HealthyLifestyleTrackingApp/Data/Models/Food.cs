@@ -37,5 +37,7 @@ namespace HealthyLifestyleTrackingApp.Data.Models
         public FoodCategory FoodCategory { get; init; }
 
         public ICollection<FoodTag> FoodTags { get; set; } = new List<FoodTag>();
+
+        public IEnumerable<TrackedFood> TrackedFoods { get; set; } = new List<TrackedFood>();
     }
 }
