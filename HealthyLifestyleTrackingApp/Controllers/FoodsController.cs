@@ -36,6 +36,13 @@ namespace HealthyLifestyleTrackingApp.Controllers
             return View(query);
         }
 
+        public IActionResult Details(int id, string info)
+        {
+            var food = this.foods.Details(id);
+
+            return View(food);
+        }
+
         public IActionResult Create() => View(new CreateFoodFormModel
         {
             FoodCategories = this.foods.GetFoodCategories(),

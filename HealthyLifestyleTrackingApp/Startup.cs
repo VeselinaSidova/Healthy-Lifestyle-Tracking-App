@@ -45,6 +45,8 @@ namespace HealthyLifestyleTrackingApp
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<HealthyLifestyleTrackerDbContext>();
 
+            services.AddMemoryCache();
+
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();

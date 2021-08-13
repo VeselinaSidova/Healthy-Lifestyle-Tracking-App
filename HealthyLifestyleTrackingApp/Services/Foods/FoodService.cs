@@ -74,6 +74,30 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
             };
         }
 
+        public FoodDetailsServiceModel Details(int id)
+        {
+            var food = this.data
+                .Foods
+                .Where(f => f.Id == id)
+                .Select(f => new FoodDetailsServiceModel
+                {
+                    Id = f.Id,
+                    Name = f.Name,
+                    Brand = f.Brand,
+                    ImageUrl = f.ImageUrl,
+                    FoodCategory = f.FoodCategory.Name,
+                    StandardServingAmount = f.StandardServingAmount,
+                    StandardServingType = f.StandardServingType,
+                    Protein = f.Protein,
+                    Carbohydrates = f.Carbohydrates,
+                    Fat = f.Fat,
+                    Tags = f.FoodTags.Select(t => t.Tag.Name).ToList(),
+                })
+                .FirstOrDefault();
+
+            return food;
+        }
+
         public int Create(
             string name, 
             string brand, 
@@ -148,7 +172,5 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
            })
            .OrderBy(t => t.Name)
            .ToList();
-
-        
     }
 }

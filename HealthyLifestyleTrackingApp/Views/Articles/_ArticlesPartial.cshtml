@@ -10,7 +10,7 @@
                     <h5 class="card-title">@article.Title</h5>
                     <p class="card-text">Written by: @article.Author</p>
                     <p class="card-text">Added on: @article.CreatedOn.ToString("dd/MM/yyyy")</p>
-                    <a asp-controller="Articles" asp-action="Read" asp-route-id="@article.Id" class="btn btn-primary">Read</a>
+                    <a asp-controller="Articles" asp-action="Read" asp-route-id="@article.Id" asp-route-information ="@article.Title"class="btn btn-primary">Read</a>
                     @if (ViewBag.AllowArticleEdit == true || User.IsAdmin())
                     {
                         <a asp-controller="Articles" asp-action="Edit" asp-route-id="@article.Id" class="btn btn-warning">Edit</a>

@@ -14,6 +14,7 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
             int currentPage, 
             int foodsPerPage);
 
+        FoodDetailsServiceModel Details(int id);
 
         int Create(
                 string name,

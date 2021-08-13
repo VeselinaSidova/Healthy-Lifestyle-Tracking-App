@@ -15,7 +15,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
         public ExercisesController(IExerciseService exercises, ILifeCoachService lifeCoaches)
         {
-            this.exercises = exercises;
+            this.exercises = exercises; 
             this.lifeCoaches = lifeCoaches;
         }
 
