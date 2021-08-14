@@ -1,0 +1,8 @@
+﻿@model DatePickerModel
+
+@using (Html.BeginForm())
+{ 
+    <br/>
+    @Html.EditorFor(Model => Model.Date, new { htmlAttributes = new { @class="datepicker" } })
+}
+

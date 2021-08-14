@@ -69,5 +69,11 @@
             public const int NameMinLength = 1;
             public const int NameMaxLength = 30;
         }
+
+        public class TrackedFood
+        {
+            public const double AmountMinValue = 0.1;
+            public const double AmountMaxValue = 5000;
+        }
     }
 }

@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using HealthyLifestyleTrackingApp.Models.Foods;
 using HealthyLifestyleTrackingApp.Services.Foods;
 using static HealthyLifestyleTrackingApp.WebConstants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HealthyLifestyleTrackingApp.Controllers
 {
     public class FoodsController : Controller
     {
         private readonly IFoodService foods;
+        //private readonly ITrackedFoodService trackedFoods;
 
         public FoodsController(IFoodService foods)
         {
@@ -105,6 +107,31 @@ namespace HealthyLifestyleTrackingApp.Controllers
             TempData[GlobalMessageKey] = "Successfully created food!";
 
             return RedirectToAction(nameof(Details), new { id = foodId, information = food.Name });
+        }
+
+        public IActionResult Track()
+           => View();
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Track(int userId, TrackFoodFormModel food)
+        {
+            //if (!this.trackedFoods.MealTypeExists((int)food.MealType))
+            //{
+            //    this.ModelState.AddModelError(nameof(food.MealType), "Meal type does not exist.");
+            //}
+
+            if (userId != 0)
+            {
+                return RedirectToAction();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(food);
+            }
+
+            return RedirectToAction(nameof(All));
         }
     }
 }

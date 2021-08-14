@@ -29,6 +29,8 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
                 int foodCategoryId,
                 ICollection<int> foodTags);
 
+
+
         IEnumerable<FoodCategoryServiceModel> GetFoodCategories();
 
         IEnumerable<FoodTagServiceModel> GetFoodTags();
