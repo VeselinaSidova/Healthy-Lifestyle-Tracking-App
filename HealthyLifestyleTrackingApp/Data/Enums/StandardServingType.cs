@@ -2,11 +2,11 @@
 {
     public enum StandardServingType
     {
-        Gram = 1,
-        Cup = 2,
+        Grams = 1,
+        Cups = 2,
         Milliliters = 3,
-        Slice = 4,
-        Tablespoon = 5,
+        Slices = 4,
+        Tablespoons = 5,
         Whole = 6,
         Half = 7,
     }

@@ -88,6 +88,7 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
                     FoodCategory = f.FoodCategory.Name,
                     StandardServingAmount = f.StandardServingAmount,
                     StandardServingType = f.StandardServingType,
+                    Calories = f.Calories,
                     Protein = f.Protein,
                     Carbohydrates = f.Carbohydrates,
                     Fat = f.Fat,

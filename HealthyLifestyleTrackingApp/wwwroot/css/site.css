@@ -85,3 +85,10 @@ body {
     height: calc(100% - 15px);
     margin-bottom: 15px;
 }
+
+
+img {
+    display: block;
+    width: 500px;
+    height: 500px;
+}

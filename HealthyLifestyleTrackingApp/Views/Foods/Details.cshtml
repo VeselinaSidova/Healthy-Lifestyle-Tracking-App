@@ -1,5 +1,50 @@
 ﻿@model FoodDetailsServiceModel
 
-<div class="col-md-6 mt-5 offset-3 text-center">
-    <h2>@Model.Name</h2>
+<div>
+    <div class="col-md-6 mt-5 offset-3 text-center">
+        <h2>@Model.Name</h2>
+    </div>
+    <div class="col-md-6 offset-3 text-center">
+        <img src="@Model.ImageUrl" class="img-fluid mt-3 mb-3 align-center" alt="Responsive image">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th scope="row">Brand</th>
+                    <td>@(Model.Brand != null ? Model.Brand : "None")</td>
+                </tr>
+                <tr>
+                    <th scope="row">Category</th>
+                    <td>@Model.FoodCategory</td>
+                </tr>
+                <tr>
+                    <th scope="row">Standard Serving</th>
+                    <td>@Model.StandardServingAmount grams</td>
+                </tr>
+                <tr>
+                    <th scope="row">Standard Serving Type</th>
+                    <td>@Model.StandardServingType</td>
+                </tr>
+                <tr>
+                    <th scope="row">Calories</th>
+                    <td>@Model.Calories kcal\100gr</td>
+                </tr>
+                <tr>
+                    <th scope="row">Protein</th>
+                    <td>@Model.Protein gr\100gr</td>
+                </tr>
+                <tr>
+                    <th scope="row">Carbohydrates</th>
+                    <td>@Model.Carbohydrates gr\100gr</td>
+                </tr>
+                <tr>
+                    <th scope="row">Fat</th>
+                    <td>@Model.Fat gr\100gr</td>
+                </tr>
+                <tr>
+                    <th scope="row">Tags</th>
+                    <td>@string.Join(", ", Model.Tags)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
