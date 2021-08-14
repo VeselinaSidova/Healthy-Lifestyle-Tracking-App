@@ -17,7 +17,14 @@ namespace HealthyLifestyleTrackingApp.Services.Exercises
             string imageUrl,
             int exerciseCategoryId);
 
+        int Track(
+            int exerciseId,
+            string userId,
+            int duration);
+
         IEnumerable<ExerciseCategoryServiceModel> GetExerciseCategories();
+
+        string GetExerciseName(int exerciseId);
 
         bool ExerciseCategoryExists(int categoryId);
 

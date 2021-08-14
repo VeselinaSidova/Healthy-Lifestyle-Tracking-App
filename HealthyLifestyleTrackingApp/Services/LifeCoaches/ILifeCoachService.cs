@@ -2,7 +2,7 @@
 {
     public interface ILifeCoachService
     {
-        int Create(
+        int Become(
             string firstName,
             string lastName,
             string profilePictureUrl,

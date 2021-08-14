@@ -13,7 +13,7 @@ using HealthyLifestyleTrackingApp.Services.Articles;
 using HealthyLifestyleTrackingApp.Services.Exercises;
 using HealthyLifestyleTrackingApp.Services.Foods;
 using HealthyLifestyleTrackingApp.Services.LifeCoaches;
-
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace HealthyLifestyleTrackingApp
 {
@@ -86,13 +86,13 @@ namespace HealthyLifestyleTrackingApp
                         pattern: "/Food/Details/{id}/{information}",
                         defaults: new { controller = "Foods", action = "Details" });
                     endpoints.MapControllerRoute(
-                       name: "Track Food",
-                       pattern: "/Food/Track-Food/{id}/{information}",
-                       defaults: new { controller = "FoodTracker", action = "Track" });
+                       name: "Food Track",
+                       pattern: "/Food/Track/{id}/{information}",
+                       defaults: new { controller = "Foods", action = "Track" });
                     endpoints.MapControllerRoute(
-                       name: "Track Exercise",
-                       pattern: "/Food/Track-Exercise/{id}/{information}",
-                       defaults: new { controller = "ExerciseTracker", action = "Track" });
+                       name: "Exervise Track",
+                       pattern: "/Exercise/Track/{id}/{information}",
+                       defaults: new { controller = "Exercises", action = "Track" });
                     endpoints.MapDefaultControllerRoute();
                     endpoints.MapRazorPages();
                 });

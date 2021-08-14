@@ -4,13 +4,13 @@ using HealthyLifestyleTrackingApp.Models.Foods;
 using HealthyLifestyleTrackingApp.Services.Foods;
 using static HealthyLifestyleTrackingApp.WebConstants;
 using Microsoft.AspNetCore.Authorization;
+using HealthyLifestyleTrackingApp.Infrastructure;
 
 namespace HealthyLifestyleTrackingApp.Controllers
 {
     public class FoodsController : Controller
     {
         private readonly IFoodService foods;
-        //private readonly ITrackedFoodService trackedFoods;
 
         public FoodsController(IFoodService foods)
         {
@@ -114,22 +114,43 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Track(int userId, TrackFoodFormModel food)
+        public IActionResult Track(int id, string information, TrackFoodFormModel food)
         {
-            //if (!this.trackedFoods.MealTypeExists((int)food.MealType))
-            //{
-            //    this.ModelState.AddModelError(nameof(food.MealType), "Meal type does not exist.");
-            //}
+            var foodName = this.foods.GetFoodName(id);
 
-            if (userId != 0)
+            if (!information.Contains(foodName))
             {
-                return RedirectToAction();
+                return BadRequest();
             }
+
+            if (!this.foods.MealTypeExists((int)food.MealType))
+            {
+                this.ModelState.AddModelError(nameof(food.MealType), "Meal type does not exist.");
+            }
+
+            var userId = this.User.GetId();
+
+            if (userId == null)
+            {
+                return Redirect("~/Identity/Account/Login");
+            }
+            
+            if (id == 0)
+            {
+                return BadRequest();
+            }
+
 
             if (!ModelState.IsValid)
             {
                 return View(food);
             }
+
+            var trackedFoodId = this.foods.Track(
+                id,
+                userId,
+                food.AmountInGrams,
+                food.MealType);
 
             return RedirectToAction(nameof(All));
         }

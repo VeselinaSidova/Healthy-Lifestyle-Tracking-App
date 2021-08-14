@@ -141,15 +141,26 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
             return foodData.Id;
         }
 
-        public bool FoodCategoryExists(int categoryId)
-            => this.data.FoodCategories.Any(c => c.Id == categoryId);
+        public int Track(
+            int foodId, 
+            string userId, 
+            double amountInGrams, 
+            MealType mealType)
+        {
+            var trackedFood = new TrackedFood
+            {
+                FoodId = foodId,
+                UserId = userId,
+                AmountInGrams = amountInGrams,
+                MealType = mealType,
+                DateTracked = DateTime.UtcNow
+            };
 
+            this.data.TrackedFoods.Add(trackedFood);
+            this.data.SaveChanges();
 
-        public bool StandardServingTypeExists(int standardServingTypeInt)
-            => Enum.IsDefined(typeof(StandardServingType), standardServingTypeInt);
-
-        public bool FoodTagsExists(int tag)
-            => this.data.Tags.Any(t => t.Id == tag);
+            return trackedFood.Id;
+        }
 
 
         public IEnumerable<FoodCategoryServiceModel> GetFoodCategories()
@@ -172,5 +183,24 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
            })
            .OrderBy(t => t.Name)
            .ToList();
+
+        public string GetFoodName(int foodId)
+        {
+            var food = this.data.Foods.Where(f => f.Id == foodId).FirstOrDefault();
+            return food.Name;
+        }
+            
+
+        public bool FoodCategoryExists(int categoryId)
+            => this.data.FoodCategories.Any(c => c.Id == categoryId);
+
+        public bool StandardServingTypeExists(int standardServingTypeInt)
+            => Enum.IsDefined(typeof(StandardServingType), standardServingTypeInt);
+
+        public bool FoodTagsExists(int tag)
+            => this.data.Tags.Any(t => t.Id == tag);
+
+        public bool MealTypeExists(int mealTypeInt)
+           => Enum.IsDefined(typeof(MealType), mealTypeInt);
     }
 }

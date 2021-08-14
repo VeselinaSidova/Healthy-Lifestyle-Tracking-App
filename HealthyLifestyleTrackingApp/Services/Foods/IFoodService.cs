@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using HealthyLifestyleTrackingApp.Data.Enums;
 using HealthyLifestyleTrackingApp.Service.Foods;
 
@@ -16,6 +17,12 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
 
         FoodDetailsServiceModel Details(int id);
 
+        int Track( 
+            int foodId, 
+            string userId, 
+            double amountInGrams, 
+            MealType mealType);
+
         int Create(
                 string name,
                 string brand,
@@ -30,15 +37,18 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
                 ICollection<int> foodTags);
 
 
-
         IEnumerable<FoodCategoryServiceModel> GetFoodCategories();
 
         IEnumerable<FoodTagServiceModel> GetFoodTags();
+
+        string GetFoodName(int foodId);
 
         bool FoodCategoryExists(int categoryId);
 
         bool StandardServingTypeExists(int standardServingTypeInt);
 
         bool FoodTagsExists(int tag);
+
+        bool MealTypeExists(int mealType);
     }
 }

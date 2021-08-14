@@ -1,8 +1,35 @@
 ﻿@model DatePickerModel
 
+
 @using (Html.BeginForm())
-{ 
-    <br/>
-    @Html.EditorFor(Model => Model.Date, new { htmlAttributes = new { @class="datepicker" } })
+{
+    <br />
+    @Html.EditorFor(Model => Model.Date, new { htmlAttributes = new { @class = "datepicker", placeholder = "Select Date" } })
 }
 
+
+
+
+
+
+
+
+
+
+<link href="~/lib/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet" />
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+      @section scripts{
+    <script src="~/lib/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+            $(".datepicker").datepicker({
+                dateFormat: "dd MM yy",
+                minDate: new Date(2021, 0, 1),
+                maxDate: new Date(@DateTime.UtcNow.Year + 1, 0, 1),
+                showOn: "both",
+                buttonText: "<i class='fa fa-calendar' aria-hidden='true'></i>"
+            });
+        });
+    </script>
+}

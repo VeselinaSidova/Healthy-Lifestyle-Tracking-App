@@ -22,7 +22,6 @@ namespace HealthyLifestyleTrackingApp.Data
         public DbSet<Article> Articles { get; init; }
         public DbSet<Recipe> Recipes { get; init; }
         public DbSet<LifeCoach> LifeCoaches { get; init; }
-        public DbSet<Tracker> Trackers { get; init; }
         public DbSet<TrackedFood> TrackedFoods { get; init; }
         public DbSet<TrackedExercise> TrackedExercises { get; init; }
 
@@ -110,31 +109,6 @@ namespace HealthyLifestyleTrackingApp.Data
               .WithMany(u => u.TrackedExercises)
               .HasForeignKey(e => e.UserId)
               .OnDelete(DeleteBehavior.Restrict);
-
-            builder
-                .Entity<TrackedFood>()
-                .HasOne(f => f.Tracker)
-                .WithMany(t => t.TrackedFoods)
-                .HasForeignKey(f => f.TrackerId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder
-             .Entity<TrackedExercise>()
-             .HasOne(e => e.Tracker)
-             .WithMany(t => t.TrackedExercises)
-             .HasForeignKey(e => e.TrackerId)
-             .OnDelete(DeleteBehavior.Restrict);
-
-            builder
-             .Entity<User>()
-             .HasOne(u => u.Tracker)
-             .WithOne(t => t.User)
-             .HasForeignKey<Tracker>(u => u.UserId)
-             .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<User>().ToTable("Users");
-
-            builder.Entity<Tracker>().ToTable("Trackers");
 
             base.OnModelCreating(builder);
         }

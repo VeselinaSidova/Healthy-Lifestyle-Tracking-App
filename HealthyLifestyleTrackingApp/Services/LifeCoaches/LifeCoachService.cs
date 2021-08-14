@@ -11,7 +11,12 @@ namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
         public LifeCoachService(HealthyLifestyleTrackerDbContext data)
             => this.data = data;
 
-        public int Create(string firstName, string lastName, string profilePictureUrl, string about, string userId)
+        public int Become(
+            string firstName, 
+            string lastName, 
+            string profilePictureUrl, 
+            string about, 
+            string userId)
         {
             var lifeCoachData = new LifeCoach
             {

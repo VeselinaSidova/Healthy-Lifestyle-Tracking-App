@@ -75,5 +75,11 @@
             public const double AmountMinValue = 0.1;
             public const double AmountMaxValue = 5000;
         }
+
+        public class TrackedExercise
+        {
+            public const int DurationMinValue = 1;
+            public const int DurationMaxValue = 1000;
+        }
     }
 }

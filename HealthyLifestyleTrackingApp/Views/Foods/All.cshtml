@@ -60,7 +60,7 @@
                     <p class="card-text">@food.Calories kcal\100gr</p>
                     <p class="card-text">Category: @food.FoodCategory</p>
                     <a asp-controller="Foods" asp-action="Details" asp-route-id="@food.Id" cite asp-route-information="@food.Name" class="btn btn-primary">More Details</a>
-                    <a asp-controller="Tracker" asp-action="Track" asp-route-id="@food.Id" cite asp-route-information="@food.Name" class="btn btn-primary">Track</a>
+                    <a asp-controller="Foods" asp-action="Track" asp-route-id="@food.Id" cite asp-route-information="@food.Name" class="btn btn-primary">Track</a>
                 </div>
             </div>
         </div>

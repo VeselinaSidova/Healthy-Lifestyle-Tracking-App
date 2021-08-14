@@ -17,10 +17,6 @@ namespace HealthyLifestyleTrackingApp.Data.Models
 
         public User User { get; set; }
 
-        public int TrackerId { get; set; }
-
-        public Tracker Tracker { get; set; }
-
         public double AmountInGrams { get; set; }
 
         public MealType MealType { get; set; }

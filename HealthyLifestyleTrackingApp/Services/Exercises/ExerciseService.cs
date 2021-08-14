@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HealthyLifestyleTrackingApp.Data;
 using HealthyLifestyleTrackingApp.Data.Enums;
 using HealthyLifestyleTrackingApp.Data.Models;
+using System;
 
 namespace HealthyLifestyleTrackingApp.Services.Exercises
 {
@@ -80,9 +81,31 @@ namespace HealthyLifestyleTrackingApp.Services.Exercises
             return exerciseData.Id;
         }
 
+        public int Track(int exerciseId, string userId, int duration)
+        {
+            var trackedExercise = new TrackedExercise
+            {
+                ExerciseId = exerciseId,
+                UserId = userId,
+                Duration = TimeSpan.FromMinutes(duration),
+                DateTracked = DateTime.UtcNow
+            };
+
+            this.data.TrackedExercises.Add(trackedExercise);
+            this.data.SaveChanges();
+
+            return trackedExercise.Id;
+        }
+
 
         public bool ExerciseCategoryExists(int categoryId)
             => this.data.ExerciseCategories.Any(c => c.Id == categoryId);
+
+        public string GetExerciseName(int exerciseId)
+        {
+            var exercise = this.data.Exercises.Where(f => f.Id == exerciseId).FirstOrDefault();
+            return exercise.Name;
+        }
 
         public IEnumerable<ExerciseCategoryServiceModel> GetExerciseCategories()
          => this.data
@@ -93,5 +116,7 @@ namespace HealthyLifestyleTrackingApp.Services.Exercises
                 Name = c.Name
             })
             .ToList();
+
+        
     }
 }

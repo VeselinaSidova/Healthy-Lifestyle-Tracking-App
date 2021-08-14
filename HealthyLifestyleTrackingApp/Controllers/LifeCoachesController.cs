@@ -36,7 +36,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 return View(lifeCoach);
             }
 
-            this.lifeCoaches.Create(
+            this.lifeCoaches.Become(
                 lifeCoach.FirstName,
                 lifeCoach.LastName,
                 lifeCoach.ProfilePictureUrl,

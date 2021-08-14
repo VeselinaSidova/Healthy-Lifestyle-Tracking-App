@@ -12,10 +12,6 @@ namespace HealthyLifestyleTrackingApp.Data.Models
 
         public User User { get; set; }
 
-        public int TrackerId { get; set; }
-
-        public Tracker Tracker { get; set; }
-
         public int ExerciseId { get; set; }
 
         public Exercise Exercise { get; set; }
