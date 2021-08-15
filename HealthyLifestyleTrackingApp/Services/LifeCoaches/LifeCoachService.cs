@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using HealthyLifestyleTrackingApp.Data;
 using HealthyLifestyleTrackingApp.Data.Models;
+using HealthyLifestyleTrackingApp.Models.LifeCoaches;
 
 namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
 {
@@ -10,6 +11,36 @@ namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
 
         public LifeCoachService(HealthyLifestyleTrackerDbContext data)
             => this.data = data;
+
+        public LifeCoachQueryServiceModel All(int currentPage, int lifeCoachesPerPage)
+        {
+            var lifeCoachesQuery = this.data.LifeCoaches.AsQueryable();
+
+            var totalLifeCoaches = lifeCoachesQuery.Count();
+
+            var lifeCoaches = lifeCoachesQuery
+                .Skip((currentPage - 1) * lifeCoachesPerPage)
+                .Take(lifeCoachesPerPage)
+                .Select(c => new LifeCoachServiceModel
+                {
+                    Id = c.Id,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName,
+                    ProfilePictureUrl = c.ProfilePictureUrl,
+                    About = c.About
+                })
+                .OrderBy(c => c.FirstName)
+                .ThenBy(c => c.LastName)
+                .ToList();
+
+            return new LifeCoachQueryServiceModel
+            {
+                CurrentPage = currentPage,
+                LifeCoachesPerPage = lifeCoachesPerPage,
+                TotalLifeCoaches = totalLifeCoaches,
+                LifeCoaches = lifeCoaches
+            };
+        }
 
         public int Become(
             string firstName, 

@@ -85,25 +85,33 @@ namespace HealthyLifestyleTrackingApp.Controllers
             return RedirectToAction(nameof(All));
         }
 
+        [Authorize]
         public IActionResult Track()
-           => View();
+        {
+            if (!this.User.IsLoggedIn())
+            {
+                return Redirect("~/Identity/Account/Login");
+            }
+
+            return View();
+        }
 
         [HttpPost]
         [Authorize]
         public IActionResult Track(int id, string information, TrackExerciseFormModel exercise)
         {
-            var exerciseName = this.exercises.GetExerciseName(id);
-
-            if (!information.Contains(exerciseName))
-            {
-                return BadRequest();
-            }
-
             var userId = this.User.GetId();
 
             if (userId == null)
             {
                 return Redirect("~/Identity/Account/Login");
+            }
+
+            var exerciseName = this.exercises.GetExerciseName(id);
+
+            if (!information.Contains(exerciseName))
+            {
+                return BadRequest();
             }
 
             if (id == 0)

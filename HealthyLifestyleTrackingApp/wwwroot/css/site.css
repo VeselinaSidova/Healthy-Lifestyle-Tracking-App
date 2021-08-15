@@ -92,3 +92,9 @@ img {
     width: 500px;
     height: 500px;
 }
+
+.card-img {
+    width: 367px;
+    height: 367px;
+    object-fit: cover;
+}

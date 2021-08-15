@@ -19,8 +19,14 @@ namespace HealthyLifestyleTrackingApp.Controllers
             this.lifeCoaches = lifeCoaches;
         }
 
+        [Authorize]
         public IActionResult All([FromQuery] AllArticlesQueryModel query)
         {
+            if (!this.User.IsLoggedIn())
+            {
+                return Redirect("~/Identity/Account/Login");
+            }
+
             var queryResult = this.articles.All(
                  query.SearchTerm,
                  query.CurrentPage,

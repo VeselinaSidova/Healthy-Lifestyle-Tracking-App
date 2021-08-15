@@ -10,5 +10,8 @@ namespace HealthyLifestyleTrackingApp.Infrastructure
 
         public static bool IsAdmin(this ClaimsPrincipal user)
             => user.IsInRole(AdministratorRoleName);
+
+        public static bool IsLoggedIn(this ClaimsPrincipal user)
+            => user.IsLoggedIn();
     }
 }

@@ -1,7 +1,13 @@
-﻿namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
+﻿using HealthyLifestyleTrackingApp.Models.LifeCoaches;
+
+namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
 {
     public interface ILifeCoachService
     {
+        LifeCoachQueryServiceModel All(
+            int currentPage, 
+            int lifeCoachesPerPage);
+
         int Become(
             string firstName,
             string lastName,

@@ -51,15 +51,31 @@ namespace HealthyLifestyleTrackingApp.Controllers
             return View(food); 
         }
 
-        public IActionResult Create() => View(new CreateFoodFormModel
+        [Authorize]
+        public IActionResult Create()
         {
-            FoodCategories = this.foods.GetFoodCategories(),
-            Tags = this.foods.GetFoodTags()
-        });
+            if (!this.User.IsLoggedIn())
+            {
+                return Redirect("~/Identity/Account/Login");
+            }
+
+            return View(new CreateFoodFormModel
+            {
+                FoodCategories = this.foods.GetFoodCategories(),
+                Tags = this.foods.GetFoodTags()
+            });
+        }
+              
 
         [HttpPost]
+        [Authorize]
         public IActionResult Create(CreateFoodFormModel food)
         {
+            if (!this.User.IsLoggedIn())
+            {
+                return Redirect("~/Identity/Account/Login");
+            }
+
             if (!this.foods.FoodCategoryExists(food.FoodCategoryId))
             {
                 this.ModelState.AddModelError(nameof(food.FoodCategoryId), "Food category does not exist.");
@@ -109,13 +125,28 @@ namespace HealthyLifestyleTrackingApp.Controllers
             return RedirectToAction(nameof(Details), new { id = foodId, information = food.Name });
         }
 
+        [Authorize]
         public IActionResult Track()
-           => View();
+        {
+            if (!this.User.IsLoggedIn())
+            {
+                return Redirect("~/Identity/Account/Login");
+            }
+
+            return View();
+        }
 
         [HttpPost]
         [Authorize]
         public IActionResult Track(int id, string information, TrackFoodFormModel food)
         {
+            var userId = this.User.GetId();
+
+            if (userId == null)
+            {
+                return Redirect("~/Identity/Account/Login");
+            }
+
             var foodName = this.foods.GetFoodName(id);
 
             if (!information.Contains(foodName))
@@ -126,13 +157,6 @@ namespace HealthyLifestyleTrackingApp.Controllers
             if (!this.foods.MealTypeExists((int)food.MealType))
             {
                 this.ModelState.AddModelError(nameof(food.MealType), "Meal type does not exist.");
-            }
-
-            var userId = this.User.GetId();
-
-            if (userId == null)
-            {
-                return Redirect("~/Identity/Account/Login");
             }
             
             if (id == 0)

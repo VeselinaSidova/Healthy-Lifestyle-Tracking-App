@@ -15,6 +15,19 @@ namespace HealthyLifestyleTrackingApp.Controllers
             this.lifeCoaches = lifeCoaches;
         }
 
+        public IActionResult All([FromQuery] AllLifeCoachesQueryModel query)
+        {
+            var queryResult = this.lifeCoaches.All(
+                 query.CurrentPage,
+                 AllLifeCoachesQueryModel.LifeCoachesPerPage);
+
+            query.LifeCoaches = queryResult.LifeCoaches;
+            query.TotalLifeCoaches = queryResult.TotalLifeCoaches;
+
+            return View(query);
+        }
+
+
         [Authorize]
         public IActionResult Become() => View();
 
@@ -43,7 +56,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 lifeCoach.About,
                 userId);
 
-            return RedirectToAction("Home", "Index");
+            return Redirect("~/Identity/Account/Manage");
         }
     }
 }

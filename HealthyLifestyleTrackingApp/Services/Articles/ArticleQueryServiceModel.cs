@@ -8,7 +8,7 @@ namespace HealthyLifestyleTrackingApp.Services.Articles
 
         public int ArticlesPerPage { get; init; }
 
-        public int TotalArticles { get; set; }
+        public int TotalArticles { get; init; }
 
         public IEnumerable<ArticleServiceModel> Articles { get; init; }
     }
