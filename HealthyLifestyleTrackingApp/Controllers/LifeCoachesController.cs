@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using HealthyLifestyleTrackingApp.Infrastructure;
 using HealthyLifestyleTrackingApp.Models.LifeCoaches;
 using HealthyLifestyleTrackingApp.Services.LifeCoaches;
+using static HealthyLifestyleTrackingApp.WebConstants;
 
 namespace HealthyLifestyleTrackingApp.Controllers
 {
@@ -55,6 +56,8 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 lifeCoach.ProfilePictureUrl,
                 lifeCoach.About,
                 userId);
+
+            TempData[GlobalMessageKey] = "Thank you for applying to become a Life Coach! Your application will be reviewed.";
 
             return Redirect("~/Identity/Account/Manage");
         }

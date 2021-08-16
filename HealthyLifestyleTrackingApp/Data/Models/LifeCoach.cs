@@ -26,6 +26,8 @@ namespace HealthyLifestyleTrackingApp.Data.Models
         [MaxLength(AboutMaxLength)]
         public string About { get; set; }
 
+        public bool IsApprovedLifeCoach { get; set; }
+
         public IEnumerable<Article> Articles { get; set; } = new List<Article>();
 
         public IEnumerable<Recipe> Recipes { get; set; } = new List<Recipe>();

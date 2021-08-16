@@ -94,7 +94,10 @@ img {
 }
 
 .card-img {
-    width: 367px;
-    height: 367px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 364px;
+    height: 364px;
     object-fit: cover;
 }

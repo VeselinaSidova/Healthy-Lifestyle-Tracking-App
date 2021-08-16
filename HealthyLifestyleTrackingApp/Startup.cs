@@ -82,6 +82,9 @@ namespace HealthyLifestyleTrackingApp
                 .UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllerRoute(
+                        name: "Areas",
+                        pattern: "/{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                    endpoints.MapControllerRoute(
                         name: "Food Details",
                         pattern: "/Food/Details/{id}/{information}",
                         defaults: new { controller = "Foods", action = "Details" });

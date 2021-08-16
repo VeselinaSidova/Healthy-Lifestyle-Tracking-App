@@ -1,8 +1,14 @@
-﻿@model AllFoodsQueryModel
+﻿@using Microsoft.AspNetCore.Identity
+
+@model AllFoodsQueryModel
 
 @{
     ViewBag.Title = "All Food";
 }
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
 
 <form method="get">
     <div class="row mb-12">
@@ -48,24 +54,38 @@
 </form>
 
 
-<div class="row mb-5">
-    @foreach (var food in Model.Foods)
-    {
-        <div class="col-md-3">
-            <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="@food.ImageUrl" alt="@food.Name">
-                <div class="card-body">
-                    <h5 class="card-title">@food.Name</h5>
-                    <p class="card-text">@(food.Brand != null ? food.Brand : string.Empty)</p>
-                    <p class="card-text">@food.Calories kcal\100gr</p>
-                    <p class="card-text">Category: @food.FoodCategory</p>
-                    <a asp-controller="Foods" asp-action="Details" asp-route-id="@food.Id" cite asp-route-information="@food.Name" class="btn btn-primary">More Details</a>
-                    <a asp-controller="Foods" asp-action="Track" asp-route-id="@food.Id" cite asp-route-information="@food.Name" class="btn btn-primary">Track</a>
-                </div>
-            </div>
-        </div>
-    }
-</div>
+@if (SignInManager.IsSignedIn(User))
+{
+    var useId = User.GetId();
+    var userIsAdmin = User.IsAdmin();
+
+    <div class="row mb-5">
+       @foreach (var food in Model.Foods)
+       {
+           <div class="col-md-3">
+               <div class="card" style="width: 18rem;">
+                   <img class="card-img-top" src="@food.ImageUrl" alt="@food.Name">
+                   <div class="card-body">
+                       <h5 class="card-title">@food.Name</h5>
+                       <p class="card-text">@(food.Brand != null ? food.Brand : string.Empty)</p>
+                       <p class="card-text">@food.Calories kcal\100gr</p>
+                       <p class="card-text">Category: @food.FoodCategory</p>
+                       <a asp-controller="Foods" asp-action="Details" asp-route-id="@food.Id" cite asp-route-information="@food.Name" class="btn btn-primary">More Details</a>
+                       @if (!userIsAdmin)
+                       {
+                           <a asp-controller="Foods" asp-action="Track" asp-route-id="@food.Id" cite asp-route-information="@food.Name" class="btn btn-primary">Track</a>
+                       }
+                       else if(userIsAdmin)
+                       {
+                           <a asp-controller="Foods" asp-action="Edit" asp-route-id="@food.Id" cite asp-route-information="@food.Name" class="btn btn-warning">Edit</a>
+                           <a asp-controller="Foods" asp-action="Delete" asp-route-id="@food.Id" cite asp-route-information="@food.Name" class="mt-1 btn btn-danger">Delete</a>
+                       }
+                   </div>
+               </div>
+           </div>
+       }
+    </div>
+}
 
 @if (!Model.Foods.Any())
 {

@@ -1,0 +1,36 @@
+﻿@model IEnumerable<LifeCoachServiceModel>
+
+@{
+    ViewBag.Title = "Life Coaches Administration";
+}
+
+<h1>All Life Coaches</h1>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">About</th>
+            <th scope="col">Approved</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var lifeCoach in Model)
+        {
+            <tr>
+                <td scope="col">@lifeCoach.Id</td>
+                <td scope="col">@lifeCoach.FirstName</td>
+                <td scope="col">@lifeCoach.LastName</td>
+                <td scope="col">@lifeCoach.About</td>
+                <td scope="col">@(lifeCoach.IsApprovedLifeCoach ? "Yes" : "No")</td>
+                <td scope="col">
+                    <a asp-area="Admin" asp-controller="LifeCoaches" asp-action="ApproveForLifeCoach" asp-route-id="@lifeCoach.Id" class="btn btn-info">@(lifeCoach.IsApprovedLifeCoach ? "Disable" : "Approve")</a>
+                    <a asp-area="Admin" asp-controller="LifeCoaches" asp-action="DeleteApplication" asp-route-id="@lifeCoach.Id" class="mt-2 btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

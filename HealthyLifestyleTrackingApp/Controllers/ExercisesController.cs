@@ -80,19 +80,12 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 exercise.ImageUrl,
                 exercise.ExerciseCategoryId);
 
-            TempData[GlobalMessageKey] = "Exercise was added and is awaiting approval!";
-
             return RedirectToAction(nameof(All));
         }
 
         [Authorize]
         public IActionResult Track()
         {
-            if (!this.User.IsLoggedIn())
-            {
-                return Redirect("~/Identity/Account/Login");
-            }
-
             return View();
         }
 
@@ -128,6 +121,8 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 id,
                 userId,
                 exercise.Duration);
+
+            TempData[GlobalMessageKey] = "Exercise was added to tracker.";
 
             return RedirectToAction(nameof(All));
         }

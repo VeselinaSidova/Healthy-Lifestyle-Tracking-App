@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
+﻿namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
 {
     public class LifeCoachServiceModel
     {
@@ -16,5 +11,7 @@ namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
         public string ProfilePictureUrl { get; init; }
 
         public string About { get; init; }
+
+        public bool IsApprovedLifeCoach { get; init; }
     }
 }

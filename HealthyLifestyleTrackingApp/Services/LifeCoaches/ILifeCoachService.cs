@@ -5,8 +5,9 @@ namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
     public interface ILifeCoachService
     {
         LifeCoachQueryServiceModel All(
-            int currentPage, 
-            int lifeCoachesPerPage);
+            int currentPage = 1,
+            int lifeCoachesPerPage = 10,
+            bool approvedOnly = true);
 
         int Become(
             string firstName,
@@ -14,6 +15,10 @@ namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
             string profilePictureUrl,
             string about,
             string userId);
+
+        void ApproveForLifeCoach(int id);
+
+        void DeleteApplication(int id);
 
         public bool IsLifeCoach(string userId);
 

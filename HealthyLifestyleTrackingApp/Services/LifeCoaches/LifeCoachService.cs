@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using HealthyLifestyleTrackingApp.Data;
 using HealthyLifestyleTrackingApp.Data.Models;
-using HealthyLifestyleTrackingApp.Models.LifeCoaches;
 
 namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
 {
@@ -12,13 +11,19 @@ namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
         public LifeCoachService(HealthyLifestyleTrackerDbContext data)
             => this.data = data;
 
-        public LifeCoachQueryServiceModel All(int currentPage, int lifeCoachesPerPage)
+        public LifeCoachQueryServiceModel All(
+            int currentPage = 1,
+            int lifeCoachesPerPage = 10,
+            bool approvedOnly = true)
         {
-            var lifeCoachesQuery = this.data.LifeCoaches.AsQueryable();
+            var lifeCoachesQuery = this.data.LifeCoaches
+                .Where(c => approvedOnly ? c.IsApprovedLifeCoach : true);
 
             var totalLifeCoaches = lifeCoachesQuery.Count();
 
             var lifeCoaches = lifeCoachesQuery
+                .OrderBy(c => c.FirstName)
+                .ThenBy(c => c.LastName)
                 .Skip((currentPage - 1) * lifeCoachesPerPage)
                 .Take(lifeCoachesPerPage)
                 .Select(c => new LifeCoachServiceModel
@@ -27,10 +32,9 @@ namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
                     FirstName = c.FirstName,
                     LastName = c.LastName,
                     ProfilePictureUrl = c.ProfilePictureUrl,
-                    About = c.About
+                    About = c.About,
+                    IsApprovedLifeCoach = c.IsApprovedLifeCoach
                 })
-                .OrderBy(c => c.FirstName)
-                .ThenBy(c => c.LastName)
                 .ToList();
 
             return new LifeCoachQueryServiceModel
@@ -55,13 +59,32 @@ namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
                 LastName = lastName,
                 ProfilePictureUrl = profilePictureUrl,
                 About = about,
-                UserId = userId
+                UserId = userId,
+                IsApprovedLifeCoach = false
             };
 
             this.data.LifeCoaches.Add(lifeCoachData);
             this.data.SaveChanges();
 
             return lifeCoachData.Id;
+        }
+
+        public void ApproveForLifeCoach(int id)
+        {
+            var lifeCoach = this.data.LifeCoaches.Where(c => c.Id == id).FirstOrDefault();
+
+            lifeCoach.IsApprovedLifeCoach = !lifeCoach.IsApprovedLifeCoach;
+
+            this.data.SaveChanges();
+        }
+
+        public void DeleteApplication(int id)
+        {
+            var lifeCoach = this.data.LifeCoaches.Where(c => c.Id == id).FirstOrDefault();
+
+            this.data.Remove(lifeCoach);
+
+            this.data.SaveChanges();
         }
 
         public int GetIdByUser(string userId)
@@ -74,6 +97,7 @@ namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
         public bool IsLifeCoach(string userId)
             => this.data
             .LifeCoaches
+            .Where(c => c.IsApprovedLifeCoach == true)
             .Any(c => c.UserId == userId);
     }
 }

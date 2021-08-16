@@ -22,11 +22,6 @@ namespace HealthyLifestyleTrackingApp.Controllers
         [Authorize]
         public IActionResult All([FromQuery] AllArticlesQueryModel query)
         {
-            if (!this.User.IsLoggedIn())
-            {
-                return Redirect("~/Identity/Account/Login");
-            }
-
             var queryResult = this.articles.All(
                  query.SearchTerm,
                  query.CurrentPage,
@@ -53,7 +48,6 @@ namespace HealthyLifestyleTrackingApp.Controllers
             {
                 return RedirectToAction(nameof(LifeCoachesController.Become), "LifeCoaches");
             }
-
             return View();
         }
 
@@ -80,7 +74,9 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 article.ImageUrl,
                 lifeCoachId);
 
-            return RedirectToAction(nameof(All));
+            TempData[GlobalMessageKey] = "Article was successfully created.";
+
+            return RedirectToAction(nameof(Mine));
         }
 
         [Authorize]
@@ -136,7 +132,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
                article.Content,
                article.ImageUrl);
 
-            TempData[GlobalMessageKey] = "Successfully added added article!";
+            TempData[GlobalMessageKey] = "Article was successfully edited.";
 
             return RedirectToAction(nameof(Mine));
         }

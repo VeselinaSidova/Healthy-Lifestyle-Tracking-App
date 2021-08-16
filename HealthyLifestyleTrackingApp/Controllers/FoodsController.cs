@@ -54,11 +54,6 @@ namespace HealthyLifestyleTrackingApp.Controllers
         [Authorize]
         public IActionResult Create()
         {
-            if (!this.User.IsLoggedIn())
-            {
-                return Redirect("~/Identity/Account/Login");
-            }
-
             return View(new CreateFoodFormModel
             {
                 FoodCategories = this.foods.GetFoodCategories(),
@@ -71,11 +66,6 @@ namespace HealthyLifestyleTrackingApp.Controllers
         [Authorize]
         public IActionResult Create(CreateFoodFormModel food)
         {
-            if (!this.User.IsLoggedIn())
-            {
-                return Redirect("~/Identity/Account/Login");
-            }
-
             if (!this.foods.FoodCategoryExists(food.FoodCategoryId))
             {
                 this.ModelState.AddModelError(nameof(food.FoodCategoryId), "Food category does not exist.");
@@ -120,7 +110,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 food.FoodCategoryId,
                 food.FoodTags);
 
-            TempData[GlobalMessageKey] = "Successfully created food!";
+            TempData[GlobalMessageKey] = "Food was successfully created.";
 
             return RedirectToAction(nameof(Details), new { id = foodId, information = food.Name });
         }
@@ -128,12 +118,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
         [Authorize]
         public IActionResult Track()
         {
-            if (!this.User.IsLoggedIn())
-            {
-                return Redirect("~/Identity/Account/Login");
-            }
-
-            return View();
+           return View();
         }
 
         [HttpPost]
@@ -175,6 +160,8 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 userId,
                 food.AmountInGrams,
                 food.MealType);
+
+            TempData[GlobalMessageKey] = "Food was added to tracker.";
 
             return RedirectToAction(nameof(All));
         }
