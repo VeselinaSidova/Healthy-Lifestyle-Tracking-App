@@ -123,7 +123,7 @@ namespace HealthyLifestyleTrackingApp.Services.Exercises
                 ExerciseId = exerciseId,
                 UserId = userId,
                 Duration = TimeSpan.FromMinutes(duration),
-                DateTracked = DateTime.UtcNow
+                DateTracked = DateTime.Now
             };
 
             this.data.TrackedExercises.Add(trackedExercise);

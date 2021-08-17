@@ -4,7 +4,6 @@ using HealthyLifestyleTrackingApp.Infrastructure;
 using HealthyLifestyleTrackingApp.Models.Recipes;
 using HealthyLifestyleTrackingApp.Services.LifeCoaches;
 using HealthyLifestyleTrackingApp.Services.Recipes;
-
 using static HealthyLifestyleTrackingApp.WebConstants;
 
 namespace HealthyLifestyleTrackingApp.Controllers

@@ -67,7 +67,7 @@ namespace HealthyLifestyleTrackingApp.Services.Articles
             var articleData = new Article
             {
                 Title = title,
-                CreatedOn = DateTime.UtcNow,
+                CreatedOn = DateTime.Now,
                 Content = content,
                 ImageUrl = imageUrl,
                 LifeCoachId = lifeCoachId

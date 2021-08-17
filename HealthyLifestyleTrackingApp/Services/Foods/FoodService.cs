@@ -209,7 +209,7 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
                 UserId = userId,
                 AmountInGrams = amountInGrams,
                 MealType = mealType,
-                DateTracked = DateTime.UtcNow
+                DateTracked = DateTime.Now
             };
 
             this.data.TrackedFoods.Add(trackedFood);

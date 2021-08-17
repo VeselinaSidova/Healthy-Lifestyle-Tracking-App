@@ -30,7 +30,7 @@
                         @if (!User.IsAdmin())
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Tracker" asp-action="ViewTracked">Tracker</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Tracker" asp-action="SelectDate">Tracker</a>
                             </li>
                         }
                         <li class="nav-item dropdown">
@@ -103,7 +103,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; @DateTime.UtcNow.Year - Healthy Lifestyle Tracker
+            &copy; @DateTime.Now.Year - Healthy Lifestyle Tracker
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

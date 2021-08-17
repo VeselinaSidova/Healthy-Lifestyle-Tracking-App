@@ -1,35 +1,141 @@
-﻿@model DatePickerModel
+﻿@model AllTrackedQueryModel
 
-
-@using (Html.BeginForm())
-{
-    <br />
-    @Html.EditorFor(Model => Model.Date, new { htmlAttributes = new { @class = "datepicker", placeholder = "Select Date" } })
+@{ 
+    var eaten = 0.0;
+    var burned = 0.0;
+    foreach (var food in Model.Foods)
+    {
+        eaten += food.Calories;
+    }
+    foreach (var exercise in Model.Exercises)
+    {
+        burned += exercise.Calories;
+    }
 }
 
+<div class="jumbotron mx-auto">
+    <div class="row">
+        <h2 class="col-md-6 text-center">Eaten: @(Math.Ceiling(eaten)) kcal</h2>
+        <h2 class="col-md-5 text-center">Burned: @(Math.Ceiling(burned)) kcal</h2>
+    </div>
+</div>
+
+<div class="container">
+    <h2 class="text-center">Breakfast</h2>
+    <div class="row">
+       @foreach (var food in Model.Foods.Where(f => f.MealType.ToString() == "Breakfast"))
+       {
+        <div class="mx-auto">
+            <div class="col-md-3">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="@food.ImageUrl" alt="@food.FoodName">
+                    <div class="card-body">
+                        <h5 class="card-title">@food.FoodName</h5>
+                        <p class="card-text">@food.AmountInGrams grams</p>
+                        <p class="card-text">@Math.Ceiling(food.Calories) kcal</p>
+                        <a asp-controller="Foods" asp-action="Details" asp-route-id="@food.FoodId" cite asp-route-information="@food.FoodName" class="btn btn-primary">More Details</a>
+                        <a asp-controller="Tracker" asp-action="DeleteTrackedFood" asp-route-id="@food.Id" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>       
+       }
+    </div>
+</div>
+
+<div class="container">
+    <h2 class="text-center">Lunch</h2>
+    <div class="row">
+        @foreach (var food in Model.Foods.Where(f => f.MealType.ToString() == "Lunch"))
+        {
+            <div class="mx-auto">
+                <div class="col-md-3">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="@food.ImageUrl" alt="@food.FoodName">
+                        <div class="card-body">
+                            <h5 class="card-title">@food.FoodName</h5>
+                            <p class="card-text">@food.AmountInGrams grams</p>
+                            <p class="card-text">@Math.Ceiling(food.Calories) kcal</p>
+                            <a asp-controller="Foods" asp-action="Details" asp-route-id="@food.FoodId" cite asp-route-information="@food.FoodName" class="btn btn-primary">More Details</a>
+                            <a asp-controller="Tracker" asp-action="DeleteTrackedFood" asp-route-id="@food.Id" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="container">
+    <h2 class="text-center">Dinner</h2>
+    <div class="row">
+        @foreach (var food in Model.Foods.Where(f => f.MealType.ToString() == "Dinner"))
+        {
+            <div class="mx-auto">
+                <div class="col-md-3">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="@food.ImageUrl" alt="@food.FoodName">
+                        <div class="card-body">
+                            <h5 class="card-title">@food.FoodName</h5>
+                            <p class="card-text">@food.AmountInGrams grams</p>
+                            <p class="card-text">@Math.Ceiling(food.Calories) kcal</p>
+                            <a asp-controller="Foods" asp-action="Details" asp-route-id="@food.FoodId" cite asp-route-information="@food.FoodName" class="btn btn-primary">More Details</a>
+                            <a asp-controller="Tracker" asp-action="DeleteTrackedFood" asp-route-id="@food.Id" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="container">
+    <h2 class="text-center">Snacks</h2>
+    <div class="row">
+        @foreach (var food in Model.Foods.Where(f => f.MealType.ToString() == "Snacks"))
+        {
+            <div class="mx-auto">
+                <div class="col-md-3">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="@food.ImageUrl" alt="@food.FoodName">
+                        <div class="card-body">
+                            <h5 class="card-title">@food.FoodName</h5>
+                            <p class="card-text">@food.AmountInGrams grams</p>
+                            <p class="card-text">@Math.Ceiling(food.Calories) kcal</p>
+                            <a asp-controller="Foods" asp-action="Details" asp-route-id="@food.FoodId" cite asp-route-information="@food.FoodName" class="btn btn-primary">More Details</a>
+                            <a asp-controller="Tracker" asp-action="DeleteTrackedFood" asp-route-id="@food.Id" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+<div class="container">
+    <h2 class="text-center">Exercise</h2>
+    <div class="row">
+        @foreach (var exercise in Model.Exercises)
+        {
+            <div class="mx-auto">
+                <div class="col-md-3">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="@exercise.ImageUrl" alt="@exercise.ExerciseName">
+                        <div class="card-body">
+                            <h5 class="card-title">@exercise.ExerciseName</h5>
+                            <p class="card-text">@exercise.Duration mins</p>
+                            <p class="card-text">@Math.Ceiling(exercise.Calories) kcal</p>
+                            <a asp-controller="Tracker" asp-action="DeleteTrackedExercise" asp-route-id="@exercise.Id" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
 
 
 
 
 
-
-
-
-
-<link href="~/lib/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet" />
-<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-
-      @section scripts{
-    <script src="~/lib/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
-    <script>
-        $(function () {
-            $(".datepicker").datepicker({
-                dateFormat: "dd MM yy",
-                minDate: new Date(2021, 0, 1),
-                maxDate: new Date(@DateTime.UtcNow.Year + 1, 0, 1),
-                showOn: "both",
-                buttonText: "<i class='fa fa-calendar' aria-hidden='true'></i>"
-            });
-        });
-    </script>
-}

@@ -15,6 +15,7 @@ using HealthyLifestyleTrackingApp.Services.Foods;
 using HealthyLifestyleTrackingApp.Services.LifeCoaches;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using HealthyLifestyleTrackingApp.Services.Recipes;
+using HealthyLifestyleTrackingApp.Services.Tracker;
 
 namespace HealthyLifestyleTrackingApp
 {
@@ -58,6 +59,7 @@ namespace HealthyLifestyleTrackingApp
             services.AddTransient<IArticleService, ArticleService>();
             services.AddTransient<IRecipeService, RecipeService>();
             services.AddTransient<ILifeCoachService, LifeCoachService>();
+            services.AddTransient<ITrackerService, TrackerService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

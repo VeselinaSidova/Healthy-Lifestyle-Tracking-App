@@ -1,0 +1,39 @@
+﻿@model DatePickerModel
+
+@{
+    ViewBag.Title = "Select Date";
+}
+
+<div class="row">
+<div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+    <h2 class="heading-margin text-center">@ViewBag.Title</h2>
+    <form method="post">
+        <div class="form-group text-center">
+            <input asp-for="Date" class="datepicker" placeholder="Select Date">
+        </div>
+        <div class="text-center">
+            <input class="btn btn-primary" type="submit" value="Select" />
+        </div>
+    </form>
+</div>
+</div>
+
+
+
+<link href="~/lib/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet" />
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+@section scripts{
+    <script src="~/lib/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+            $('.datepicker').datepicker({
+                dateFormat: "dd MM yy",
+                minDate: new Date(2021, 0, 1),
+                maxDate: new Date(@DateTime.UtcNow.Year + 1, 0, 1),
+                showOn: "both",
+                buttonText: "<i class='fa fa-calendar' aria-hidden='true'></i>",
+            });
+        });
+    </script>
+}
