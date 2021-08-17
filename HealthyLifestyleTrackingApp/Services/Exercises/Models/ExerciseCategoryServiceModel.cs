@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace HealthyLifestyleTrackingApp.Services.Exercises
+﻿namespace HealthyLifestyleTrackingApp.Services.Exercises.Models
 {
     public class ExerciseCategoryServiceModel
     {

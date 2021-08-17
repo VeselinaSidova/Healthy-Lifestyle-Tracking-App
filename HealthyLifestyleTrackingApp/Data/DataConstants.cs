@@ -38,6 +38,14 @@
         {
             public const int NameMinLength = 2;
             public const int NameMaxLength = 50;
+            public const int ServingsCountMinValue = 1;
+            public const int ServingsCountMaxValue = 20;
+            public const int CaloriesPerServingMinValue = 0;
+            public const int CaloriesPerServingMaxValue = 10000;
+            public const int ReadyInMinValue = 1;
+            public const int ReadyInMaxValue = 1000;
+            public const int InstructionsMinLength = 50;
+            public const int InstructionsMaxLength = 10000;
         }
 
         public class Article
@@ -62,12 +70,6 @@
             public const int NameMaxLength = 30;
             public const int PasswordMinLength = 6;
             public const int PasswordMaxLength = 100;
-        }
-
-        public class SuperUser
-        {
-            public const int NameMinLength = 1;
-            public const int NameMaxLength = 30;
         }
 
         public class TrackedFood

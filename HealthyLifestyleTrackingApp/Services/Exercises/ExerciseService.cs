@@ -1,9 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using HealthyLifestyleTrackingApp.Data;
 using HealthyLifestyleTrackingApp.Data.Enums;
 using HealthyLifestyleTrackingApp.Data.Models;
-using System;
+using HealthyLifestyleTrackingApp.Services.Exercises.Models;
 
 namespace HealthyLifestyleTrackingApp.Services.Exercises
 {
@@ -65,6 +66,21 @@ namespace HealthyLifestyleTrackingApp.Services.Exercises
             };
         }
 
+        public ExerciseDetailsServiceModel Details(int exerciseId)
+           => this.data
+               .Exercises
+               .Where(a => a.Id == exerciseId)
+               .Select(a => new ExerciseDetailsServiceModel
+               {
+                   Id = a.Id,
+                   Name = a.Name,
+                   CaloriesPerHour = a.CaloriesPerHour,
+                   ImageUrl = a.ImageUrl,
+                   ExerciseCategoryId = a.ExerciseCategoryId,
+                   ExerciseCategory = a.ExerciseCategory.ToString()
+               })
+               .FirstOrDefault();
+
         public int Create(string name, int caloriesPerHour, string imageUrl, int exerciseCategoryId)
         {
             var exerciseData = new Exercise
@@ -81,6 +97,25 @@ namespace HealthyLifestyleTrackingApp.Services.Exercises
             return exerciseData.Id;
         }
 
+        public bool Edit(int exerciseId, string name, int caloriesPerHour, string imageUrl, int exerciseCategoryId)
+        {
+            var exerciseData = this.data.Exercises.Find(exerciseId);
+
+            if (exerciseData == null)
+            {
+                return false;
+            }
+
+            exerciseData.Name = name;
+            exerciseData.CaloriesPerHour = caloriesPerHour;
+            exerciseData.ImageUrl = imageUrl;
+            exerciseData.ExerciseCategoryId = exerciseCategoryId;
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
         public int Track(int exerciseId, string userId, int duration)
         {
             var trackedExercise = new TrackedExercise
@@ -95,6 +130,15 @@ namespace HealthyLifestyleTrackingApp.Services.Exercises
             this.data.SaveChanges();
 
             return trackedExercise.Id;
+        }
+
+        public void Delete(int id)
+        {
+            var exercise = this.data.Exercises.Where(c => c.Id == id).FirstOrDefault();
+
+            this.data.Remove(exercise);
+
+            this.data.SaveChanges();
         }
 
 

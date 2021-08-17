@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using HealthyLifestyleTrackingApp.Data.Enums;
+using HealthyLifestyleTrackingApp.Services.Exercises.Models;
 
 namespace HealthyLifestyleTrackingApp.Services.Exercises
 {
@@ -12,7 +13,16 @@ namespace HealthyLifestyleTrackingApp.Services.Exercises
             int currentPage,
             int exercisesPerPage);
 
+        ExerciseDetailsServiceModel Details(int exerciseId);
+
         int Create(string name, 
+            int caloriesPerHour,
+            string imageUrl,
+            int exerciseCategoryId);
+
+        bool Edit(
+            int exerciseId,
+            string name,
             int caloriesPerHour,
             string imageUrl,
             int exerciseCategoryId);
@@ -21,6 +31,8 @@ namespace HealthyLifestyleTrackingApp.Services.Exercises
             int exerciseId,
             string userId,
             int duration);
+
+        void Delete(int id);
 
         IEnumerable<ExerciseCategoryServiceModel> GetExerciseCategories();
 

@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using HealthyLifestyleTrackingApp.Data.Enums;
-using HealthyLifestyleTrackingApp.Service.Foods;
+using HealthyLifestyleTrackingApp.Services.Foods.Models;
 using static HealthyLifestyleTrackingApp.Data.DataConstants.Food;
 
 namespace HealthyLifestyleTrackingApp.Models.Foods
 {
-    public class CreateFoodFormModel : IValidatableObject
+    public class FoodFormModel : IValidatableObject
     {
         private const int NutritionalValueSum = 100;
 
@@ -57,6 +57,7 @@ namespace HealthyLifestyleTrackingApp.Models.Foods
         public IEnumerable<FoodTagServiceModel> Tags { get; set; }
 
         public ICollection<int> FoodTags { get; set; }
+
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

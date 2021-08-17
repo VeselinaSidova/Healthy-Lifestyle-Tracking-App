@@ -1,4 +1,4 @@
-﻿namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
+﻿namespace HealthyLifestyleTrackingApp.Services.LifeCoaches.Models
 {
     public class LifeCoachServiceModel
     {

@@ -1,0 +1,42 @@
+﻿@model RecipeFormModel
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <h2 class="heading-margin text-center">@ViewBag.Title</h2>
+
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" placeholder="Add recipe name">
+                <span asp-validation-for="Name" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageUrl"></label>
+                <input asp-for="ImageUrl" class="form-control" placeholder="Add image URL">
+                <span asp-validation-for="ImageUrl" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ServingsCount"></label>
+                <input asp-for="ServingsCount" class="form-control" placeholder="Add number of servings">
+                <span asp-validation-for="ServingsCount" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CaloriesPerServing"></label>
+                <input asp-for="CaloriesPerServing" class="form-control" placeholder="Add kcal per serving">
+                <span asp-validation-for="CaloriesPerServing" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReadyIn"></label>
+                <input asp-for="ReadyIn" class="form-control" placeholder="Add minutes needed to prepare">
+                <span asp-validation-for="ReadyIn" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Instructions"></label>
+                <textarea asp-for="Instructions" class="form-control" placeholder="Add recipe instructions" rows="10"></textarea>
+                <span asp-validation-for="Instructions" class="small text-danger"></span>
+            </div>
+            <input class="btn btn-primary mt-3" type="submit" value="Save" />
+        </form>
+    </div>
+</div>
+

@@ -1,4 +1,4 @@
-﻿namespace HealthyLifestyleTrackingApp.Services.Articles
+﻿namespace HealthyLifestyleTrackingApp.Services.Articles.Models
 {
     public class ArticleDetailsServiceModel : ArticleServiceModel
     {

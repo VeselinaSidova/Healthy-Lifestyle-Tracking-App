@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
+namespace HealthyLifestyleTrackingApp.Services.LifeCoaches.Models
 {
     public class LifeCoachQueryServiceModel
     {

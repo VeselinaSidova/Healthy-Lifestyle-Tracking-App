@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using HealthyLifestyleTrackingApp.Services.LifeCoaches;
+using HealthyLifestyleTrackingApp.Services.LifeCoaches.Models;
 
 namespace HealthyLifestyleTrackingApp.Models.LifeCoaches
 {

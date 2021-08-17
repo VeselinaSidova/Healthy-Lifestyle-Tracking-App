@@ -1,7 +1,7 @@
 ﻿using HealthyLifestyleTrackingApp.Data.Enums;
 using System.Collections.Generic;
 
-namespace HealthyLifestyleTrackingApp.Services.Foods
+namespace HealthyLifestyleTrackingApp.Services.Foods.Models
 {
     public class FoodDetailsServiceModel : FoodServiceModel
     {
@@ -15,6 +15,10 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
 
         public double Fat { get; init; }
 
+        public int FoodCategoryId { get; init; }
+
         public IEnumerable<string> Tags { get; init; }
+
+        public ICollection<int> FoodTags { get; init; }
     }
 }

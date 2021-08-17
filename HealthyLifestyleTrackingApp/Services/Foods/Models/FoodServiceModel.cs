@@ -1,4 +1,4 @@
-﻿namespace HealthyLifestyleTrackingApp.Services.Foods
+﻿namespace HealthyLifestyleTrackingApp.Services.Foods.Models
 {
     public class FoodServiceModel
     {

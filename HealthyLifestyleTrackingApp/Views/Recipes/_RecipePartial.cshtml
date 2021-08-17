@@ -1,0 +1,25 @@
+﻿@model IEnumerable<RecipeServiceModel>
+
+<div class="row">
+    @foreach (var recipe in Model)
+    {
+        <div class="col-md-3">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="@recipe.ImageUrl" alt="@recipe.Name">
+                <div class="card-body">
+                    <h5 class="card-title">@recipe.Name</h5>
+                    <p class="card-text">Added by: @recipe.Author</p>
+                    <p class="card-text">@recipe.CaloriesPerServing kcal\serving</p>
+                    <p class="card-text">@recipe.ServingsCount servings</p>
+                    <p class="card-text">Ready In: @recipe.ReadyIn minutes</p>
+                    <a asp-controller="Recipes" asp-action="Read" asp-route-id="@recipe.Id" asp-route-information="@recipe.Name" class="btn btn-primary">Read</a>
+                    @if (ViewBag.AllowArticleEdit == true || User.IsAdmin())
+                    {
+                        <a asp-controller="Recipes" asp-action="Edit" asp-route-id="@recipe.Id" asp-route-information="@recipe.Name" class="btn btn-warning">Edit</a>
+                        <a asp-controller="Recipes" asp-action="Delete" asp-route-id="@recipe.Id" asp-route-information="@recipe.Name" class="btn btn-danger">Delete</a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

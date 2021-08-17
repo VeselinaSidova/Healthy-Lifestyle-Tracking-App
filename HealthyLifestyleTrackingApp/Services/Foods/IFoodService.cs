@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using HealthyLifestyleTrackingApp.Data.Enums;
-using HealthyLifestyleTrackingApp.Service.Foods;
+using HealthyLifestyleTrackingApp.Services.Foods.Models;
 
 namespace HealthyLifestyleTrackingApp.Services.Foods
 {
@@ -36,6 +35,21 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
                 int foodCategoryId,
                 ICollection<int> foodTags);
 
+        public bool Edit(
+           int foodId,
+           string name,
+           string brand,
+           double standardServingAmount,
+           StandardServingType standardServingType,
+           string imageUrl,
+           int calories,
+           double protein,
+           double carbohydrates,
+           double fat,
+           int foodCategoryId,
+           ICollection<int> foodTags);
+
+        void Delete(int id);
 
         IEnumerable<FoodCategoryServiceModel> GetFoodCategories();
 

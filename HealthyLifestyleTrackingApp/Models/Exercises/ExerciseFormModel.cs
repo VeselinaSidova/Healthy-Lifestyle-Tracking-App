@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using HealthyLifestyleTrackingApp.Services.Exercises;
+using HealthyLifestyleTrackingApp.Services.Exercises.Models;
 using static HealthyLifestyleTrackingApp.Data.DataConstants.Exercise;
 
 namespace HealthyLifestyleTrackingApp.Models.Exercises
 {
-    public class CreateExerciseFormModel
+    public class ExerciseFormModel
     {
         [Required]
         [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage = "Exercise name should be between 2 and 40 characters long.")]

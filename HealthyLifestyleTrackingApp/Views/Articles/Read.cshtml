@@ -1,0 +1,23 @@
+﻿@model ArticleDetailsServiceModel
+
+    <div>
+        <div class="col-md-6 mt-5 offset-3 text-center">
+            <h2>@Model.Title</h2>
+        </div>
+        <div class="col-md-6 offset-3 text-center">
+            <img src="@Model.ImageUrl" class="img-fluid mt-3 mb-3 align-center" alt="@Model.Title">
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td><strong>Author: @Model.Author</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Created On: @Model.CreatedOn.ToString("dd/MM/yyyy")</td>
+                    </tr>
+                    <tr>
+                        <td style="white-space: pre-line">@Model.Content</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>

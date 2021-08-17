@@ -1,0 +1,26 @@
+﻿@model RecipeDetailsServiceModel
+
+<div>
+    <div class="col-md-6 mt-5 offset-3 text-center">
+        <h2>@Model.Name</h2>
+    </div>
+    <div class="col-md-6 offset-3 text-center">
+        <img src="@Model.ImageUrl" class="img-fluid mt-3 mb-3 align-center" alt="@Model.Name">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td><strong>Author: @Model.Author</strong></td>
+                </tr>
+                <tr>
+                    <td>@Model.CaloriesPerServing kcal/serving</td>
+                </tr>
+                <tr>
+                    <td>@Model.ServingsCount servings</td>
+                </tr>
+                <tr>
+                    <td style="white-space: pre-line">@Model.Instructions</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

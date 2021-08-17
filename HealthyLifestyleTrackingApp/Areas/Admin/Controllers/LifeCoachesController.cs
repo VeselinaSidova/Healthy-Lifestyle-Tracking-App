@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using HealthyLifestyleTrackingApp.Services.LifeCoaches;
 using static HealthyLifestyleTrackingApp.Areas.Admin.AdminConstants;
+using static HealthyLifestyleTrackingApp.WebConstants;
 
 namespace HealthyLifestyleTrackingApp.Areas.Admin.Controllers
 {
@@ -24,12 +25,16 @@ namespace HealthyLifestyleTrackingApp.Areas.Admin.Controllers
         {
             this.lifeCoaches.ApproveForLifeCoach(id);
 
+            TempData[GlobalMessageKey] = "Life Coach application was approved. Please inform user.";
+
             return RedirectToAction(nameof(All));
         }
         
         public IActionResult DeleteApplication(int id)
         {
             this.lifeCoaches.DeleteApplication(id);
+
+            TempData[GlobalMessageKey] = "Life Coach application was deleted. Please inform user.";
 
             return RedirectToAction(nameof(All));
         }

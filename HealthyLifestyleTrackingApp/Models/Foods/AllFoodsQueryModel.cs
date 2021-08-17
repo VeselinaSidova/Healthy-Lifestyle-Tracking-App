@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using HealthyLifestyleTrackingApp.Data.Enums;
-using HealthyLifestyleTrackingApp.Services.Foods;
+using HealthyLifestyleTrackingApp.Services.Foods.Models;
 
 namespace HealthyLifestyleTrackingApp.Models.Foods
 {

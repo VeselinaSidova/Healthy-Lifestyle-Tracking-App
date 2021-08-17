@@ -1,4 +1,4 @@
-﻿using HealthyLifestyleTrackingApp.Models.LifeCoaches;
+﻿using HealthyLifestyleTrackingApp.Services.LifeCoaches.Models;
 
 namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
 {

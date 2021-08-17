@@ -42,6 +42,19 @@ namespace HealthyLifestyleTrackingApp.Controllers
         }
 
         [Authorize]
+        public IActionResult Read(int id, string information)
+        {
+            var article = this.articles.Details(id);
+
+            if (!information.Contains(article.Title))
+            {
+                return BadRequest();
+            }
+
+            return View(article);
+        }
+
+        [Authorize]
         public IActionResult Create()
         {
             if (!this.lifeCoaches.IsLifeCoach(this.User.GetId()))
@@ -132,9 +145,27 @@ namespace HealthyLifestyleTrackingApp.Controllers
                article.Content,
                article.ImageUrl);
 
+
             TempData[GlobalMessageKey] = "Article was successfully edited.";
 
             return RedirectToAction(nameof(Mine));
+        }
+
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            var lifeCoachId = this.lifeCoaches.GetIdByUser(this.User.GetId());
+
+            if (!this.articles.ArticleIsByLifeCoach(id, lifeCoachId) && !User.IsAdmin())
+            {
+                return BadRequest();
+            }
+
+            this.articles.Delete(id);
+
+            TempData[GlobalMessageKey] = "Article was deleted.";
+
+            return RedirectToAction(nameof(All));
         }
     }
 }

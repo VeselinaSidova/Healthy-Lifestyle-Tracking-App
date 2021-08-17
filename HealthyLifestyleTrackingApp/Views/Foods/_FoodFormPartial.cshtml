@@ -1,0 +1,80 @@
+﻿@model FoodFormModel
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <h2 class="heading-margin text-center">@ViewBag.Title</h2>
+
+        <form method="post">
+            <div class="col-sm-12">
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" placeholder="Add food name">
+                <span asp-validation-for="Name" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Brand"></label>
+                <input asp-for="Brand" class="form-control" placeholder="Add food brand">
+                <span asp-validation-for="Brand" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StandardServingAmount"></label>
+                <input asp-for="StandardServingAmount" class="form-control" placeholder="Add standard serving amount in grams">
+                <span asp-validation-for="StandardServingAmount" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StandardServingType"></label>
+                <select asp-for="@Model.StandardServingType" class="form-control" asp-items="Html.GetEnumSelectList<HealthyLifestyleTrackingApp.Data.Enums.StandardServingType>()">
+                </select>
+                <span asp-validation-for="StandardServingType" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FoodCategoryId"></label>
+                <select asp-for="FoodCategoryId" class="form-control">
+                    @foreach (var category in Model.FoodCategories)
+                    {
+                        <option value="@category?.Id">@category?.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="FoodCategoryId" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageUrl"></label>
+                <input asp-for="ImageUrl" class="form-control" placeholder="Add image URL">
+                <span asp-validation-for="ImageUrl" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Calories"></label>
+                <input asp-for="Calories" class="form-control" placeholder="Add kcal per 100 grams">
+                <span asp-validation-for="Calories" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Protein"></label>
+                <input asp-for="Protein" class="form-control" placeholder="Add grams per 100 grams">
+                <span asp-validation-for="Protein" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Carbohydrates"></label>
+                <input asp-for="Carbohydrates" class="form-control" placeholder="Add grams per 100 grams">
+                <span asp-validation-for="Carbohydrates" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Fat"></label>
+                <input asp-for="Fat" class="form-control" placeholder="Add grams per 100 grams">
+                <span asp-validation-for="Fat" class="small text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FoodTags"></label>
+                <select asp-for="FoodTags" multiple class="form-control">
+                    @foreach (var foodTag in Model.Tags)
+                    {
+                        <option value="@foodTag.Id">@foodTag.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="FoodTags" class="small text-danger"></span>
+            </div>
+            <input class="btn btn-primary mt-3" type="submit" value="Save" />
+        </form>
+    </div>
+</div>

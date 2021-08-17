@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using HealthyLifestyleTrackingApp.Services.Articles;
+using HealthyLifestyleTrackingApp.Services.Articles.Models;
 
 namespace HealthyLifestyleTrackingApp.Models.Articles
 {

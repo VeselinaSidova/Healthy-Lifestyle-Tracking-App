@@ -1,10 +1,11 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using HealthyLifestyleTrackingApp.Models.Foods;
-using HealthyLifestyleTrackingApp.Services.Foods;
-using static HealthyLifestyleTrackingApp.WebConstants;
 using Microsoft.AspNetCore.Authorization;
 using HealthyLifestyleTrackingApp.Infrastructure;
+using HealthyLifestyleTrackingApp.Models.Foods;
+using HealthyLifestyleTrackingApp.Services.Foods;
+using HealthyLifestyleTrackingApp.Services.Foods.Models;
+using static HealthyLifestyleTrackingApp.WebConstants;
 
 namespace HealthyLifestyleTrackingApp.Controllers
 {
@@ -54,7 +55,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
         [Authorize]
         public IActionResult Create()
         {
-            return View(new CreateFoodFormModel
+            return View(new FoodFormModel
             {
                 FoodCategories = this.foods.GetFoodCategories(),
                 Tags = this.foods.GetFoodTags()
@@ -64,7 +65,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Create(CreateFoodFormModel food)
+        public IActionResult Create(FoodFormModel food)
         {
             if (!this.foods.FoodCategoryExists(food.FoodCategoryId))
             {
@@ -115,6 +116,69 @@ namespace HealthyLifestyleTrackingApp.Controllers
             return RedirectToAction(nameof(Details), new { id = foodId, information = food.Name });
         }
 
+
+        [Authorize]
+        public IActionResult Edit(int id, string information)
+        {
+            if (!User.IsAdmin())
+            {
+                return Unauthorized();
+            }
+
+            var food = this.foods.Details(id);
+
+            return View(new FoodFormModel
+            {
+                Name = food.Name,
+                Brand = food.Brand,
+                StandardServingAmount = food.StandardServingAmount,
+                StandardServingType = food.StandardServingType,
+                ImageUrl = food.ImageUrl,
+                Calories = food.Calories,
+                Protein = food.Protein,
+                Carbohydrates = food.Carbohydrates,
+                Fat = food.Fat,
+                FoodCategoryId = food.FoodCategoryId,
+                FoodCategories = this.foods.GetFoodCategories(),
+                Tags = this.foods.GetFoodTags(),
+                FoodTags = food.FoodTags
+            });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Edit(int id, FoodFormModel food)
+        {
+            if (!User.IsAdmin())
+            {
+                return Unauthorized();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(food);
+            }
+
+            var foodIsEdited = foods.Edit(
+               id,
+               food.Name,
+               food.Brand,
+               (double)food.StandardServingAmount,
+               food.StandardServingType,
+               food.ImageUrl,
+               (int)food.Calories,
+               (double)food.Protein,
+               (double)food.Carbohydrates,
+               (double)food.Fat,
+               food.FoodCategoryId,
+               food.FoodTags);
+
+            TempData[GlobalMessageKey] = "Food was successfully edited.";
+
+            return RedirectToAction(nameof(Details), new { id = id, information = food.Name });
+        }
+
+
         [Authorize]
         public IActionResult Track()
         {
@@ -162,6 +226,21 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 food.MealType);
 
             TempData[GlobalMessageKey] = "Food was added to tracker.";
+
+            return RedirectToAction(nameof(All));
+        }
+
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            if (!User.IsAdmin())
+            {
+                return BadRequest();
+            }
+
+            this.foods.Delete(id);
+
+            TempData[GlobalMessageKey] = "Food was deleted.";
 
             return RedirectToAction(nameof(All));
         }

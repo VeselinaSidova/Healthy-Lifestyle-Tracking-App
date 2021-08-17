@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using HealthyLifestyleTrackingApp.Services.Articles.Models;
 
 namespace HealthyLifestyleTrackingApp.Services.Articles
 {
@@ -23,6 +23,8 @@ namespace HealthyLifestyleTrackingApp.Services.Articles
             string title,
             string content,
             string imageUrl);
+
+        void Delete(int id);
 
         bool ArticleIsByLifeCoach(int articleId, int lifeCoachId);
 

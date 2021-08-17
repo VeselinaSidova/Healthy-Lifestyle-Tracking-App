@@ -14,6 +14,7 @@ using HealthyLifestyleTrackingApp.Services.Exercises;
 using HealthyLifestyleTrackingApp.Services.Foods;
 using HealthyLifestyleTrackingApp.Services.LifeCoaches;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using HealthyLifestyleTrackingApp.Services.Recipes;
 
 namespace HealthyLifestyleTrackingApp
 {
@@ -55,6 +56,7 @@ namespace HealthyLifestyleTrackingApp
             services.AddTransient<IFoodService, FoodService>();
             services.AddTransient<IExerciseService, ExerciseService>();
             services.AddTransient<IArticleService, ArticleService>();
+            services.AddTransient<IRecipeService, RecipeService>();
             services.AddTransient<ILifeCoachService, LifeCoachService>();
         }
 
@@ -85,17 +87,41 @@ namespace HealthyLifestyleTrackingApp
                         name: "Areas",
                         pattern: "/{area:exists}/{controller=Home}/{action=Index}/{id?}");
                     endpoints.MapControllerRoute(
+                      name: "Article Read",
+                      pattern: "/Articles/Read/{id}/{information}",
+                      defaults: new { controller = "Articles", action = "Read" });
+                    endpoints.MapControllerRoute(
+                       name: "Article Edit",
+                       pattern: "/Articles/Edit/{id}/{information}",
+                       defaults: new { controller = "Articles", action = "Edit" });
+                    endpoints.MapControllerRoute(
                         name: "Food Details",
                         pattern: "/Food/Details/{id}/{information}",
                         defaults: new { controller = "Foods", action = "Details" });
+                    endpoints.MapControllerRoute(
+                       name: "Food Edit",
+                       pattern: "/Food/Edit/{id}/{information}",
+                       defaults: new { controller = "Foods", action = "Edit" });
                     endpoints.MapControllerRoute(
                        name: "Food Track",
                        pattern: "/Food/Track/{id}/{information}",
                        defaults: new { controller = "Foods", action = "Track" });
                     endpoints.MapControllerRoute(
-                       name: "Exervise Track",
+                      name: "Exercise Edit",
+                      pattern: "/Exercise/Edit/{id}/{information}",
+                      defaults: new { controller = "Exercises", action = "Edit" });
+                    endpoints.MapControllerRoute(
+                       name: "Exercise Track",
                        pattern: "/Exercise/Track/{id}/{information}",
                        defaults: new { controller = "Exercises", action = "Track" });
+                    endpoints.MapControllerRoute(
+                      name: "Recipe Read",
+                      pattern: "/Recipes/Read/{id}/{information}",
+                      defaults: new { controller = "Recipes", action = "Read" });
+                    endpoints.MapControllerRoute(
+                       name: "Recipe Edit",
+                       pattern: "/Recipes/Edit/{id}/{information}",
+                       defaults: new { controller = "Recipes", action = "Edit" });
                     endpoints.MapDefaultControllerRoute();
                     endpoints.MapRazorPages();
                 });

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using HealthyLifestyleTrackingApp.Data;
 using HealthyLifestyleTrackingApp.Data.Models;
+using HealthyLifestyleTrackingApp.Services.LifeCoaches.Models;
 
 namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
 {

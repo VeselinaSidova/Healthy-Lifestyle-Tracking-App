@@ -41,12 +41,12 @@ namespace HealthyLifestyleTrackingApp.Controllers
         [Authorize]
         public IActionResult Create()
         {
-            if (!this.lifeCoaches.IsLifeCoach(this.User.GetId()))
+            if (!this.lifeCoaches.IsLifeCoach(this.User.GetId()) && !this.User.IsAdmin())
             {
                 return RedirectToAction(nameof(LifeCoachesController.Become), "LifeCoaches");
             }
 
-            return View(new CreateExerciseFormModel
+            return View(new ExerciseFormModel
             {
                 ExerciseCategories = this.exercises.GetExerciseCategories(),
             });
@@ -54,11 +54,11 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Create(CreateExerciseFormModel exercise)
+        public IActionResult Create(ExerciseFormModel exercise)
         {
             var lifeCoachId = this.lifeCoaches.GetIdByUser(this.User.GetId());
 
-            if (lifeCoachId == 0)
+            if (lifeCoachId == 0 && !this.User.IsAdmin())
             {
                 return RedirectToAction(nameof(LifeCoachesController.Become), "LifeCoaches");
             }
@@ -80,8 +80,57 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 exercise.ImageUrl,
                 exercise.ExerciseCategoryId);
 
+            TempData[GlobalMessageKey] = "Exercise was successfully created.";
+
             return RedirectToAction(nameof(All));
         }
+
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            if (!User.IsAdmin())
+            {
+                return Unauthorized();
+            }
+
+            var exercise = this.exercises.Details(id);
+
+            return View(new ExerciseFormModel
+            {
+                Name = exercise.Name,
+                CaloriesPerHour = exercise.CaloriesPerHour,
+                ImageUrl = exercise.ImageUrl,
+                ExerciseCategoryId = exercise.ExerciseCategoryId,
+                ExerciseCategories = this.exercises.GetExerciseCategories()
+            });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Edit(int id, ExerciseFormModel exercise)
+        {
+            if (!User.IsAdmin())
+            {
+                return Unauthorized();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(exercise);
+            }
+
+            var exerciseIsEdited = exercises.Edit(
+               id,
+               exercise.Name,
+               exercise.CaloriesPerHour,
+               exercise.ImageUrl,
+               exercise.ExerciseCategoryId);
+
+            TempData[GlobalMessageKey] = "Exercise was successfully edited.";
+
+            return RedirectToAction(nameof(All));
+        }
+
 
         [Authorize]
         public IActionResult Track()
@@ -123,6 +172,22 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 exercise.Duration);
 
             TempData[GlobalMessageKey] = "Exercise was added to tracker.";
+
+            return RedirectToAction(nameof(All));
+        }
+
+
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            if (!this.User.IsAdmin())
+            {
+                return BadRequest();
+            }
+
+            this.exercises.Delete(id);
+
+            TempData[GlobalMessageKey] = "Exercise was deleted.";
 
             return RedirectToAction(nameof(All));
         }

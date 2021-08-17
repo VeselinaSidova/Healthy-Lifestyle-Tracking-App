@@ -18,6 +18,8 @@ namespace HealthyLifestyleTrackingApp.Data.Models
 
         public int CaloriesPerServing { get; set; }
 
+        public int ReadyIn { get; set; }
+
         [Required]
         public string Instructions { get; set; }
 

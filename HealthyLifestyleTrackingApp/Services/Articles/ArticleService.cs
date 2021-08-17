@@ -1,8 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using HealthyLifestyleTrackingApp.Data;
 using HealthyLifestyleTrackingApp.Data.Models;
-using System;
+using HealthyLifestyleTrackingApp.Services.Articles.Models;
 
 namespace HealthyLifestyleTrackingApp.Services.Articles
 {
@@ -30,9 +31,10 @@ namespace HealthyLifestyleTrackingApp.Services.Articles
             var totalArticles = articleQuery.Count();
 
             var articles = GetArticles(articleQuery
+                .OrderByDescending(a => a.CreatedOn)
                 .Skip((currentPage - 1) * articlesPerPage)
                 .Take(articlesPerPage));
-                
+                        
 
             return new ArticleQueryServiceModel
             {
@@ -95,10 +97,21 @@ namespace HealthyLifestyleTrackingApp.Services.Articles
             return true;
         }
 
+        public void Delete(int id)
+        {
+            var article = this.data.Articles.Where(c => c.Id == id).FirstOrDefault();
+
+            this.data.Remove(article);
+
+            this.data.SaveChanges();
+        }
+
+
         public bool ArticleIsByLifeCoach(int articleId, int lifeCoachId)
             => this.data
                 .Articles
                 .Any(a => a.Id == articleId && a.LifeCoachId == lifeCoachId);
+
 
         public IEnumerable<ArticleServiceModel> ByUser(string userId)
             => this.GetArticles(this.data
