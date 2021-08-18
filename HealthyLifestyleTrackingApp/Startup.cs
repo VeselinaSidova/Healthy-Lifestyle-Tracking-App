@@ -90,11 +90,11 @@ namespace HealthyLifestyleTrackingApp
                         pattern: "/{area:exists}/{controller=Home}/{action=Index}/{id?}");
                     endpoints.MapControllerRoute(
                       name: "Article Read",
-                      pattern: "/Articles/Read/{id}/{information}",
+                      pattern: "/Article/Read/{id}/{information}",
                       defaults: new { controller = "Articles", action = "Read" });
                     endpoints.MapControllerRoute(
                        name: "Article Edit",
-                       pattern: "/Articles/Edit/{id}/{information}",
+                       pattern: "/Article/Edit/{id}/{information}",
                        defaults: new { controller = "Articles", action = "Edit" });
                     endpoints.MapControllerRoute(
                         name: "Food Details",
@@ -118,12 +118,16 @@ namespace HealthyLifestyleTrackingApp
                        defaults: new { controller = "Exercises", action = "Track" });
                     endpoints.MapControllerRoute(
                       name: "Recipe Read",
-                      pattern: "/Recipes/Read/{id}/{information}",
+                      pattern: "/Recipe/Read/{id}/{information}",
                       defaults: new { controller = "Recipes", action = "Read" });
                     endpoints.MapControllerRoute(
                        name: "Recipe Edit",
-                       pattern: "/Recipes/Edit/{id}/{information}",
+                       pattern: "/Recipe/Edit/{id}/{information}",
                        defaults: new { controller = "Recipes", action = "Edit" });
+                    endpoints.MapControllerRoute(
+                       name: "View Tracked",
+                       pattern: "/Tracker/ViewTracked/{selectedDateString}",
+                       defaults: new { controller = "Tracker", action = "ViewTracked" });
                     endpoints.MapDefaultControllerRoute();
                     endpoints.MapRazorPages();
                 });

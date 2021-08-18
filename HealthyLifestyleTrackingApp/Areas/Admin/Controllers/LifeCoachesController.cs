@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using HealthyLifestyleTrackingApp.Services.LifeCoaches;
 using static HealthyLifestyleTrackingApp.Areas.Admin.AdminConstants;
 using static HealthyLifestyleTrackingApp.WebConstants;
 
+
 namespace HealthyLifestyleTrackingApp.Areas.Admin.Controllers
 {
     [Area(AreaName)]
+    [Authorize(Roles = AdminConstants.AdministratorRoleName)]
     public class LifeCoachesController : Controller
     {
         private readonly ILifeCoachService lifeCoaches;

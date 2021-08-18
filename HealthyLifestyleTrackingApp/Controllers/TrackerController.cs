@@ -29,12 +29,16 @@ namespace HealthyLifestyleTrackingApp.Controllers
         {
             var selectedDate = datePicker.Date;
 
-            return RedirectToAction(nameof(ViewTracked), new { selectedDate = selectedDate });
+            var selectedDateString = selectedDate.ToString("dd-MM-yyyy");
+
+            return RedirectToAction(nameof(ViewTracked), new { selectedDateString = selectedDateString });
         }
 
         [Authorize]
-        public IActionResult ViewTracked([FromQuery] AllTrackedQueryModel query, DateTime selectedDate)
+        public IActionResult ViewTracked([FromQuery] AllTrackedQueryModel query, string selectedDateString)
         {
+            DateTime selectedDate = DateTime.Parse(selectedDateString);
+
             var userId = this.User.GetId();
 
             var foodQueryResult = this.tracked.AllTrackedFoods(
@@ -45,7 +49,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 selectedDate, 
                 userId);
 
-            query.DateTracked = foodQueryResult.DateTracked;
+            query.DateTracked = foodQueryResult.DateTracked.Date;
             query.Foods = foodQueryResult.Foods;
             query.Exercises = exerciseQueryResult.Exercises;
 

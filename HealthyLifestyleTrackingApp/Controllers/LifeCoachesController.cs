@@ -59,7 +59,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
             TempData[GlobalMessageKey] = "Thank you for applying to become a Life Coach! Your application will be reviewed.";
 
-            return Redirect("~/Identity/Account/Manage");
+            return RedirectToAction(nameof(All));
         }
     }
 }
