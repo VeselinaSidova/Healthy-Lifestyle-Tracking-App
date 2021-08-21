@@ -83,6 +83,11 @@ namespace HealthyLifestyleTrackingApp.Services.LifeCoaches
         {
             var lifeCoach = this.data.LifeCoaches.Where(c => c.Id == id).FirstOrDefault();
 
+            var lifeCoachArticles = this.data.Articles.Where(a => a.LifeCoachId == id).ToList();
+            var lifeCoachRecipes = this.data.Recipes.Where(r => r.LifeCoachId == id).ToList();
+
+            this.data.RemoveRange(lifeCoachArticles);
+            this.data.RemoveRange(lifeCoachRecipes);
             this.data.Remove(lifeCoach);
 
             this.data.SaveChanges();

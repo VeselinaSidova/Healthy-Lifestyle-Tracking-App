@@ -28,7 +28,10 @@ namespace HealthyLifestyleTrackingApp.Test.Data
                     LifeCoachId = i,
                     LifeCoach = sameUser ? user : new LifeCoach
                     {
-                        UserId = $"Author Id {i}"
+                        Id = i,
+                        UserId = $"userId{i}",
+                        FirstName = "FirstName",
+                        LastName = "LastName"
                     }
                 })
                 .ToList();

@@ -62,7 +62,14 @@
                     else if (userIsAdmin)
                     {
                         <a asp-controller="Exercises" asp-action="Edit" asp-route-id="@exercise.Id" cite asp-route-information="@exercise.Name" class="btn btn-warning">Edit</a>
-                        <a asp-controller="Exercises" asp-action="Delete" asp-route-id="@exercise.Id" cite asp-route-information="@exercise.Name" class="btn btn-danger">Delete</a>
+                        <button class="btn btn-danger delete"
+                                data-id="@exercise.Id"
+                                data-controller="Exercises"
+                                data-action="Delete"
+                                data-body-message="Are you sure you want to delete exercise '@exercise.Name'?"
+                                >
+                            Delete
+                        </button>
                     }
                 </div>
             </div>

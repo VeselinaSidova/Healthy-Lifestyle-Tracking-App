@@ -97,13 +97,19 @@ namespace HealthyLifestyleTrackingApp.Services.Articles
             return true;
         }
 
-        public void Delete(int id)
+        public bool Delete(int id)
         {
             var article = this.data.Articles.Where(c => c.Id == id).FirstOrDefault();
 
-            this.data.Remove(article);
+            if (article == null)
+            {
+                return false;
+            }
 
+            this.data.Remove(article);
             this.data.SaveChanges();
+
+            return true;
         }
 
 

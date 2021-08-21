@@ -37,6 +37,13 @@ namespace HealthyLifestyleTrackingApp.Controllers
         [Authorize]
         public IActionResult Mine()
         {
+            var lifeCoachId = this.lifeCoaches.GetIdByUser(this.User.GetId());
+
+            if (lifeCoachId == 0)
+            {
+                return RedirectToAction(nameof(LifeCoachesController.Become), "LifeCoaches");
+            }
+
             var myArticles = this.articles.ByUser(this.User.GetId());
 
             return View(myArticles);
@@ -47,9 +54,14 @@ namespace HealthyLifestyleTrackingApp.Controllers
         {
             var article = this.articles.Details(id);
 
-            if (!information.Contains(article.Title))
+            if (article == null)
             {
-                return BadRequest();
+                return NotFound("Article not found!");
+            }
+
+            if (article != null && !information.Contains(article.Title))
+            {
+                return BadRequest("Article with such data does not exist!");
             }
 
             return View(article);
@@ -97,17 +109,16 @@ namespace HealthyLifestyleTrackingApp.Controllers
         public IActionResult Edit(int id)
         {
             var userId = this.User.GetId();
-
-            if (!this.lifeCoaches.IsLifeCoach(userId) && !User.IsAdmin())
-            {
-                return RedirectToAction(nameof(LifeCoachesController.Become), "LifeCoaches");
-            }
-
             var article = this.articles.Details(id);
 
-            if (article.UserId != userId && !User.IsAdmin())
+            if (article == null)
             {
-                return Unauthorized();
+                return NotFound("Article not found!");
+            }
+
+            if (article.UserId != userId  && !User.IsAdmin())
+            {
+                return Unauthorized("You cannot edit this article!");
             }
 
             return View(new ArticleFormModel
@@ -124,20 +135,14 @@ namespace HealthyLifestyleTrackingApp.Controllers
         {
             var lifeCoachId = this.lifeCoaches.GetIdByUser(this.User.GetId());
 
-            if (lifeCoachId == 0 && !User.IsAdmin())
+            if (!this.articles.ArticleIsByLifeCoach(id, lifeCoachId) && !User.IsAdmin())
             {
-                return RedirectToAction(nameof(LifeCoachesController.Become), "LifeCoaches");
+                return BadRequest("You cannot edit this article!");
             }
 
             if (!ModelState.IsValid)
             {
                 return View(article);
-            }
-
-
-            if (!this.articles.ArticleIsByLifeCoach(id, lifeCoachId) && !User.IsAdmin())
-            {
-                return BadRequest();
             }
 
             var articleIsEdited = articles.Edit(
@@ -146,8 +151,12 @@ namespace HealthyLifestyleTrackingApp.Controllers
                article.Content,
                article.ImageUrl);
 
-
             TempData[GlobalMessageKey] = "Article was successfully edited.";
+
+            if (User.IsInRole("Administrator"))
+            {
+                return RedirectToAction(nameof(All));
+            }
 
             return RedirectToAction(nameof(Mine));
         }
@@ -159,14 +168,24 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
             if (!this.articles.ArticleIsByLifeCoach(id, lifeCoachId) && !User.IsAdmin())
             {
-                return BadRequest();
+                return Unauthorized("You cannot delete this article!");
             }
 
-            this.articles.Delete(id);
+            var isDeleted = this.articles.Delete(id);
 
-            TempData[GlobalMessageKey] = "Article was deleted.";
+            if (isDeleted == false)
+            {
+                return NotFound("Article not found!");
+            }
 
-            return RedirectToAction(nameof(All));
+            TempData[GlobalMessageKey] = "Article was successfully deleted.";
+
+            if (User.IsInRole("Administrator"))
+            {
+                return RedirectToAction(nameof(All));
+            }
+
+            return RedirectToAction(nameof(Mine));
         }
     }
 }

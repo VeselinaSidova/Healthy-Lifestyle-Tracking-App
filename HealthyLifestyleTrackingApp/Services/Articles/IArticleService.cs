@@ -24,7 +24,7 @@ namespace HealthyLifestyleTrackingApp.Services.Articles
             string content,
             string imageUrl);
 
-        void Delete(int id);
+        bool Delete(int id);
 
         bool ArticleIsByLifeCoach(int articleId, int lifeCoachId);
 

@@ -75,10 +75,16 @@
                        {
                            <a asp-controller="Foods" asp-action="Track" asp-route-id="@food.Id" cite asp-route-information="@food.Name" class="btn btn-primary">Track</a>
                        }
-                       else if(userIsAdmin)
+                       else if (userIsAdmin)
                        {
                            <a asp-controller="Foods" asp-action="Edit" asp-route-id="@food.Id" cite asp-route-information="@food.Name" class="btn btn-warning">Edit</a>
-                           <a asp-controller="Foods" asp-action="Delete" asp-route-id="@food.Id" cite asp-route-information="@food.Name" class="mt-1 btn btn-danger">Delete</a>
+                           <button class="btn btn-danger delete"
+                                   data-id="@food.Id"
+                                   data-controller="Foods"
+                                   data-action="Delete"
+                                   data-body-message="Are you sure you want to delete food '@food.Name'?">
+                               Delete
+                           </button>
                        }
                    </div>
                </div>

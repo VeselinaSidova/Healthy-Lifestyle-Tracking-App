@@ -23,10 +23,8 @@ namespace HealthyLifestyleTrackingApp.Test.Data
                 .Select(i => new LifeCoach
                 {
                     Id = i,
-                    FirstName = "FirstName",
-                    LastName = "LastName",
                     IsApprovedLifeCoach = isApproved,
-                    UserId = "testId",
+                    UserId = isApproved ? "testId" : "userId{i}"
                 })
                 .ToList();
 

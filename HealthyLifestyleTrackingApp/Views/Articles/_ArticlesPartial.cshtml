@@ -14,7 +14,13 @@
                     @if (ViewBag.AllowArticleEdit == true || User.IsAdmin())
                     {
                         <a asp-controller="Articles" asp-action="Edit" asp-route-id="@article.Id" asp-route-information ="@article.Title" class="btn btn-warning">Edit</a>
-                        <a asp-controller="Articles" asp-action="Delete" asp-route-id="@article.Id" asp-route-information ="@article.Title" class="btn btn-danger">Delete</a>
+                        <button class="btn btn-danger delete"
+                                data-id="@article.Id"
+                                data-controller="Articles"
+                                data-action="Delete"
+                                data-body-message="Are you sure you want to delete article '@article.Title'?">
+                            Delete
+                        </button>
                     }
                 </div>
             </div>
