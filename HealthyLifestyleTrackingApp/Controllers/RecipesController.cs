@@ -170,8 +170,6 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
             this.recipes.Delete(id);
 
-            TempData[GlobalMessageKey] = "Recipe was deleted.";
-
             return RedirectToAction(nameof(All));
         }
     }

@@ -178,8 +178,6 @@ namespace HealthyLifestyleTrackingApp.Controllers
                 return NotFound("Article not found!");
             }
 
-            TempData[GlobalMessageKey] = "Article was successfully deleted.";
-
             if (User.IsInRole("Administrator"))
             {
                 return RedirectToAction(nameof(All));

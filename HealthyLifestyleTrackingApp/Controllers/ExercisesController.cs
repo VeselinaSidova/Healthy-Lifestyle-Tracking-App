@@ -188,8 +188,6 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
             this.exercises.Delete(id);
 
-            TempData[GlobalMessageKey] = "Exercise was deleted.";
-
             return RedirectToAction(nameof(All));
         }
     }

@@ -61,5 +61,12 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
             return RedirectToAction(nameof(All));
         }
+
+        public IActionResult DeleteApplication(int id)
+        {
+            this.lifeCoaches.DeleteApplication(id);
+
+            return RedirectToAction(nameof(All));
+        }
     }
 }

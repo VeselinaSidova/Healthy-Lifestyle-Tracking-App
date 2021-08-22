@@ -29,9 +29,9 @@
                 <td scope="col">
                     <a asp-area="Admin" asp-controller="LifeCoaches" asp-action="ApproveForLifeCoach" asp-route-id="@lifeCoach.Id" class="btn btn-info">@(lifeCoach.IsApprovedLifeCoach ? "Disable" : "Approve")</a>
                     <button class="btn btn-danger mt-2 delete" 
-                       data-id="@lifeCoach.Id" 
+                       data-id="@lifeCoach.Id"
                        data-controller="LifeCoaches" 
-                       data-action="DeleteApplication" 
+                       data-action="deleteapplication" 
                        data-body-message="Are you sure you want to delete the life coach application of @(lifeCoach.FirstName + " " + lifeCoach.LastName)? If they were an approved life coach, please note that this will delete their articles and recipes too.">
                          Delete
                     </button>

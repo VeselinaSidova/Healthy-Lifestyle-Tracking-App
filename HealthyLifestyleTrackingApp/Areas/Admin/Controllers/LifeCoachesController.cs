@@ -32,14 +32,5 @@ namespace HealthyLifestyleTrackingApp.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(All));
         }
-        
-        public IActionResult DeleteApplication(int id)
-        {
-            this.lifeCoaches.DeleteApplication(id);
-
-            TempData[GlobalMessageKey] = "Life Coach application was deleted. Please inform user.";
-
-            return RedirectToAction(nameof(All));
-        }
     }
 }

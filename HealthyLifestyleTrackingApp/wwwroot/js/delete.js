@@ -51,8 +51,8 @@
                     window.location.href = redirectUrl;
             }).always(() => {
                 $("#deleteModal").modal('hide');
+                alert('Item was deleted!');
                 location.reload();
             }); 
     }); 
-    
 }())); 

@@ -240,8 +240,6 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
             this.foods.Delete(id);
 
-            TempData[GlobalMessageKey] = "Food was deleted.";
-
             return RedirectToAction(nameof(All));
         }
     }
