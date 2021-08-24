@@ -443,7 +443,7 @@ namespace HealthyLifestyleTrackingApp.Test.Controllers
                 .NotFound();
 
         [Fact]
-        public void GetDeleteShouldReturnNotFoundWhenNonAuthorUser()
+        public void GetDeleteShouldReturnUnauthorizedWhenNonAuthorUser()
             => MyController<ArticlesController>
                 .Instance(instance => instance
                     .WithUser(user => user.WithIdentifier("NonAuthor"))

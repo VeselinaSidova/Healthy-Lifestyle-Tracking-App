@@ -195,8 +195,12 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
 
         [Authorize]
-        public IActionResult Track()
+        public IActionResult Track(int id)
         {
+            if (!this.foods.FoodExists(id))
+            {
+                return NotFound("Food to be tracked not found!");
+            }
            return View();
         }
 
@@ -204,30 +208,24 @@ namespace HealthyLifestyleTrackingApp.Controllers
         [Authorize]
         public IActionResult Track(int id, string information, TrackFoodFormModel food)
         {
-            var userId = this.User.GetId();
-
-            if (userId == null)
+            if (!this.foods.FoodExists(id))
             {
-                return Redirect("~/Identity/Account/Login");
+                return NotFound("Food not found!");
             }
+
+            var userId = this.User.GetId();
 
             var foodName = this.foods.GetFoodName(id);
 
-            if (!information.Contains(foodName))
+            if (foodName != information)
             {
-                return BadRequest();
+                return BadRequest("You cannot track food with such data!");
             }
 
             if (!this.foods.MealTypeExists((int)food.MealType))
             {
                 this.ModelState.AddModelError(nameof(food.MealType), "Meal type does not exist.");
             }
-            
-            if (id == 0)
-            {
-                return BadRequest();
-            }
-
 
             if (!ModelState.IsValid)
             {
@@ -250,7 +248,12 @@ namespace HealthyLifestyleTrackingApp.Controllers
         {
             if (!User.IsAdmin())
             {
-                return BadRequest();
+                return Unauthorized("Only admins can delete food!");
+            }
+
+            if (!this.foods.FoodExists(id))
+            {
+                return NotFound("Food not found!");
             }
 
             this.foods.Delete(id);

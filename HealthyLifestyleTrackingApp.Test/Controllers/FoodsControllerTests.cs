@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using HealthyLifestyleTrackingApp.Controllers;
 using HealthyLifestyleTrackingApp.Data.Enums;
 using HealthyLifestyleTrackingApp.Data.Models;
@@ -360,6 +361,131 @@ namespace HealthyLifestyleTrackingApp.Test.Controllers
                 .ShouldReturn()
                 .Redirect(redirect => redirect
                     .To<FoodsController>(c => c.Details(foodId, "Edit Name")));
+
+
+        [Fact]
+        public void GetTrackShouldOnlyBeAllowedForAuthorizedUsersAndShouldReturnView()
+        => MyController<FoodsController>
+          .Instance(instance => instance
+                 .WithUser())
+            .Calling(c => c.Track(1))
+            .ShouldHave()
+            .ActionAttributes(attrs => attrs
+                .RestrictingForAuthorizedRequests());
+
+
+        [Fact]
+        public void PostTrackShouldReturnNotFoundWhenInvalidId()
+            => MyController<FoodsController>
+                .Instance(instance => instance
+                    .WithUser())
+                .Calling(c => c.Track(
+                    With.Any<int>(),
+                    With.Any<string>(),
+                    With.Any<TrackFoodFormModel>()))
+                .ShouldReturn()
+                .NotFound();
+
+
+        [Fact]
+        public void PostTrackShouldReturnBadRequestWhenValidIdAndInvalidName()
+            => MyController<FoodsController>
+                .Instance(instance => instance
+                    .WithUser()
+                    .WithData(FoodsTestData.GetFoods(1)))
+                .Calling(c => c.Track(
+                    1,
+                    With.Any<string>(),
+                    With.Any<TrackFoodFormModel>()))
+                .ShouldReturn()
+                .BadRequest();
+
+
+        [Fact]
+        public void PostTrackShouldReturnViewWithSameModelWhenInvalidModelState()
+            => MyController<FoodsController>
+                .Instance(instance => instance
+                    .WithUser()
+                    .WithData(FoodsTestData.GetFoods(1)))
+                .Calling(c => c.Track(1, "Name 1", With.Default<TrackFoodFormModel>()))
+                .ShouldHave()
+                .InvalidModelState()
+                .AndAlso()
+                .ShouldReturn()
+                .View(With.Default<TrackFoodFormModel>());
+
+
+        [Theory]
+        [InlineData(1, 200, (MealType)1)]
+        public void PostCreateShouldSaveArticleSetTempDataMessageAndRedirectWhenValidModel(int foodId, int amount, MealType mealType)
+          => MyController<FoodsController>
+               .Instance(instance => instance
+                   .WithData(FoodsTestData.GetFoods(1))
+                   .WithUser())
+              .Calling(c => c.Track(foodId, "Name 1", new TrackFoodFormModel
+              {
+                  AmountInGrams = amount,
+                  MealType = mealType,
+                  DateTracked = DateTime.Today,
+              }))
+              .ShouldHave()
+              .ValidModelState()
+              .AndAlso()
+              .ShouldHave()
+              .TempData(tempData => tempData
+                   .ContainingEntryWithKey(GlobalMessageKey))
+              .AndAlso()
+              .ShouldReturn()
+              .Redirect(redirect => redirect
+                  .To<FoodsController>(c => c.All(With.Empty<AllFoodsQueryModel>())));
+
+
+        [Fact]
+        public void GetDeleteShouldOnlyBeAllowedForAuthorizedAdmins()
+         => MyController<FoodsController>
+           .Instance(instance => instance
+                  .WithUser(user => user.InRole("Administrator")))
+             .Calling(c => c.Delete(With.Empty<int>()))
+             .ShouldHave()
+             .ActionAttributes(attrs => attrs
+                 .RestrictingForAuthorizedRequests());
+
+        [Fact]
+        public void GetDeleteShouldReturnNotFoundWhenInvalidId()
+            => MyController<FoodsController>
+                .Instance(instance => instance
+                    .WithUser(user => user.InRole("Administrator"))
+                    .WithData(FoodsTestData.GetFoods(1)))
+                .Calling(c => c.Delete(2))
+                .ShouldReturn()
+                .NotFound();
+
+        [Fact]
+        public void GetDeleteShouldReturnUnauthorizedWhenNonAdminTriedToEdit()
+            => MyController<FoodsController>
+                .Instance(instance => instance
+                    .WithUser()
+                    .WithData(FoodsTestData.GetFoods(1)))
+                .Calling(c => c.Delete(1))
+                .ShouldReturn()
+                .Unauthorized();
+
+
+        [Fact]
+        public void GetDeleteShouldDeleteFoodAndRedirectWhenAdminTriesToDelete()
+           => MyController<FoodsController>
+               .Instance(instance => instance
+                   .WithUser(user => user.InRole("Administrator"))
+                   .WithData(FoodsTestData.GetFoods(1)))
+               .Calling(c => c.Delete(1))
+               .ShouldHave()
+               .Data(data => data
+                   .WithSet<Food>(set => set.ShouldBeEmpty()))
+               .AndAlso()
+               .ShouldReturn()
+               .Redirect(redirect => redirect
+                   .To<FoodsController>(c => c.All(With.Empty<AllFoodsQueryModel>())));
+
     }
 }
 

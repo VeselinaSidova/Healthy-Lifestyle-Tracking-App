@@ -78,7 +78,7 @@
                         else if (userIsAdmin)
                         {
                             <a asp-controller="Foods" asp-action="Edit" asp-route-id="@food.Id" cite asp-route-information="@food.Name" class="btn btn-warning">Edit</a>
-                            <button class="btn btn-danger delete"
+                            <button class="btn btn-danger delete mt-1 overflow-auto"
                                     data-id="@food.Id"
                                     data-controller="Foods"
                                     data-action="Delete"
@@ -94,6 +94,7 @@
 }
 else
 {
+
     <div class="row mb-5">
         @foreach (var food in Model.Foods)
         {
@@ -111,6 +112,7 @@ else
             </div>
         }
     </div>
+
 }
 
 

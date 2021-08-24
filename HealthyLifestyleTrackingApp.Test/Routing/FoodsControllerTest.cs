@@ -109,7 +109,7 @@ namespace HealthyLifestyleTrackingApp.Test.Routing
            => MyRouting
                .Configuration()
                .ShouldMap("/Food/Track/1/Name")
-               .To<FoodsController>(c => c.Track());
+               .To<FoodsController>(c => c.Track(1));
 
 
         [Fact]
