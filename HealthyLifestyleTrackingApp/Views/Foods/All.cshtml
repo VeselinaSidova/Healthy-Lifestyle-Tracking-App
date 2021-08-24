@@ -60,38 +60,59 @@
     var userIsAdmin = User.IsAdmin();
 
     <div class="row mb-5">
-       @foreach (var food in Model.Foods)
-       {
-           <div class="col-md-3">
-               <div class="card" style="width: 18rem;">
-                   <img class="card-img-top" src="@food.ImageUrl" alt="@food.Name">
-                   <div class="card-body">
-                       <h5 class="card-title">@food.Name</h5>
-                       <p class="card-text">@(food.Brand != null ? food.Brand : string.Empty)</p>
-                       <p class="card-text">@food.Calories kcal\100gr</p>
-                       <p class="card-text">Category: @food.FoodCategory</p>
-                       <a asp-controller="Foods" asp-action="Details" asp-route-id="@food.Id" cite asp-route-information="@food.Name" class="btn btn-primary">More Details</a>
-                       @if (!userIsAdmin)
-                       {
-                           <a asp-controller="Foods" asp-action="Track" asp-route-id="@food.Id" cite asp-route-information="@food.Name" class="btn btn-primary">Track</a>
-                       }
-                       else if (userIsAdmin)
-                       {
-                           <a asp-controller="Foods" asp-action="Edit" asp-route-id="@food.Id" cite asp-route-information="@food.Name" class="btn btn-warning">Edit</a>
-                           <button class="btn btn-danger delete"
-                                   data-id="@food.Id"
-                                   data-controller="Foods"
-                                   data-action="Delete"
-                                   data-body-message="Are you sure you want to delete food '@food.Name'?">
-                               Delete
-                           </button>
-                       }
-                   </div>
-               </div>
-           </div>
-       }
+        @foreach (var food in Model.Foods)
+        {
+            <div class="col-md-3">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="@food.ImageUrl" alt="@food.Name">
+                    <div class="card-body">
+                        <h5 class="card-title">@food.Name</h5>
+                        <p class="card-text">@(food.Brand != null ? food.Brand : string.Empty)</p>
+                        <p class="card-text">@food.Calories kcal\100gr</p>
+                        <p class="card-text">Category: @food.FoodCategory</p>
+                        <a asp-controller="Foods" asp-action="Details" asp-route-id="@food.Id" cite asp-route-information="@food.Name" class="btn btn-primary">More Details</a>
+                        @if (!userIsAdmin)
+                        {
+                            <a asp-controller="Foods" asp-action="Track" asp-route-id="@food.Id" cite asp-route-information="@food.Name" class="btn btn-primary">Track</a>
+                        }
+                        else if (userIsAdmin)
+                        {
+                            <a asp-controller="Foods" asp-action="Edit" asp-route-id="@food.Id" cite asp-route-information="@food.Name" class="btn btn-warning">Edit</a>
+                            <button class="btn btn-danger delete"
+                                    data-id="@food.Id"
+                                    data-controller="Foods"
+                                    data-action="Delete"
+                                    data-body-message="Are you sure you want to delete food '@food.Name'?">
+                                Delete
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 }
+else
+{
+    <div class="row mb-5">
+        @foreach (var food in Model.Foods)
+        {
+            <div class="col-md-3">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="@food.ImageUrl" alt="@food.Name">
+                    <div class="card-body">
+                        <h5 class="card-title">@food.Name</h5>
+                        <p class="card-text">@(food.Brand != null ? food.Brand : string.Empty)</p>
+                        <p class="card-text">@food.Calories kcal\100gr</p>
+                        <p class="card-text">Category: @food.FoodCategory</p>
+                        <a asp-controller="Foods" asp-action="Details" asp-route-id="@food.Id" cite asp-route-information="@food.Name" class="btn btn-primary">More Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
 
 @if (!Model.Foods.Any())
 {

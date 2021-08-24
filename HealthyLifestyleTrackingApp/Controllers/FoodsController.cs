@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 using HealthyLifestyleTrackingApp.Infrastructure;
 using HealthyLifestyleTrackingApp.Models.Foods;
 using HealthyLifestyleTrackingApp.Services.Foods;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using static HealthyLifestyleTrackingApp.WebConstants;
 
@@ -42,11 +42,11 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
         public IActionResult Details(int id, string information)
         {
-            var food = this.foods.Details(id);
+            var food = this.foods.Details(id, information);
 
-            if (!information.Contains(food.Name))
+            if (food == null)
             {
-                return BadRequest();
+                return NotFound("Food not found!");
             }
 
             return View(food); 
@@ -122,10 +122,15 @@ namespace HealthyLifestyleTrackingApp.Controllers
         {
             if (!User.IsAdmin())
             {
-                return Unauthorized();
+                return Unauthorized("Only admin can edit foods!");
             }
 
-            var food = this.foods.Details(id);
+            var food = this.foods.Details(id, information);
+
+            if (food == null)
+            {
+                return NotFound("Food not found!");
+            }
 
             return View(new FoodFormModel
             {
@@ -149,9 +154,14 @@ namespace HealthyLifestyleTrackingApp.Controllers
         [Authorize]
         public IActionResult Edit(int id, FoodFormModel food)
         {
+            if (!this.foods.FoodExists(id))
+            {
+                return NotFound("Food not found");
+            }
+
             if (!User.IsAdmin())
             {
-                return Unauthorized();
+                return Unauthorized("Only admin can edit foods!");
             }
 
             if (!ModelState.IsValid)
@@ -172,6 +182,11 @@ namespace HealthyLifestyleTrackingApp.Controllers
                (double)food.Fat,
                food.FoodCategoryId,
                food.FoodTags);
+
+            if (foodIsEdited == false)
+            {
+                return BadRequest("Food was not edited!");
+            }
 
             TempData[GlobalMessageKey] = "Food was successfully edited.";
 

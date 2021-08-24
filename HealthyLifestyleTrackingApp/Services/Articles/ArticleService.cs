@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using HealthyLifestyleTrackingApp.Data;
 using HealthyLifestyleTrackingApp.Data.Models;
 using HealthyLifestyleTrackingApp.Services.Articles.Models;
@@ -111,6 +111,12 @@ namespace HealthyLifestyleTrackingApp.Services.Articles
 
             return true;
         }
+
+
+        public bool ArticleExists(int articleId)
+            => this.data
+                .Articles
+                .Any(a => a.Id == articleId);
 
 
         public bool ArticleIsByLifeCoach(int articleId, int lifeCoachId)

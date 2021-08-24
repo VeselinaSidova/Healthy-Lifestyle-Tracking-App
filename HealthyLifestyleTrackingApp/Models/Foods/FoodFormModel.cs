@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using HealthyLifestyleTrackingApp.Data.Enums;
 using HealthyLifestyleTrackingApp.Services.Foods.Models;
+
 using static HealthyLifestyleTrackingApp.Data.DataConstants.Food;
 
 namespace HealthyLifestyleTrackingApp.Models.Foods

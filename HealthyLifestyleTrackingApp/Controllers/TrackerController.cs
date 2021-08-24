@@ -1,9 +1,10 @@
 ﻿using System;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 using HealthyLifestyleTrackingApp.Infrastructure;
 using HealthyLifestyleTrackingApp.Models.Tracker;
 using HealthyLifestyleTrackingApp.Services.Tracker;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
 using static HealthyLifestyleTrackingApp.WebConstants;
 
 namespace HealthyLifestyleTrackingApp.Controllers

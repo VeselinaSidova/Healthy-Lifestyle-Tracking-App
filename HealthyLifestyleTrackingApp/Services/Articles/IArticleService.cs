@@ -26,6 +26,9 @@ namespace HealthyLifestyleTrackingApp.Services.Articles
 
         bool Delete(int id);
 
+
+        bool ArticleExists(int articleId);
+
         bool ArticleIsByLifeCoach(int articleId, int lifeCoachId);
 
         IEnumerable<ArticleServiceModel> ByUser(string userId);

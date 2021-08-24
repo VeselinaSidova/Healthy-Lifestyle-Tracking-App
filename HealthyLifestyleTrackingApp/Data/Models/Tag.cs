@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
 using static HealthyLifestyleTrackingApp.Data.DataConstants.FoodTag;
 
 namespace HealthyLifestyleTrackingApp.Data.Models

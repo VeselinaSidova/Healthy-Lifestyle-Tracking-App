@@ -1,13 +1,13 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using HealthyLifestyleTrackingApp.Controllers;
 using HealthyLifestyleTrackingApp.Data.Models;
 using HealthyLifestyleTrackingApp.Models.Articles;
 using HealthyLifestyleTrackingApp.Services.Articles.Models;
 using HealthyLifestyleTrackingApp.Test.Data;
 using MyTested.AspNetCore.Mvc;
+using Shouldly;
 using Xunit;
-
 using static HealthyLifestyleTrackingApp.WebConstants;
 
 namespace HealthyLifestyleTrackingApp.Test.Controllers
@@ -33,7 +33,7 @@ namespace HealthyLifestyleTrackingApp.Test.Controllers
         public void GetMineArticlesShouldBeForAuthorizedUsersAndReturnView()
             => MyController<ArticlesController>
                 .Instance(instance => instance
-                    .WithData(Articles.GetArticles(1, false))
+                    .WithData(ArticlesTestData.GetArticles(1, false))
                     .WithUser(user => user.WithIdentifier("userId1")))
                .Calling(c => c.Mine())
                .ShouldHave()
@@ -45,10 +45,10 @@ namespace HealthyLifestyleTrackingApp.Test.Controllers
 
 
         [Fact]
-        public void MineShouldReturnViewWithCorrectModel()
+        public void GetMineShouldReturnViewWithCorrectModel()
             => MyController<ArticlesController>
                 .Instance(instance => instance
-                    .WithData(Articles.GetArticles(2, sameUser: false))
+                    .WithData(ArticlesTestData.GetArticles(2, sameUser: false))
                     .WithUser(user => user.WithIdentifier("userId1")))
                 .Calling(c => c.Mine())
                 .ShouldReturn()
@@ -73,7 +73,7 @@ namespace HealthyLifestyleTrackingApp.Test.Controllers
         public void GetReadShouldReturnBadRequestWhenValidArticleIdAndInvalidName()
             => MyController<ArticlesController>
                .Instance(instance => instance
-                    .WithData(Articles.GetArticles(1)))
+                    .WithData(ArticlesTestData.GetArticles(1)))
                .Calling(c => c.Read(1, "Name"))
                .ShouldReturn()
                .BadRequest();
@@ -83,7 +83,7 @@ namespace HealthyLifestyleTrackingApp.Test.Controllers
         public void GetReadShouldBeForAuthorizedUsersAndShouldReturnCorrectArticle()
            => MyController<ArticlesController>
                 .Instance(instance => instance
-                    .WithData(Articles.GetArticles(1)))
+                    .WithData(ArticlesTestData.GetArticles(1)))
                 .Calling(c => c.Read(1, "Article 1"))
                 .ShouldHave()
                     .ActionAttributes(attributes => attributes
@@ -103,7 +103,7 @@ namespace HealthyLifestyleTrackingApp.Test.Controllers
         public void GetCreateShouldBeForAuthorizedUsersAndLifeCoachesAndReturnView()
             => MyController<ArticlesController>
                 .Instance(instance => instance
-                    .WithData(LifeCoaches.GetLifeCoaches(1, true))
+                    .WithData(LifeCoachesTestData.GetLifeCoaches(1, true))
                     .WithUser(user => user.WithIdentifier("testId")))
                  .Calling(c => c.Create())
                  .ShouldHave()
@@ -118,7 +118,7 @@ namespace HealthyLifestyleTrackingApp.Test.Controllers
         public void GetCreateShouldBeForAuthorizedUsersAndShouldRedirectToBecomeLifeCoachIfUserIsNotApprovedLifeCoach()
             => MyController<ArticlesController>
                 .Instance(instance => instance
-                    .WithData(LifeCoaches.GetLifeCoaches(1, false))
+                    .WithData(LifeCoachesTestData.GetLifeCoaches(1, false))
                     .WithUser(user => user.WithIdentifier("userId1")))
                 .Calling(c => c.Create())
                 .ShouldHave()
@@ -161,7 +161,7 @@ namespace HealthyLifestyleTrackingApp.Test.Controllers
         public void PostCreateShouldReturnViewWithSameModelWhenInvalidModelState()
             => MyController<ArticlesController>
                 .Instance(instance => instance
-                    .WithData(LifeCoaches.GetLifeCoaches(1, true))
+                    .WithData(LifeCoachesTestData.GetLifeCoaches(1, true))
                     .WithUser(user => user.WithIdentifier("testId")))
                 .Calling(c => c.Create(With.Default<ArticleFormModel>()))
                 .ShouldHave()
@@ -176,7 +176,7 @@ namespace HealthyLifestyleTrackingApp.Test.Controllers
         public void PostCreateShouldSaveArticleSetTempDataMessageAndRedirectWhenValidModel(string title, string content, string imageUrl)
            => MyController<ArticlesController>
                 .Instance(instance => instance
-                    .WithData(LifeCoaches.GetLifeCoaches(1, true))
+                    .WithData(LifeCoachesTestData.GetLifeCoaches(1, true))
                     .WithUser(user => user.WithIdentifier("testId")))
                .Calling(c => c.Create(new ArticleFormModel
                {
@@ -203,10 +203,10 @@ namespace HealthyLifestyleTrackingApp.Test.Controllers
                    .To<ArticlesController>(c => c.Mine()));
 
         [Fact]
-        public void EditGetShouldBeAvailableForAuthorizedUsersAuthorsOnly()
+        public void GetEditShouldBeAvailableForAuthorizedUsersAndAuthorsOnly()
             => MyController<ArticlesController>
                 .Instance(instance => instance
-                    .WithData(Articles.GetArticles(1, false))
+                    .WithData(ArticlesTestData.GetArticles(1, false))
                     .WithUser(user => user.WithIdentifier("userId1")))
                 .Calling(c => c.Edit(1))
                 .ShouldHave()
@@ -225,13 +225,264 @@ namespace HealthyLifestyleTrackingApp.Test.Controllers
 
 
         [Fact]
-        public void EditGetShouldReturnNotFoundWhenInvalidId()
+        public void GetEditShouldBeAvailableForAdmins()
+            => MyController<ArticlesController>
+                .Instance(instance => instance
+                    .WithData(ArticlesTestData.GetArticles(1))
+                    .WithUser(user => user.InRole("Administator")))
+                .Calling(c => c.Edit(1))
+                .ShouldHave()
+                .ActionAttributes(attrs => attrs
+                    .RestrictingForAuthorizedRequests())
+                .AndAlso()
+                .ShouldReturn()
+                .View(view => view
+                    .WithModelOfType<ArticleFormModel>()
+                    .Passing(article =>
+                    {
+                        article.Title.Equals("Article 1");
+                        article.Content.Equals("Article Content for this article must be at least 100 characters long so that is the number of characters written. 1");
+                        article.ImageUrl.Equals("https://testphoto.com/photo.jpg");
+                    }));
+
+
+
+        [Fact]
+        public void GetEditShouldReturnNotFoundWhenInvalidId()
            => MyController<ArticlesController>
                 .Instance(instance => instance
-                    .WithData(Articles.GetArticles(1, false))
+                    .WithData(ArticlesTestData.GetArticles(1, false))
                     .WithUser(user => user.WithIdentifier("userId1")))
                .Calling(c => c.Edit(int.MaxValue))
                .ShouldReturn()
                .NotFound();
+
+
+        [Fact]
+        public void GetEditShouldReturnUnathorizedWhenNonAuthorTriesToEdit()
+          => MyController<ArticlesController>
+              .Instance(instance => instance
+                  .WithUser(user => user.WithIdentifier("userId"))
+                  .WithData(ArticlesTestData.GetArticles(1)))
+              .Calling(c => c.Edit(1))
+              .ShouldReturn()
+              .Unauthorized();
+
+
+        [Fact]
+        public void PostEditShouldHaveRestrictionsForHttpPostAndAuthorizedUsers()
+           => MyController<ArticlesController>
+                .Instance(instance => instance
+                    .WithData(LifeCoachesTestData.GetLifeCoaches(1, true))
+                    .WithUser(user => user.WithIdentifier("testId")))
+               .Calling(c => c.Edit(
+                   With.Empty<int>(),
+                   With.Empty<ArticleFormModel>()))
+               .ShouldHave()
+               .ActionAttributes(attrs => attrs
+                   .RestrictingForHttpMethod(HttpMethod.Post)
+                   .RestrictingForAuthorizedRequests());
+
+
+        [Fact]
+        public void PostEditShouldReturnNotFoundWhenInvalidId()
+            => MyController<ArticlesController>
+                .Instance(instance => instance
+                    .WithData(LifeCoachesTestData.GetLifeCoaches(1, true))
+                    .WithUser(user => user.WithIdentifier("testId")))
+                .Calling(c => c.Edit(
+                    With.Any<int>(),
+                    With.Any<ArticleFormModel>()))
+                .ShouldReturn()
+                .NotFound();
+
+
+        [Fact]
+        public void PostEditShouldReturUnauthorizedWhenNonAuthorTriesToEdit()
+            => MyController<ArticlesController>
+                .Instance(instance => instance
+                    .WithUser(user => user.WithIdentifier("NonAuthor"))
+                    .WithData(ArticlesTestData.GetArticles(1)))
+                .Calling(c => c.Edit(1, With.Empty<ArticleFormModel>()))
+                .ShouldReturn()
+                .Unauthorized();
+
+
+        [Fact]
+        public void PostEditShouldReturnViewWithSameModelWhenInvalidModelState()
+            => MyController<ArticlesController>
+                .Instance(instance => instance
+                    .WithUser()
+                    .WithData(ArticlesTestData.GetArticles(1)))
+                .Calling(c => c.Edit(1, With.Default<ArticleFormModel>()))
+                .ShouldHave()
+                .InvalidModelState()
+                .AndAlso()
+                .ShouldReturn()
+                .View(With.Default<ArticleFormModel>());
+
+
+        [Fact]
+        public void PostEditShouldReturnViewWhenAdminTriesToEdit()
+           => MyController<ArticlesController>
+               .Instance(instance => instance
+                   .WithUser(user => user.InRole("Administrator"))
+                   .WithData(ArticlesTestData.GetArticles(1)))
+               .Calling(c => c.Edit(1, With.Empty<ArticleFormModel>()))
+               .ShouldReturn()
+                 .Redirect(redirect => redirect
+                   .To<ArticlesController>(c => c.All(With.Empty<AllArticlesQueryModel>())));
+
+
+
+
+        [Theory]
+        [InlineData(1, "Article Title", "Article Content for this article must be at least 100 characters long so that is the number of characters written.", "https://testphoto.com/photo.jpg", TestUser.Username, null)]
+        public void PostEditShouldSaveArticleSetTempDataMessageAndRedirectWhenValidModelStateWhenAuthorEdits(
+            int articleId,
+            string title,
+            string content,
+            string imageUrl,
+            string username,
+            string role)
+            => MyController<ArticlesController>
+                .Instance(instance => instance
+                    .WithUser(username, new[] { role })
+                    .WithData(ArticlesTestData.GetArticles(1)))
+                .Calling(c => c.Edit(articleId, new ArticleFormModel
+                {
+                    Title = $"Edit {title}",
+                    Content = $"Edit {content}",
+                    ImageUrl = $"{imageUrl}/test"
+                }))
+                .ShouldHave()
+                .ValidModelState()
+                .AndAlso()
+                .ShouldHave()
+                .Data(data => data
+                    .WithSet<Article>(set =>
+                    {
+                        set.Any();
+                        var article = set.SingleOrDefault(a => a.Id == articleId);
+                        article.ShouldNotBeNull();
+                        article.Title.Equals($"Edit {title}");
+                        article.Content.Equals($"Edit {content}");
+                        article.ImageUrl.Equals($"{imageUrl}/test");
+                    }))
+                .AndAlso()
+                .ShouldHave()
+                .TempData(tempData => tempData
+                    .ContainingEntryWithKey(GlobalMessageKey))
+                .AndAlso()
+                .ShouldReturn()
+                .Redirect(redirect => redirect
+                    .To<ArticlesController>(c => c.Mine()));
+
+
+        [Theory]
+        [InlineData(1, "Article Title", "Article Content for this article must be at least 100 characters long so that is the number of characters written here.", "https://testphoto.com/photo.jpg", "Administrator", WebConstants.AdministratorRoleName)]
+        public void PostEditShouldSaveArticleSetTempDataMessageAndRedirectWhenValidModelStateWhenAdminEdits(
+           int articleId,
+           string title,
+           string content,
+           string imageUrl,
+           string username,
+           string role)
+           => MyController<ArticlesController>
+               .Instance(instance => instance
+                   .WithUser(username, new[] { role })
+                   .WithData(ArticlesTestData.GetArticles(1)))
+               .Calling(c => c.Edit(articleId, new ArticleFormModel
+               {
+                   Title = $"Edit {title}",
+                   Content = $"Edit {content}",
+                   ImageUrl = $"{imageUrl}/test"
+               }))
+               .ShouldHave()
+               .ValidModelState()
+               .AndAlso()
+               .ShouldHave()
+               .Data(data => data
+                   .WithSet<Article>(set =>
+                   {
+                       set.Any();
+                       var article = set.SingleOrDefault(a => a.Id == articleId);
+                       article.ShouldNotBeNull();
+                       article.Title.Equals($"Edit {title}");
+                       article.Content.Equals($"Edit {content}");
+                       article.ImageUrl.Equals($"{imageUrl}/test");
+                   }))
+               .AndAlso()
+               .ShouldHave()
+               .TempData(tempData => tempData
+                   .ContainingEntryWithKey(GlobalMessageKey))
+               .AndAlso()
+               .ShouldReturn()
+               .Redirect(redirect => redirect
+                   .To<ArticlesController>(c => c.All(With.Empty<AllArticlesQueryModel>())));
+
+
+        [Fact]
+        public void GetDeleteShouldOnlyBeAllowedForAuthorizedUsers()
+           => MyController<ArticlesController>
+             .Instance(instance => instance
+                    .WithUser())
+               .Calling(c => c.Delete(With.Empty<int>()))
+               .ShouldHave()
+               .ActionAttributes(attrs => attrs
+                   .RestrictingForAuthorizedRequests());
+
+        [Fact]
+        public void GetDeleteShouldReturnNotFoundWhenInvalidId()
+            => MyController<ArticlesController>
+                .Instance(instance => instance
+                    .WithUser(user => user.WithIdentifier("testId"))
+                    .WithData(ArticlesTestData.GetArticles(1)))
+                .Calling(c => c.Delete(With.Any<int>()))
+                .ShouldReturn()
+                .NotFound();
+
+        [Fact]
+        public void GetDeleteShouldReturnNotFoundWhenNonAuthorUser()
+            => MyController<ArticlesController>
+                .Instance(instance => instance
+                    .WithUser(user => user.WithIdentifier("NonAuthor"))
+                    .WithData(ArticlesTestData.GetArticles(1)))
+                .Calling(c => c.Delete(1))
+                .ShouldReturn()
+                .Unauthorized();
+
+
+        [Fact]
+        public void GetDeleteShouldDeleteArticleAndRedirectWhenValidIdAndUserTriesToDelete()
+           => MyController<ArticlesController>
+               .Instance(instance => instance
+                   .WithUser()
+                   .WithData(ArticlesTestData.GetArticles(1)))
+               .Calling(c => c.Delete(1))
+               .ShouldHave()
+               .Data(data => data
+                   .WithSet<Article>(set => set.ShouldBeEmpty()))
+               .AndAlso()
+               .ShouldReturn()
+               .Redirect(redirect => redirect
+                   .To<ArticlesController>(c => c.Mine()));
+
+
+        [Fact]
+        public void GetDeleteShouldDeleteArticleAndRedirectWhenValidIdAndAdminTriesToDelete()
+          => MyController<ArticlesController>
+              .Instance(instance => instance
+                   .WithUser(user => user.InRole("Administrator"))
+                   .WithData(ArticlesTestData.GetArticles(1)))
+              .Calling(c => c.Delete(1))
+              .ShouldHave()
+              .Data(data => data
+                  .WithSet<Article>(set => set.ShouldBeEmpty()))
+              .AndAlso()
+              .ShouldReturn()
+              .Redirect(redirect => redirect
+                  .To<ArticlesController>(c => c.All(With.Empty<AllArticlesQueryModel>())));
     }
+
 }

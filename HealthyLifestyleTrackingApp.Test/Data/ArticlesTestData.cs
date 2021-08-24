@@ -7,7 +7,7 @@ using MyTested.AspNetCore.Mvc;
 
 namespace HealthyLifestyleTrackingApp.Test.Data
 {
-    class Articles
+    public class ArticlesTestData
     {
         public static List<Article> GetArticles(int count, bool sameUser = true)
         {

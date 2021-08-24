@@ -1,10 +1,10 @@
 ﻿using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 using HealthyLifestyleTrackingApp.Infrastructure;
 using HealthyLifestyleTrackingApp.Models.Exercises;
 using HealthyLifestyleTrackingApp.Services.Exercises;
 using HealthyLifestyleTrackingApp.Services.LifeCoaches;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using static HealthyLifestyleTrackingApp.WebConstants;
 

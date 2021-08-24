@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using HealthyLifestyleTrackingApp.Infrastructure;
+﻿using HealthyLifestyleTrackingApp.Infrastructure;
 using HealthyLifestyleTrackingApp.Models.Recipes;
 using HealthyLifestyleTrackingApp.Services.LifeCoaches;
 using HealthyLifestyleTrackingApp.Services.Recipes;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
 using static HealthyLifestyleTrackingApp.WebConstants;
 
 namespace HealthyLifestyleTrackingApp.Controllers
@@ -19,6 +20,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
             this.lifeCoaches = lifeCoaches;
         }
 
+        [Authorize]
         public IActionResult All([FromQuery] AllRecipesQueryModel query)
         {
             var queryResult = this.recipes.All(

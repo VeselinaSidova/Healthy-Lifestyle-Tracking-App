@@ -14,7 +14,7 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
             int currentPage, 
             int foodsPerPage);
 
-        FoodDetailsServiceModel Details(int id);
+        FoodDetailsServiceModel Details(int id, string information);
 
         int Track( 
             int foodId, 
@@ -56,6 +56,8 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
         IEnumerable<FoodTagServiceModel> GetFoodTags();
 
         string GetFoodName(int foodId);
+
+        bool FoodExists(int foodId);
 
         bool FoodCategoryExists(int categoryId);
 

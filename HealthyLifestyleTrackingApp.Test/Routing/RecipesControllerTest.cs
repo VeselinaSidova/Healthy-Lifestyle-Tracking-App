@@ -1,7 +1,7 @@
-﻿using Xunit;
-using MyTested.AspNetCore.Mvc;
-using HealthyLifestyleTrackingApp.Controllers;
+﻿using HealthyLifestyleTrackingApp.Controllers;
 using HealthyLifestyleTrackingApp.Models.Recipes;
+using MyTested.AspNetCore.Mvc;
+using Xunit;
 
 namespace HealthyLifestyleTrackingApp.Test.Routing
 {

@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using HealthyLifestyleTrackingApp.Data;
 using HealthyLifestyleTrackingApp.Data.Enums;
 using HealthyLifestyleTrackingApp.Data.Models;
@@ -74,11 +74,11 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
             };
         }
 
-        public FoodDetailsServiceModel Details(int id)
+        public FoodDetailsServiceModel Details(int id, string information)
         {
             var food = this.data
                 .Foods
-                .Where(f => f.Id == id)
+                .Where(f => f.Id == id && f.Name == information)
                 .Select(f => new FoodDetailsServiceModel
                 {
                     Id = f.Id,
@@ -257,7 +257,11 @@ namespace HealthyLifestyleTrackingApp.Services.Foods
             var food = this.data.Foods.Where(f => f.Id == foodId).FirstOrDefault();
             return food.Name;
         }
-            
+
+
+        public bool FoodExists(int foodId)
+            => this.data.Foods.Any(f => f.Id == foodId);
+
 
         public bool FoodCategoryExists(int categoryId)
             => this.data.FoodCategories.Any(c => c.Id == categoryId);

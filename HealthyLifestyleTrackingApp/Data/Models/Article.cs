@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+
 using static HealthyLifestyleTrackingApp.Data.DataConstants.Article;
 
 namespace HealthyLifestyleTrackingApp.Data.Models

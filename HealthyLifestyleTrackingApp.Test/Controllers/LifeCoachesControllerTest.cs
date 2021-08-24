@@ -1,10 +1,9 @@
 ﻿using System.Linq;
-using Xunit;
-using MyTested.AspNetCore.Mvc;
 using HealthyLifestyleTrackingApp.Controllers;
 using HealthyLifestyleTrackingApp.Data.Models;
 using HealthyLifestyleTrackingApp.Models.LifeCoaches;
-
+using MyTested.AspNetCore.Mvc;
+using Xunit;
 using static HealthyLifestyleTrackingApp.WebConstants;
 
 namespace HealthyLifestyleTrackingApp.Test.Controllers

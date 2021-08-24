@@ -1,5 +1,5 @@
-﻿using HealthyLifestyleTrackingApp.Data.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using HealthyLifestyleTrackingApp.Data.Enums;
 
 namespace HealthyLifestyleTrackingApp.Services.Foods.Models
 {

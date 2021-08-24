@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
 using static HealthyLifestyleTrackingApp.Data.DataConstants.Category;
 
 namespace HealthyLifestyleTrackingApp.Data.Models

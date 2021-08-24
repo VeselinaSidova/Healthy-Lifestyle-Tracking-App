@@ -1,6 +1,6 @@
-﻿using Xunit;
+﻿using HealthyLifestyleTrackingApp.Controllers;
 using MyTested.AspNetCore.Mvc;
-using HealthyLifestyleTrackingApp.Controllers;
+using Xunit;
 
 namespace HealthyLifestyleTrackingApp.Test.Pipeline
 {

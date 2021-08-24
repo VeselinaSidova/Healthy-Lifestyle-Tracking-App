@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using HealthyLifestyleTrackingApp.Services.LifeCoaches;
 using Microsoft.AspNetCore.Authorization;
-using HealthyLifestyleTrackingApp.Services.LifeCoaches;
+using Microsoft.AspNetCore.Mvc;
+
 using static HealthyLifestyleTrackingApp.Areas.Admin.AdminConstants;
 using static HealthyLifestyleTrackingApp.WebConstants;
 

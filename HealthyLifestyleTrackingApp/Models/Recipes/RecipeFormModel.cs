@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+
 using static HealthyLifestyleTrackingApp.Data.DataConstants.Recipe;
 
 namespace HealthyLifestyleTrackingApp.Models.Recipes

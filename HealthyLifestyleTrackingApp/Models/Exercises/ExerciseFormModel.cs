@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using HealthyLifestyleTrackingApp.Services.Exercises.Models;
+
 using static HealthyLifestyleTrackingApp.Data.DataConstants.Exercise;
 
 namespace HealthyLifestyleTrackingApp.Models.Exercises

@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using HealthyLifestyleTrackingApp.Infrastructure;
+﻿using HealthyLifestyleTrackingApp.Infrastructure;
 using HealthyLifestyleTrackingApp.Models.Articles;
 using HealthyLifestyleTrackingApp.Services.Articles;
 using HealthyLifestyleTrackingApp.Services.LifeCoaches;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using static HealthyLifestyleTrackingApp.WebConstants;
 
@@ -133,11 +133,16 @@ namespace HealthyLifestyleTrackingApp.Controllers
         [Authorize]
         public IActionResult Edit(int id, ArticleFormModel article)
         {
+            if (!this.articles.ArticleExists(id))
+            {
+                return NotFound("Article not found!");
+            }
+
             var lifeCoachId = this.lifeCoaches.GetIdByUser(this.User.GetId());
 
             if (!this.articles.ArticleIsByLifeCoach(id, lifeCoachId) && !User.IsAdmin())
             {
-                return BadRequest("You cannot edit this article!");
+                return Unauthorized("You cannot edit this article!");
             }
 
             if (!ModelState.IsValid)
@@ -150,6 +155,12 @@ namespace HealthyLifestyleTrackingApp.Controllers
                article.Title,
                article.Content,
                article.ImageUrl);
+
+            if (articleIsEdited == false)
+            {
+                return BadRequest("Article not edited!");
+            }
+
 
             TempData[GlobalMessageKey] = "Article was successfully edited.";
 
@@ -164,7 +175,12 @@ namespace HealthyLifestyleTrackingApp.Controllers
         [Authorize]
         public IActionResult Delete(int id)
         {
-            var lifeCoachId = this.lifeCoaches.GetIdByUser(this.User.GetId());
+            if (!this.articles.ArticleExists(id))
+            {
+                return NotFound("Article not found!");
+            }
+
+            var lifeCoachId = this.lifeCoaches.GetIdByUser(this.User.GetId());         
 
             if (!this.articles.ArticleIsByLifeCoach(id, lifeCoachId) && !User.IsAdmin())
             {
@@ -175,7 +191,7 @@ namespace HealthyLifestyleTrackingApp.Controllers
 
             if (isDeleted == false)
             {
-                return NotFound("Article not found!");
+                return BadRequest("Article not deleted!");
             }
 
             if (User.IsInRole("Administrator"))

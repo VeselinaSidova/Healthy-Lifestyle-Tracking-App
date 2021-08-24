@@ -97,7 +97,7 @@ img {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 364px;
-    height: 364px;
-    object-fit: cover;
+    width: fit-content;
+    height: auto;
+    object-fit: fill;
 }

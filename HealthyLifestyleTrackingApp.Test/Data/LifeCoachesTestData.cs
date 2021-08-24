@@ -1,14 +1,11 @@
-﻿using HealthyLifestyleTrackingApp.Data.Models;
-using MyTested.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HealthyLifestyleTrackingApp.Data.Models;
+using MyTested.AspNetCore.Mvc;
 
 namespace HealthyLifestyleTrackingApp.Test.Data
 {
-    public class LifeCoaches
+    public class LifeCoachesTestData
     {
         public static List<LifeCoach> GetLifeCoaches(int count, bool isApproved = true)
         {

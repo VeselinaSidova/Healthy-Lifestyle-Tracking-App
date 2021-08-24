@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using HealthyLifestyleTrackingApp.Data.Models;
 using HealthyLifestyleTrackingApp.Services.Tracker.Models;
 
 namespace HealthyLifestyleTrackingApp.Services.Tracker
